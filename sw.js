@@ -13,9 +13,9 @@ self.addEventListener('install', e => {
         '/images/logo-512x512.png',
         '/css/style.css',
         '/css/material.min.css',
-        '/scripts/jquery.min.js',
-        '/scripts/main.js',
-        '/scripts/material.min.js',
+        '/js/jquery.min.js',
+        '/js/main.js',
+        '/js/material.min.js',
         '/fonts/material-icons.woff2'
       ])
       .then(() => self.skipWaiting());
