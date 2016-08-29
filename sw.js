@@ -35,7 +35,34 @@ self.addEventListener('fetch', event => {
   );
 });
 
-self.addEventListener('push', function(event) {
+/*self.addEventListener('push', function(event) {
   console.log('Push message received', event);
   // TODO
+});*/
+
+self.addEventListener('push', function(event) {
+  console.log('Received push');
+  let notificationTitle = 'Hello';
+  const notificationOptions = {
+    body: 'Thanks for sending this push msg.',
+    icon: './images/logo-192x192.png',
+    badge: './images/logo-72x72.png',
+    tag: 'simple-push-demo-notification',
+    data: {
+      url: 'https://developers.google.com/web/fundamentals/getting-started/push-notifications/'
+    }
+  };
+
+  if (event.data) {
+    const dataText = event.data.text();
+    notificationTitle = 'Received Payload';
+    notificationOptions.body = `Push data: '${dataText}'`;
+  }
+
+  event.waitUntil(
+    Promise.all([
+      self.registration.showNotification(
+        notificationTitle, notificationOptions)
+    ])
+  );
 });
