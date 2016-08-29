@@ -13,6 +13,8 @@ self.addEventListener('install', e => {
         '/images/logo-512x512.png',
         '/css/style.css',
         '/css/material.min.css',
+        '/scripts/jquery.min.js',
+        '/scripts/main.js',
         '/scripts/material.min.js',
         '/fonts/material-icons.woff2'
       ])
