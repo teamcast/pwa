@@ -5,7 +5,7 @@ class AppController {
   constructor() {
     // Define a different server URL here if desire.
     this._PUSH_SERVER_URL = '';
-    this._API_KEY = 'AIzaSyBBh4ddPa96rQQNxqiq_qQj7sq1JdsNQUQ';
+    this._API_KEY = 'AIzaSyAHo1hROcWowE1p2wddSuPcqI4ojWGb9DQ';
 
     this._applicationKeys = {
       publicKey: window.base64UrlToUint8Array(
