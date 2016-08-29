@@ -1,3 +1,5 @@
+reg = null;
+
 if ('serviceWorker' in navigator) {
     console.log('Service Worker is supported');
     navigator.serviceWorker.register('sw.js').then(function(reg) {
@@ -6,6 +8,7 @@ if ('serviceWorker' in navigator) {
             userVisibleOnly: true
         }).then(function(sub) {
             console.log('endpoint:', sub.endpoint);
+            $("#endpoint-id").html(sub.endpoint);
         });
     }).catch(function(error) {
         console.log('Error: ', error);
