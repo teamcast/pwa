@@ -35,6 +35,10 @@ h2,
     color: #000080;
 }
 
+p {
+    word-wrap: break-word;
+}
+
 main {
     padding: 15px;
     width: 100%;
