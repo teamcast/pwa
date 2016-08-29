@@ -2,7 +2,7 @@ self.addEventListener('install', e => {
   e.waitUntil(
     caches.open('teamcast').then(cache => {
       return cache.addAll([
-        '/',
+        '/sw.js',
         '/index.html',
         '/index.html?homescreen=1',
         '/?homescreen=1',
@@ -31,4 +31,9 @@ self.addEventListener('fetch', event => {
       return response || fetch(event.request);
     })
   );
+});
+
+self.addEventListener('push', function(event) {
+  console.log('Push message received', event);
+  // TODO
 });
