@@ -36,8 +36,6 @@ self.addEventListener("install", event => {
         console.error("Failed to cache the files.", error);
       })
     });
-
-    self.clients.claim();
   );
 });
 
