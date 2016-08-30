@@ -1,7 +1,7 @@
 if ('serviceWorker' in navigator) {
     console.log('Service Worker is supported');
     navigator.serviceWorker.register('./sw.js').then(function(registrationObj) {
-        console.log('sw.js registered. ', reg);
+        console.log('sw.js registered. ', registrationObj);
         registrationObj.pushManager.subscribe(
             {
                 userVisibleOnly: true
