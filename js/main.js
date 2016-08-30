@@ -10,6 +10,7 @@ if ('serviceWorker' in navigator) {
             }
         ).then(function(subscriptionObj) {
             console.log('endpoint:', subscriptionObj.endpoint);
+                console.log(JSON.parse(subscriptionObj))
 
             $("#endpoint-id").html(subscriptionObj.endpoint + " - KEY -" + JSON.parse(subscriptionObj.getKey("p256dh")));
         });
