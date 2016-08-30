@@ -133,8 +133,6 @@ self.addEventListener('push', event => {
   if (event.data) {
     const dataText = event.data.text();
 
-    console.log(data)
-
     notificationTitle = data.headline;
     notificationOptions.body = data.message;
   }

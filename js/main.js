@@ -11,7 +11,7 @@ if ('serviceWorker' in navigator) {
         ).then(function(subscriptionObj) {
             console.log('endpoint:', subscriptionObj.endpoint);
 
-            $("#endpoint-id").html(subscriptionObj.endpoint);
+            $("#endpoint-id").html(subscriptionObj.endpoint + " - KEY -" +subscriptionObj.getKey("p256dh"));
         });
     }).catch(function(error) {
         console.log('Error: ', error);
