@@ -35,7 +35,7 @@ self.addEventListener("install", event => {
       .catch(function (error) {
         console.error("Failed to cache the files.", error);
       })
-    });
+    })
   );
 });
 
