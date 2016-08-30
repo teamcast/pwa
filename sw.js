@@ -133,8 +133,8 @@ self.addEventListener('push', event => {
   if (event.data) {
     const dataText = event.data.text();
 
-    notificationTitle = data.headline;
-    notificationOptions.body = data.message;
+    notificationTitle = dataText;
+    notificationOptions.body = dataText;
   }
 
   event.waitUntil(
