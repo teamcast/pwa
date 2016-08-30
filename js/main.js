@@ -9,10 +9,17 @@ if ('serviceWorker' in navigator) {
                 userVisibleOnly: true
             }
         ).then(function(subscriptionObj) {
-            console.log('endpoint:', subscriptionObj.endpoint);
-                console.log(subscriptionObj.getKey("p256dh"));
+            var rawKey = subscription.getKey ? subscription.getKey('p256dh') : '';
+            key = rawKey ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawKey))) : '';
+            var rawAuthSecret = subscription.getKey ? subscription.getKey('auth') : '';
+            authSecret = rawAuthSecret ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawAuthSecret))) : '';
+            endpoint = subscription.endpoint;
 
-            $("#endpoint-id").html(subscriptionObj.endpoint + " - KEY -" + JSON.parse(subscriptionObj.getKey("p256dh")));
+            console.log("Endpoint: " + endpoint);
+            console.log("Key: " + key);
+            console.log("AuthSecret: " + authSecret);
+
+            $("#endpoint-id").html(endpoint + " - KEY -" + key + " - AUTHSECRET - " + authSecret);
         });
     }).catch(function(error) {
         console.log('Error: ', error);
