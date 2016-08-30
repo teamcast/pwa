@@ -26,7 +26,7 @@ self.addEventListener("install", event => {
     caches.open(staticCache)
     .then(function (cache) {
       //[] of files to cache & any of the file not present compelete 'addAll' will fail
-      return cache.addAll(files.map(function (fileUrl) {
+      return cache.addAll(filesToCache.map(function (fileUrl) {
         return new Request(fileUrl);
       }))
       .then(function () {
