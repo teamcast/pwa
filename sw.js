@@ -132,13 +132,13 @@ self.addEventListener('push', event => {
 
   if (event.data) {
 	  console.log("GCM includes DATA!");
-	  //alert("GCM includes DATA!");
-	  //alert(JSON.stringify(event.data));
 	  console.log(event.data.text());
-    /*const dataText = event.data.text();
 
-    notificationTitle = dataText;
-    notificationOptions.body = dataText;*/
+	  var jsonPayload = JSON.parse(event.data.text());
+    /*const dataText = event.data.text();*/
+
+    notificationTitle = jsonPayload.title;
+    notificationOptions.body = jsonPayload.message;
   }
 
   event.waitUntil(
