@@ -27,11 +27,6 @@ if ('serviceWorker' in navigator) {
 
                     $("#endpoint-id").html(endpoint + " - KEY -" + key + " - AUTHSECRET - " + authSecret);
                 });
-            /*registrationObj.update().then(function() {
-                console.log('Checked for update');
-            }).catch(function(error) {
-                console.error('Update failed', error);
-            });*/
         });
     });
 }

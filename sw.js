@@ -131,10 +131,11 @@ self.addEventListener('push', event => {
   };
 
   if (event.data) {
-    const dataText = event.data.text();
+	  console.log(event.data);
+    /*const dataText = event.data.text();
 
     notificationTitle = dataText;
-    notificationOptions.body = dataText;
+    notificationOptions.body = dataText;*/
   }
 
   event.waitUntil(
@@ -159,7 +160,7 @@ self.addEventListener("notificationclick", event => {
       for (var i = 0; i < clientList.length; i++) {
         var client = clientList[i];
         if (client.url == "/" && "focus" in client) {
-          client.postMessage(event.data);
+          client.postMessage(event.notification);
           client.focus();
           return;
         }
