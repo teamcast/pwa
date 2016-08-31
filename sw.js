@@ -157,22 +157,10 @@ self.addEventListener("notificationclick", event => {
 
   //To open the app after click notification
   event.waitUntil(
-    clients.matchAll()
+    self.clients.matchAll()
     .then(function(clientList) {
-		var found = false;
-		for (var i = 0; i < clientList.length; i++) {
-			var client = clientList[i];
-			if (client.url == event.data.url) {
-				found = true;
-				clients[i].focus();
-				break;
-			}
-		}
-		if (!found) {
-			// Create a new window.
-			clients.openWindow(event.data.url).then(function(windowClient) {
-			// do something with the windowClient.
-			});
+		if (clientList.length > 0) {
+			return clientList[0].focus();
 		}
     })
   );
