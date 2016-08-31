@@ -26,7 +26,7 @@ self.addEventListener('install',function(e){
         Promise.all([caches.open(staticCache),self.skipWaiting()]).then(function(cache){
             return Promise.all([cache.addAll(filesToCache.map(function (fileUrl) {
 				return new Request(fileUrl);
-			  })]);
+			  }))]);
         })
     );
 });
