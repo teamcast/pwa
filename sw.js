@@ -47,14 +47,15 @@ self.addEventListener("activate", event => {
 
   //Delete unwanted caches
   event.waitUntil(
-    caches.keys()
-      .then(function (allCaches) {
-        allCaches.map(function (cacheName) {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        });
-      })
+	self.clients.claim();
+	caches.keys()
+		.then(function (allCaches) {
+			allCaches.map(function (cacheName) {
+				if (cacheWhitelist.indexOf(cacheName) === -1) {
+					return caches.delete(cacheName);
+				}
+			});
+		})
   );
 });
 
@@ -131,11 +132,10 @@ self.addEventListener('push', event => {
   };
 
   if (event.data) {
-	  console.log("GCM includes DATA!");
-	  console.log(event.data.text());
+	console.log("GCM includes DATA!");
+	console.log(event.data.text());
 
-	  var jsonPayload = JSON.parse(event.data.text());
-    /*const dataText = event.data.text();*/
+	const jsonPayload = JSON.parse(event.data.text());
 
     notificationTitle = jsonPayload.title;
     notificationOptions.body = jsonPayload.message;
