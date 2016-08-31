@@ -23,7 +23,7 @@ self.addEventListener("install", event => {
   console.log("Event: Install");
 
   event.waitUntil(
-	self.skipWaiting();
+	self.skipWaiting(),
     caches.open(staticCache)
     .then(function (cache) {
       //[] of files to cache & any of the file not present compelete 'addAll' will fail
@@ -48,7 +48,7 @@ self.addEventListener("activate", event => {
 
   //Delete unwanted caches
   event.waitUntil(
-	self.clients.claim()
+	self.clients.claim(),
     caches.keys()
       .then(function (allCaches) {
         allCaches.map(function (cacheName) {
