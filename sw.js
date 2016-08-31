@@ -163,7 +163,7 @@ self.addEventListener("notificationclick", event => {
     .then(function(clientList) {
       for (var i = 0; i < clientList.length; i++) {
         var client = clientList[i];
-        if (client.url == "/" && "focus" in client) {
+        if (client.url == event.data.url && "focus" in client) {
           client.postMessage(event.notification);
           client.focus();
           return;
