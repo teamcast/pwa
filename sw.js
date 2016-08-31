@@ -134,7 +134,7 @@ self.addEventListener('push', event => {
 	  console.log("GCM includes DATA!");
 	  //alert("GCM includes DATA!");
 	  //alert(JSON.stringify(event.data));
-	  console.log(JSON.stringify(event.data.json()));
+	  console.log(event.data.json());
     /*const dataText = event.data.text();
 
     notificationTitle = dataText;
