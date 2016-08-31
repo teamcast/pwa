@@ -39,6 +39,8 @@ if ('serviceWorker' in navigator) {
                 authSecret = rawAuthSecret ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawAuthSecret))) : '';
                 endpoint = subscription.endpoint;
 
+                console.log(JSON.stringify(subscription));
+
                 console.log("Endpoint: " + endpoint);
                 console.log("Key: " + key);
                 console.log("AuthSecret: " + authSecret);
