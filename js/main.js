@@ -41,11 +41,11 @@ if ('serviceWorker' in navigator) {
 
                 console.log(JSON.stringify(subscription));
 
-                console.log("Endpoint: " + endpoint);
+                /*console.log("Endpoint: " + endpoint);
                 console.log("Key: " + key);
-                console.log("AuthSecret: " + authSecret);
+                console.log("AuthSecret: " + authSecret);*/
 
-                $("#endpoint-id").html(endpoint + " - KEY -" + key + " - AUTHSECRET - " + authSecret);
+                $("#endpoint-id").html(JSON.stringify(subscription));
             })
             .catch(function(err) {
                 //window.Demo.debug.log('Error during getSubscription()', err);
@@ -65,11 +65,11 @@ if ('serviceWorker' in navigator) {
                     authSecret = rawAuthSecret ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawAuthSecret))) : '';
                     endpoint = subscriptionObj.endpoint;
 
-                    console.log("Endpoint: " + endpoint);
+                    /*console.log("Endpoint: " + endpoint);
                     console.log("Key: " + key);
-                    console.log("AuthSecret: " + authSecret);
+                    console.log("AuthSecret: " + authSecret);*/
 
-                    $("#endpoint-id").html(endpoint + " - KEY -" + key + " - AUTHSECRET - " + authSecret);
+                    $("#endpoint-id").html(JSON.stringify(subscription));
                 });
         });
     });
