@@ -19,35 +19,45 @@ var filesToCache = [
 	'/fonts/material-icons.woff2'
 ];
 
+self.addEventListener("install", event => {
+  console.log("Event: Install");
 
-
-self.addEventListener('install',function(e){
-    e.waitUntil(
-        Promise.all([caches.open(staticCache),self.skipWaiting()]).then(function(cache){
-            return Promise.all([cache.addAll(filesToCache.map(function (fileUrl) {
-				return new Request(fileUrl);
-			  }))]);
-        })
-    );
+  event.waitUntil(
+	self.skipWaiting();
+    caches.open(staticCache)
+    .then(function (cache) {
+      //[] of files to cache & any of the file not present compelete 'addAll' will fail
+      return cache.addAll(filesToCache.map(function (fileUrl) {
+        return new Request(fileUrl);
+      }))
+      .then(function () {
+        console.log("All the files are cached.");
+      })
+      .catch(function (error) {
+        console.error("Failed to cache the files.", error);
+      })
+    })
+  );
 });
 
-self.addEventListener('activate', function(e) {
-	var cacheWhitelist = ["teamcast-static-cache", "teamcast-data-cache"];
+//Activate event to delete old caches
+self.addEventListener("activate", event => {
+  console.log("Event: Activate");
 
-    e.waitUntil(
-        Promise.all([
-            self.clients.claim(),
-            caches.keys().then(function(cacheNames) {
-                return Promise.all(
-                    cacheNames.map(function(cacheName) {
-                        if (cacheWhitelist.indexOf(cacheName) === -1) {
-							return caches.delete(cacheName);
-						}
-                    })
-                );
-            })
-        ])
-    );
+  var cacheWhitelist = ["teamcast-static-cache", "teamcast-data-cache"];
+
+  //Delete unwanted caches
+  event.waitUntil(
+	self.clients.claim()
+    caches.keys()
+      .then(function (allCaches) {
+        allCaches.map(function (cacheName) {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        });
+      })
+  );
 });
 
 self.addEventListener('fetch', event => {
