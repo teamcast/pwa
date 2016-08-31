@@ -41,10 +41,6 @@ if ('serviceWorker' in navigator) {
 
                 console.log(JSON.stringify(subscription));
 
-                /*console.log("Endpoint: " + endpoint);
-                console.log("Key: " + key);
-                console.log("AuthSecret: " + authSecret);*/
-
                 $("#endpoint-id").html(JSON.stringify(subscription));
             })
             .catch(function(err) {
@@ -64,10 +60,6 @@ if ('serviceWorker' in navigator) {
                     var rawAuthSecret = subscription.getKey ? subscription.getKey('auth') : '';
                     authSecret = rawAuthSecret ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawAuthSecret))) : '';
                     endpoint = subscription.endpoint;
-
-                    /*console.log("Endpoint: " + endpoint);
-                    console.log("Key: " + key);
-                    console.log("AuthSecret: " + authSecret);*/
 
                     $("#endpoint-id").html(JSON.stringify(subscription));
                 });
