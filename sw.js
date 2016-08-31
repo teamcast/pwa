@@ -56,6 +56,7 @@ self.addEventListener("activate", event => {
 				}
 			});
 		})
+	self.skipWaiting();
   );
 });
 
