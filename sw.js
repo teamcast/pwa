@@ -45,8 +45,25 @@ self.addEventListener("activate", event => {
 
   var cacheWhitelist = ["teamcast-static-cache", "teamcast-data-cache"];
 
+	e.waitUntil(
+        Promise.all([
+            self.clients.claim(),
+            caches.keys().then(function(cacheNames) {
+                return Promise.all(
+					allCaches.map(function (cacheName) {
+						if (cacheWhitelist.indexOf(cacheName) === -1) {
+							return caches.delete(cacheName);
+						}
+					});
+                );
+            })
+        ])
+        self.skipWaiting();
+    );
+
+
   //Delete unwanted caches
-  event.waitUntil(
+  /*event.waitUntil(
 	self.clients.claim();
 	caches.keys()
 		.then(function (allCaches) {
@@ -57,7 +74,7 @@ self.addEventListener("activate", event => {
 			});
 		})
 	self.skipWaiting();
-  );
+  );*/
 });
 
 self.addEventListener('fetch', event => {
