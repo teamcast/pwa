@@ -42,7 +42,7 @@ if ('serviceWorker' in navigator) {
                     userVisibleOnly: true
                 }
             ).then(function(subscription) {
-                var subscriptionObj = JSON.stringify(subscription);
+                var subscriptionObj = JSON.parse(JSON.stringify(subscription));
                 var profileObj = {
                     "firstName": $("#firstname").val(),
                     "lastName": $("#lastname").val(),
