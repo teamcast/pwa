@@ -2,7 +2,7 @@ importScripts("/cache-polyfill.js");
 
 var staticCache = "teamcast-static-cache";
 var filesToCache = [
-	'./',
+	'/',
 	'/index.html',
 	'/index.html?homescreen=1',
 	'/?homescreen=1',
