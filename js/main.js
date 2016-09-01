@@ -33,7 +33,7 @@ if ('serviceWorker' in navigator) {
                 console.log('Error during getSubscription()', err);
                 $(".loading-overlay").addClass("hidden");
             });
-
+/*
         navigator.serviceWorker.addEventListener('message', function(event) {
             //event.data.message
             var profileObj = JSON.parse(localStorage.getItem("profile"));
@@ -43,6 +43,7 @@ if ('serviceWorker' in navigator) {
             $(".mdl-card__supporting-text", ".notification-card")
                 .find("p").text(JSON.stringify(event.data.body));
         });
+        */
 
         $('#subscribe-btn').on('click', function(e) {
             e.preventDefault();
@@ -94,5 +95,15 @@ if ('serviceWorker' in navigator) {
                 })
             });
         });
+    });
+
+    navigator.serviceWorker.addEventListener('message', function(event) {
+        //event.data.message
+        var profileObj = JSON.parse(localStorage.getItem("profile"));
+        $(".mdl-card").hide();
+        $(".notification-card").show();
+        $(".employee-name").html(profileObj.firstName + profileObj.lastName);
+        $(".mdl-card__supporting-text", ".notification-card")
+            .find("p").text(JSON.stringify(event.data.body));
     });
 }

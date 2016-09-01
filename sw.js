@@ -135,6 +135,7 @@ self.addEventListener("notificationclick", event => {
 		} else {
 			self.clients.openWindow(pwaUrl).then(function(windowClient) {
               self.clients.claim();
+              windowClient.focus();
               //windowClient.postMessage(messageData);
             }).then(function() {
               self.clients.matchAll()
