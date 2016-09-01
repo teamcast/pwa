@@ -162,7 +162,7 @@ self.addEventListener("notificationclick", event => {
 		if (clientList.length > 0) {
 			return clientList[0].focus();
 		} else {
-			return self.clients.openWindow('./?utm_source=homescreen');
+			return self.clients.openWindow('https://teamcast.github.io');
 		}
     })
   );
