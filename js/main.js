@@ -53,6 +53,7 @@ if ('serviceWorker' in navigator) {
             $(".employee-name").html(profileObj.firstName + profileObj.lastName);
             $(".mdl-card__supporting-text", ".notification-card")
                 .find("p").text(messageObj.content);
+            $(".mdl-card__actions", ".notification-card").empty();
 
             if (messageObj.options && messageObj.options.length) {
                 var optLen = messageObj.options.length;
