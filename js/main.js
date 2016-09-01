@@ -34,6 +34,16 @@ if ('serviceWorker' in navigator) {
                 $(".loading-overlay").addClass("hidden");
             });
 
+        navigator.serviceWorker.addEventListener('message', function(event) {
+            //event.data.message
+            var profileObj = JSON.parse(localStorage.getItem("profile"));
+            $(".mdl-card").hide();
+            $(".notification-card").show();
+            $(".employee-name").html(profileObj.firstName + profileObj.lastName);
+            $(".mdl-card__supporting-text", ".notification-card")
+                .find("p").text(JSON.stringify(event.data.body));
+        });
+
         $('#subscribe-btn').on('click', function(e) {
             e.preventDefault();
             $(".loading-overlay").removeClass("hidden");
@@ -85,15 +95,4 @@ if ('serviceWorker' in navigator) {
             });
         });
     });
-
-    navigator.serviceWorker.addEventListener('message', function(event) {
-        //event.data.message
-        var profileObj = JSON.parse(localStorage.getItem("profile"));
-        $(".mdl-card").hide();
-        $(".notification-card").show();
-        $(".employee-name").html(profileObj.firstName + profileObj.lastName);
-        $(".mdl-card__supporting-text", ".notification-card")
-            .find("p").html(JSON.stringify(event.data.body));
-    });
-
 }

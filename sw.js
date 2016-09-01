@@ -132,10 +132,10 @@ self.addEventListener("notificationclick", event => {
 		if (clientList.length > 0) {
 			clientList[0].focus();
             clientList[0].postMessage(messageData);
-
 		} else {
-			self.clients.openWindow(pwaUrl).then(function(client) {
-              client.postMessage(messageData);
+			self.clients.openWindow(pwaUrl).then(function(windowClient) {
+              self.clients.claim();
+              windowClient.postMessage(messageData);
             });
 		}
         return
