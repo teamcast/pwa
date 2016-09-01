@@ -9,15 +9,9 @@ if ('serviceWorker' in navigator) {
     });
 
     navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-        // Do we already have a push message subscription?
         serviceWorkerRegistration.pushManager.getSubscription()
             .then(function(subscription) {
-                // Enable any UI which subscribes / unsubscribes from
-                // push messages.
-                //var pushButton = document.querySelector('.js-push-button');
-                //pushButton.disabled = false;
-
-                $(".mdl-card").hide();
+                $(".mdl-card").hide(); // hide all cards
 
                 if (!subscription) {
                     // We aren’t subscribed to push, so set UI
@@ -26,25 +20,7 @@ if ('serviceWorker' in navigator) {
                     return;
                 }
 
-                // Keep your server in sync with the latest subscriptionId
-                //sendSubscriptionToServer(subscription);
-
-                //showCurlCommand(subscription);
-
-                // Set your UI to show they have subscribed for
-                // push messages
-                //pushButton.textContent = 'Disable Push Messages';
-                //isPushEnabled = true;
-
                 $(".unsusbscribe-card").show();
-
-                /*
-                var rawKey = subscription.getKey ? subscription.getKey('p256dh') : '';
-                key = rawKey ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawKey))) : '';
-                var rawAuthSecret = subscription.getKey ? subscription.getKey('auth') : '';
-                authSecret = rawAuthSecret ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawAuthSecret))) : '';
-                endpoint = subscription.endpoint;
-                */
 
                 console.log(JSON.stringify(subscription));
 
@@ -53,23 +29,19 @@ if ('serviceWorker' in navigator) {
             .catch(function(err) {
                 console.log('Error during getSubscription()', err);
             });
-    });
 
-    document.querySelector('#subscribe-btn').addEventListener('click', function() {
-        navigator.serviceWorker.ready.then(function(registrationObj) {
-            registrationObj.pushManager.subscribe(
+        document.querySelector('#subscribe-btn').addEventListener('click', function() {
+            serviceWorkerRegistration.pushManager.subscribe(
                 {
                     userVisibleOnly: true
                 }
             ).then(function(subscription) {
-                    var rawKey = subscription.getKey ? subscription.getKey('p256dh') : '';
-                    key = rawKey ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawKey))) : '';
-                    var rawAuthSecret = subscription.getKey ? subscription.getKey('auth') : '';
-                    authSecret = rawAuthSecret ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawAuthSecret))) : '';
-                    endpoint = subscription.endpoint;
-
+                    $(".mdl-card").hide(); // hide all cards
+                    $(".unsusbscribe-card").show();
                     $("#endpoint-id").html(JSON.stringify(subscription));
                 });
         });
     });
+
+
 }
