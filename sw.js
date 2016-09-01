@@ -1,5 +1,6 @@
 importScripts("/cache-polyfill.js");
 
+var pwaUrl = "https://teamcast.github.io";
 var staticCache = "teamcast-static-cache";
 var filesToCache = [
 	'/',
@@ -64,44 +65,19 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
+		var fetchRequest = event.request.clone();
 
-		  // IMPORTANT: Clone the request. A request is a stream and
-		          // can only be consumed once. Since we are consuming this
-		          // once by cache and once by the browser for fetch, we need
-		          // to clone the request.
-		          var fetchRequest = event.request.clone();
+		// Cache hit - return response
+		if (response) {
+			var onlineResponse = self.updateStaticCache(fetchRequest);
 
-		          fetch(fetchRequest).then(
-					function(resp) {
-					  // Check if we received a valid response
-					  if(!resp || resp.status !== 200 || resp.type !== 'basic') {
-						return resp;
-					  }
-
-					  // IMPORTANT: Clone the response. A response is a stream
-					  // and because we want the browser to consume the response
-					  // as well as the cache consuming the response, we need
-					  // to clone it so we have 2 stream.
-					  var responseToCache = resp.clone();
-
-					  caches.open(staticCache)
-						.then(function(cache) {
-						  cache.put(event.request, responseToCache);
-						});
-					}
-        )
-
-
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-
-
+			return response;
+		} else {
+			return self.updateStaticCache(fetchRequest);
+		}
       })
     );
 });
-
 
 self.addEventListener('push', event => {
   console.log('Received push');
@@ -164,8 +140,28 @@ self.addEventListener("notificationclick", event => {
 		if (clientList.length > 0) {
 			return clientList[0].focus();
 		} else {
-			return self.clients.openWindow('https://teamcast.github.io');
+			return self.clients.openWindow(pwaUrl);
 		}
     })
   );
 });
+
+self.updateStaticCache = function(request) {
+	return fetch(fetchRequest).then(
+		function(response) {
+			// Check if we received a valid response
+			if(!response || response.status !== 200 || response.type !== 'basic') {
+				return response;
+			}
+
+			var responseToCache = response.clone();
+
+			caches.open(staticCache)
+			.then(function(cache) {
+				cache.put(fetchRequest, responseToCache);
+			});
+
+			return response;
+		}
+	)
+}
