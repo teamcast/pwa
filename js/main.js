@@ -65,6 +65,7 @@ if ('serviceWorker' in navigator) {
                     $(".mdl-card").hide(); // hide all cards
                     $(".subscription-card").show();
                     $("#endpoint-id").html("");
+                    $(".loading-overlay").addClass("hidden");
                 }).catch(function(e) {
                     // Unsubscription failed
                     $(".loading-overlay").addClass("hidden");
