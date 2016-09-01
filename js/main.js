@@ -62,7 +62,7 @@ if ('serviceWorker' in navigator) {
                         "id": messageObj.options[x].toLowerCase(),
                         "name": messageObj.options[x].toUpperCase()
                     }
-                    var template = $("#options-template");
+                    var template = $("#options-template").html();
                     var optMarkup = Mustache.to_html(template, data);
                     $(".mdl-card__actions", ".notification-card").append(optMarkup);
                 }
