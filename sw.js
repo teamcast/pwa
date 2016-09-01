@@ -1,8 +1,10 @@
 importScripts("/cache-polyfill.js");
 
 var pwaUrl = "https://teamcast.github.io";
-var staticCache = "teamcast-static-cache";
-var filesToCache = [
+staticCache = "teamcast-static-cache",
+client_id,
+messageData,
+filesToCache = [
 	'/',
 	'/index.html',
 	'/index.html?homescreen=1',
