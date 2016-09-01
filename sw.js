@@ -93,20 +93,11 @@ self.addEventListener('push', event => {
     data: {
       headline: "",
       message: "",
-      messageId: "1",
-      options: [
-      	{
-		  text: "no",
-		  value: "unsafe",
-		  priority: 2
-		},
-      	{
-		  text: "yes",
-		  value: "safe",
-		  priority: 1
-		}
-      ],
-      url: ""
+      announcementId: "1",
+      body: {
+        content: "",
+        options: []
+      }
     }
   };
 
@@ -116,8 +107,10 @@ self.addEventListener('push', event => {
 
 	const jsonPayload = JSON.parse(event.data.text());
 
-    notificationTitle = jsonPayload.title;
+    notificationTitle = jsonPayload.headline;
     notificationOptions.body = jsonPayload.message;
+    notificationOptions.announcementId = jsonPayload.announcementId;
+    notificationOptions.data = jsonPayload.data;
   }
 
   event.waitUntil(
