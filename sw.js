@@ -139,6 +139,7 @@ self.addEventListener("notificationclick", event => {
             }).then(function() {
               self.clients.matchAll()
                   .then(function(clientList) {
+                    console.log(clientList);
                     clientList[0].focus();
                     clientList[0].postMessage(messageData);
                   })
