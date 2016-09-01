@@ -29,11 +29,7 @@ if ('serviceWorker' in navigator) {
                 $("#endpoint-id").html(JSON.stringify(subscription));
                 $(".loading-overlay").addClass("hidden");
 
-                //navigator.serviceWorker.controller.postMessage("ready");
-                navigator.serviceWorker.getNotifications({ tag : 'teamcast-push-notification' }).then(function(notifications) {
-                    console.log(notifications);
-                    // do something with your notifications
-                })
+                console.log(navigator.serviceWorker);
             })
             .catch(function(err) {
                 console.log('Error during getSubscription()', err);
