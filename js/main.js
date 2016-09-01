@@ -11,6 +11,7 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
         serviceWorkerRegistration.pushManager.getSubscription()
             .then(function(subscription) {
+                $(".loading-overlay").removeClass("hidden");
                 $(".mdl-card").hide(); // hide all cards
 
                 if (!subscription) {
@@ -25,27 +26,36 @@ if ('serviceWorker' in navigator) {
                 console.log(JSON.stringify(subscription));
 
                 $("#endpoint-id").html(JSON.stringify(subscription));
+                $(".loading-overlay").addClass("hidden");
             })
             .catch(function(err) {
                 console.log('Error during getSubscription()', err);
+                $(".loading-overlay").addClass("hidden");
             });
 
         $('#subscribe-btn').on('click', function(e) {
             e.preventDefault();
+            $(".loading-overlay").removeClass("hidden");
             serviceWorkerRegistration.pushManager.subscribe(
                 {
                     userVisibleOnly: true
                 }
             ).then(function(subscription) {
-                    //TODO: send subscripttion to REST API
+                //TODO: send subscripttion to REST API
 
-                    $(".mdl-card").hide(); // hide all cards
-                    $(".unsusbscribe-card").show();
-                    $("#endpoint-id").html(JSON.stringify(subscription));
-                });
+                $(".mdl-card").hide(); // hide all cards
+                $(".unsusbscribe-card").show();
+                $("#endpoint-id").html(JSON.stringify(subscription));
+                $(".loading-overlay").addClass("hidden");
+            })
+            .catch(function(err) {
+                console.log('Error during getSubscription()', err);
+                $(".loading-overlay").addClass("hidden");
+            });
         });
         $('#unsubscribe-btn').on('click', function(e) {
             e.preventDefault();
+            $(".loading-overlay").removeClass("hidden");
 
             serviceWorkerRegistration.pushManager.getSubscription()
                 .then(function(subscription) {
@@ -57,6 +67,7 @@ if ('serviceWorker' in navigator) {
                     $("#endpoint-id").html("");
                 }).catch(function(e) {
                     // Unsubscription failed
+                    $(".loading-overlay").addClass("hidden");
                 })
             });
         });
