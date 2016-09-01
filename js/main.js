@@ -1,7 +1,7 @@
 if ('serviceWorker' in navigator) {
     console.log('Service Worker is supported');
 
-    navigator.serviceWorker.register('sw.js', {scope: '/'})
+    navigator.serviceWorker.register('/sw.js', {scope: '/'})
         .then(function(registrationObj) {
         console.log('sw.js registered. ', registrationObj);
             //alert("REGISTERED");

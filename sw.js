@@ -147,7 +147,7 @@ self.addEventListener("notificationclick", event => {
 });
 
 self.updateStaticCache = function(request) {
-	return fetch(fetchRequest).then(
+	return fetch(request).then(
 		function(response) {
 			// Check if we received a valid response
 			if(!response || response.status !== 200 || response.type !== 'basic') {
@@ -158,7 +158,7 @@ self.updateStaticCache = function(request) {
 
 			caches.open(staticCache)
 			.then(function(cache) {
-				cache.put(fetchRequest, responseToCache);
+				cache.put(request, responseToCache);
 			});
 
 			return response;
