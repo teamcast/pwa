@@ -131,6 +131,7 @@ self.addEventListener('push', event => {
 self.addEventListener("notificationclick", event => {
   console.log("Notification is clicked ", event);
 
+  var messageData = event.notification.data;
   event.notification.close();
 
   //To open the app after click notification
@@ -138,10 +139,14 @@ self.addEventListener("notificationclick", event => {
     self.clients.matchAll()
     .then(function(clientList) {
 		if (clientList.length > 0) {
-			return clientList[0].focus();
+			clientList[0].focus();
+            clientList[0].postMessage(messageData);
+
 		} else {
-			return self.clients.openWindow(pwaUrl);
+			var newClient = self.clients.openWindow(pwaUrl);
+            newClient.postMessage(messageData);
 		}
+        return
     })
   );
 });
