@@ -161,6 +161,8 @@ self.addEventListener("notificationclick", event => {
     .then(function(clientList) {
 		if (clientList.length > 0) {
 			return clientList[0].focus();
+		} else {
+			return self.clients.openWindow('./?utm_source=homescreen');
 		}
     })
   );
