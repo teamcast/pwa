@@ -76,7 +76,7 @@ main {
     width: 100%;
     top: 0;
     left: 0;
-    background-color: rgba(255,255,255,1);
+    background-color: #fff;
 }
 
 .teamcast-pwa.mdl-layout .mdl-layout__content > .loading-overlay > .loading-overlay-row {

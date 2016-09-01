@@ -18,6 +18,7 @@ if ('serviceWorker' in navigator) {
                     // We aren’t subscribed to push, so set UI
                     // to allow the user to enable push
                     $(".subscription-card").show();
+                    $(".loading-overlay").addClass("hidden");
                     return;
                 }
 
