@@ -115,7 +115,14 @@
 </div>
 <script src="js/jquery.min.js"></script>
 <script src="js/material.min.js"></script>
+<script src="js/mustache.min.js"></script>
 <script src="js/main.js"></script>
+<script type="text/html" id="options-template">
+    <label class="mdl-radio mdl-js-radio" for="{{id}}">
+        <input type="radio" id="{{id}}" name="{{id}}" class="mdl-radio__button">
+        <span class="mdl-radio__label">{{name}}</span>
+    </label>
+</script>
 
 
 </body>

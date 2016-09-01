@@ -17,6 +17,7 @@ var filesToCache = [
 	'/js/jquery.min.js',
 	'/js/main.js',
 	'/js/material.min.js',
+    '/js/mustache.min.js',
 	'/fonts/material-icons.woff2'
 ];
 

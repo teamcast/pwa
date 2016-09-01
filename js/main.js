@@ -46,12 +46,38 @@ if ('serviceWorker' in navigator) {
 
         navigator.serviceWorker.addEventListener('message', function(event) {
             var profileObj = JSON.parse(localStorage.getItem("profile"));
+            var messageObj = event.data.body;
 
             $(".mdl-card").hide();
             $(".notification-card").show();
             $(".employee-name").html(profileObj.firstName + profileObj.lastName);
             $(".mdl-card__supporting-text", ".notification-card")
-                .find("p").text(JSON.stringify(event.data.body));
+                .find("p").text(messageObj.content);
+
+            if (messageObj.options && messageObj.options.length) {
+                var optLen = messageObj.options.length;
+                for (x=0; x < optLen; x++) {
+                    var data = {
+                        "id": messageObj.options[x].toLowerCase(),
+                        "name": messageObj.options[x].toUpperCase()
+                    }
+                    var template = $("#options-template");
+                    var optMarkup = Mustache.to_html(template, data);
+                    $(".mdl-card__actions", ".notification-card").append(optMarkup);
+                }
+            }
+            var data = {
+                employees: [
+                    {   firstName: "Christophe",
+                        lastName: "Coenraets"},
+                    {   firstName: "John",
+                        lastName: "Smith"}
+                ]};
+            var template = "Employees:<ul>{{#employees}}" +
+                "<li>{{firstName}} {{lastName}}</li>" +
+                "{{/employees}}</ul>";
+            var html = Mustache.to_html(template, data);
+            $('#sampleArea').html(html);
         });
 
         $('#subscribe-btn').on('click', function(e) {
