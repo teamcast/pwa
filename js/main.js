@@ -28,12 +28,18 @@ if ('serviceWorker' in navigator) {
 
                 $("#endpoint-id").html(JSON.stringify(subscription));
                 $(".loading-overlay").addClass("hidden");
+
+                //navigator.serviceWorker.controller.postMessage("ready");
+                navigator.serviceWorker.getNotifications({ tag : 'teamcast-push-notification' }).then(function(notifications) {
+                    console.log(notifications);
+                    // do something with your notifications
+                })
             })
             .catch(function(err) {
                 console.log('Error during getSubscription()', err);
                 $(".loading-overlay").addClass("hidden");
             });
-/*
+
         navigator.serviceWorker.addEventListener('message', function(event) {
             //event.data.message
             var profileObj = JSON.parse(localStorage.getItem("profile"));
@@ -43,7 +49,6 @@ if ('serviceWorker' in navigator) {
             $(".mdl-card__supporting-text", ".notification-card")
                 .find("p").text(JSON.stringify(event.data.body));
         });
-        */
 
         $('#subscribe-btn').on('click', function(e) {
             e.preventDefault();
@@ -95,15 +100,5 @@ if ('serviceWorker' in navigator) {
                 })
             });
         });
-    });
-
-    navigator.serviceWorker.addEventListener('message', function(event) {
-        //event.data.message
-        var profileObj = JSON.parse(localStorage.getItem("profile"));
-        $(".mdl-card").hide();
-        $(".notification-card").show();
-        $(".employee-name").html(profileObj.firstName + profileObj.lastName);
-        $(".mdl-card__supporting-text", ".notification-card")
-            .find("p").text(JSON.stringify(event.data.body));
     });
 }
