@@ -1,6 +1,14 @@
 if ('serviceWorker' in navigator) {
     console.log('Service Worker is supported');
 
+    $(document).ready(function() {
+        var controller = navigator.serviceWorker.controller;
+
+        if (controller) {
+           controller.postMessage("clientloaded");
+        }
+    });
+
     navigator.serviceWorker.register('/sw.js', {scope: '/'})
         .then(function(registrationObj) {
         console.log('sw.js registered. ', registrationObj);
@@ -37,8 +45,8 @@ if ('serviceWorker' in navigator) {
             });
 
         navigator.serviceWorker.addEventListener('message', function(event) {
-            //event.data.message
             var profileObj = JSON.parse(localStorage.getItem("profile"));
+
             $(".mdl-card").hide();
             $(".notification-card").show();
             $(".employee-name").html(profileObj.firstName + profileObj.lastName);

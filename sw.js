@@ -122,7 +122,7 @@ self.addEventListener('push', event => {
 self.addEventListener("notificationclick", event => {
   console.log("Notification is clicked ", event);
 
-  var messageData = event.notification.data;
+  messageData = event.notification.data;
   event.notification.close();
 
   //To open the app after click notification
@@ -133,10 +133,9 @@ self.addEventListener("notificationclick", event => {
 			clientList[0].focus();
             clientList[0].postMessage(messageData);
 		} else {
-			self.clients.openWindow(pwaUrl).then(function(windowClient) {
+			self.clients.openWindow(pwaUrl).then(function(client) {
               self.clients.claim();
-              //windowClient.focus();
-              //windowClient.postMessage(messageData);
+              client_id = client.id;
             })
 		}
         return
@@ -145,34 +144,17 @@ self.addEventListener("notificationclick", event => {
 });
 
 self.addEventListener('message', function(event) {
-  // Get all the connected clients and forward the message along.
-  var promise = self.clients.matchAll()
-      .then(function(clientList) {
-        var senderID = event.source ? event.source.id : 'unknown';
-
-        // We'll also print a warning, so users playing with the demo aren't confused.
-        if (!event.source) {
-          console.log('event.source is null; we don\'t know the sender of the ' +
-          'message');
-        }
-
-        clientList.forEach(function(client) {
-          // Skip sending the message to the client that sent it.
-          if (client.id === senderID) {
-            return;
-          }
-          client.postMessage({
-            client: senderID,
-            message: event.data
-          });
-        });
-      });
-
-  // If event.waitUntil is defined (not yet in Chrome because of the same issue detailed before),
-  // use it to extend the lifetime of the Service Worker.
-  if (event.waitUntil) {
-    event.waitUntil(promise);
+  if (event.data == "clientloaded") {
+    self.clients.matchAll()
+        .then(function(clientList) {
+          clientList.forEach(function(client){
+            if (client.id == client_id) {
+              client.postMessage(messageData);
+            }
+          })
+        })
   }
+
 });
 
 self.updateStaticCache = function(request) {
