@@ -30,16 +30,35 @@ if ('serviceWorker' in navigator) {
                 console.log('Error during getSubscription()', err);
             });
 
-        document.querySelector('#subscribe-btn').addEventListener('click', function() {
+        $('#subscribe-btn').on('click', function(e) {
+            e.preventDefault();
             serviceWorkerRegistration.pushManager.subscribe(
                 {
                     userVisibleOnly: true
                 }
             ).then(function(subscription) {
+                    //TODO: send subscripttion to REST API
+
                     $(".mdl-card").hide(); // hide all cards
                     $(".unsusbscribe-card").show();
                     $("#endpoint-id").html(JSON.stringify(subscription));
                 });
+        });
+        $('#unsubscribe-btn').on('click', function(e) {
+            e.preventDefault();
+
+            serviceWorkerRegistration.pushManager.getSubscription()
+                .then(function(subscription) {
+                    subscription.unsubscribe().then(function(successful) {
+                    //TODO: send subscripttion to REST API
+
+                    $(".mdl-card").hide(); // hide all cards
+                    $(".susbscribe-card").show();
+                    $("#endpoint-id").html("");
+                }).catch(function(e) {
+                    // Unsubscription failed
+                })
+            });
         });
     });
 
