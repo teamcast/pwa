@@ -67,18 +67,7 @@ if ('serviceWorker' in navigator) {
                     $(".mdl-card__actions", ".notification-card").append(optMarkup);
                 }
             }
-            var data = {
-                employees: [
-                    {   firstName: "Christophe",
-                        lastName: "Coenraets"},
-                    {   firstName: "John",
-                        lastName: "Smith"}
-                ]};
-            var template = "Employees:<ul>{{#employees}}" +
-                "<li>{{firstName}} {{lastName}}</li>" +
-                "{{/employees}}</ul>";
-            var html = Mustache.to_html(template, data);
-            $('#sampleArea').html(html);
+
         });
 
         $('#subscribe-btn').on('click', function(e) {
