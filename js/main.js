@@ -46,7 +46,7 @@ if ('serviceWorker' in navigator) {
                 var profileObj = {
                     "firstName": $("#firstname").val(),
                     "lastName": $("#lastname").val(),
-                    "registrationId": subscriptionObj.endpoint.split("https://android.googleapis.com/gcm/send/")[0],
+                    "registrationId": subscriptionObj.endpoint.split("https://android.googleapis.com/gcm/send/")[1],
                     "userPublicKey": subscriptionObj["keys"]["p256dh"],
                     "userAuthkey": subscriptionObj["keys"]["auth"]
                 }
