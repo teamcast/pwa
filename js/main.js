@@ -17,9 +17,12 @@ if ('serviceWorker' in navigator) {
                 //var pushButton = document.querySelector('.js-push-button');
                 //pushButton.disabled = false;
 
+                $(".mdl-card").hide();
+
                 if (!subscription) {
                     // We aren’t subscribed to push, so set UI
                     // to allow the user to enable push
+                    $(".subscription-card").show();
                     return;
                 }
 
@@ -33,18 +36,22 @@ if ('serviceWorker' in navigator) {
                 //pushButton.textContent = 'Disable Push Messages';
                 //isPushEnabled = true;
 
+                $(".unsusbscribe-card").show();
+
+                /*
                 var rawKey = subscription.getKey ? subscription.getKey('p256dh') : '';
                 key = rawKey ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawKey))) : '';
                 var rawAuthSecret = subscription.getKey ? subscription.getKey('auth') : '';
                 authSecret = rawAuthSecret ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawAuthSecret))) : '';
                 endpoint = subscription.endpoint;
+                */
 
                 console.log(JSON.stringify(subscription));
 
                 $("#endpoint-id").html(JSON.stringify(subscription));
             })
             .catch(function(err) {
-                //window.Demo.debug.log('Error during getSubscription()', err);
+                console.log('Error during getSubscription()', err);
             });
     });
 
