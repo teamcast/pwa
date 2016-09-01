@@ -135,8 +135,14 @@ self.addEventListener("notificationclick", event => {
 		} else {
 			self.clients.openWindow(pwaUrl).then(function(windowClient) {
               self.clients.claim();
-              windowClient.postMessage(messageData);
-            });
+              //windowClient.postMessage(messageData);
+            }).then(function() {
+              self.clients.matchAll()
+                  .then(function(clientList) {
+                    clientList[0].focus();
+                    clientList[0].postMessage(messageData);
+                  })
+            })
 		}
         return
     })
