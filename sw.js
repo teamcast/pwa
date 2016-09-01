@@ -110,7 +110,7 @@ self.addEventListener('push', event => {
     notificationTitle = jsonPayload.headline;
     notificationOptions.body = jsonPayload.message;
     notificationOptions.announcementId = jsonPayload.announcementId;
-    notificationOptions.bodyContent = jsonPayload.data;
+    notificationOptions.bodyContent = jsonPayload.body;
   }
 
   event.waitUntil(
