@@ -150,6 +150,37 @@ self.addEventListener("notificationclick", event => {
   );
 });
 
+self.addEventListener('message', function(event) {
+  // Get all the connected clients and forward the message along.
+  var promise = self.clients.matchAll()
+      .then(function(clientList) {
+        var senderID = event.source ? event.source.id : 'unknown';
+
+        // We'll also print a warning, so users playing with the demo aren't confused.
+        if (!event.source) {
+          console.log('event.source is null; we don\'t know the sender of the ' +
+          'message');
+        }
+
+        clientList.forEach(function(client) {
+          // Skip sending the message to the client that sent it.
+          if (client.id === senderID) {
+            return;
+          }
+          client.postMessage({
+            client: senderID,
+            message: event.data
+          });
+        });
+      });
+
+  // If event.waitUntil is defined (not yet in Chrome because of the same issue detailed before),
+  // use it to extend the lifetime of the Service Worker.
+  if (event.waitUntil) {
+    event.waitUntil(promise);
+  }
+});
+
 self.updateStaticCache = function(request) {
 	return fetch(request).then(
 		function(response) {
