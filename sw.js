@@ -22,7 +22,7 @@ filesToCache = [
 	'/fonts/material-icons.woff2'
 ];
 
-self.addEventListener("install", event => {
+self.addEventListener("install", function(event) {
   console.log("Event: Install");
 
   event.waitUntil(
@@ -44,7 +44,7 @@ self.addEventListener("install", event => {
 });
 
 //Activate event to delete old caches
-self.addEventListener("activate", event => {
+self.addEventListener("activate", function(event) {
   console.log("Event: Activate");
 
   var cacheWhitelist = ["teamcast-static-cache", "teamcast-data-cache"];
@@ -63,7 +63,7 @@ self.addEventListener("activate", event => {
   );
 });
 
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
@@ -81,7 +81,7 @@ self.addEventListener('fetch', event => {
     );
 });
 
-self.addEventListener('push', event => {
+self.addEventListener('push', function(event) {
   console.log('Received push');
 
   let notificationTitle = 'Notification Title';
@@ -121,7 +121,7 @@ self.addEventListener('push', event => {
   );
 });
 
-self.addEventListener("notificationclick", event => {
+self.addEventListener("notificationclick", function(event) {
   console.log("Notification is clicked ", event);
 
   messageData = event.notification.data;

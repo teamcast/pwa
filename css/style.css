@@ -145,3 +145,6 @@ main {
 .teamcast-pwa.mdl-layout .mdl-card__supporting-text {
     line-height: 24px;
 }
+.teamcast-pwa.mdl-layout .employee-name {
+    text-transform: capitalize;
+}

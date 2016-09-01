@@ -30,6 +30,9 @@ if ('serviceWorker' in navigator) {
                     return;
                 }
 
+                var profileObj = JSON.parse(localStorage.getItem("profile"));
+
+                $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
                 $(".unsusbscribe-card").show();
 
                 console.log(JSON.stringify(subscription));
@@ -45,12 +48,10 @@ if ('serviceWorker' in navigator) {
             });
 
         navigator.serviceWorker.addEventListener('message', function(event) {
-            var profileObj = JSON.parse(localStorage.getItem("profile"));
             var messageObj = event.data.body;
 
             $(".mdl-card").hide();
             $(".notification-card").show();
-            $(".employee-name").html(profileObj.firstName + profileObj.lastName);
             $(".mdl-card__supporting-text", ".notification-card")
                 .find("p").text(messageObj.content);
             $(".mdl-card__actions", ".notification-card").empty();
@@ -90,10 +91,12 @@ if ('serviceWorker' in navigator) {
                 //TODO: send subscripttion to REST API
 
                 $(".mdl-card").hide(); // hide all cards
+                $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
                 $(".unsusbscribe-card").show();
                 $("#endpoint-id").html(JSON.stringify(subscription));
                 $(".loading-overlay").addClass("hidden");
                 localStorage.setItem("profile", JSON.stringify(profileObj));
+
             })
             .catch(function(err) {
                 console.log('Error during getSubscription()', err);
