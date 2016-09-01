@@ -2,7 +2,6 @@
   "name": "TeamCast",
   "gcm_sender_id": "23153222404",
   "short_name": "TeamCast",
-  "scope": "/",
   "start_url": "./?utm_source=web_app_manifest",
   "display": "standalone",
   "theme_color": "#000080",
