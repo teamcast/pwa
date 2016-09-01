@@ -90,9 +90,7 @@ self.addEventListener('push', event => {
     badge: './images/logo-72x72.png',
     tag: 'teamcast-push-notification',
     vibrate: [300, 100, 400],
-    bodyContent: {
-      headline: "",
-      message: "",
+    data: {
       announcementId: "1",
       body: {
         content: "",
@@ -109,8 +107,8 @@ self.addEventListener('push', event => {
 
     notificationTitle = jsonPayload.headline;
     notificationOptions.body = jsonPayload.message;
-    notificationOptions.announcementId = jsonPayload.announcementId;
-    notificationOptions.bodyContent = jsonPayload.body;
+    notificationOptions.data.announcementId = jsonPayload.announcementId;
+    notificationOptions.data.body = jsonPayload.body;
   }
 
   event.waitUntil(
