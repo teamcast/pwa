@@ -50,11 +50,6 @@ main {
     margin: 0 auto;
 }
 
-.hidden {
-    display: none !important;
-    visibility: hidden !important;
-}
-
 .align-center {
     text-align: center;
 }
@@ -77,7 +72,7 @@ main {
     top: 0;
     left: 0;
     background-color: #fff;
-    z-index: 2;
+    z-index: 10;
 }
 
 .teamcast-pwa.mdl-layout .mdl-layout__content > .loading-overlay > .loading-overlay-row {
