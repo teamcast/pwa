@@ -53,7 +53,7 @@ if ('serviceWorker' in navigator) {
                     //TODO: send subscripttion to REST API
 
                     $(".mdl-card").hide(); // hide all cards
-                    $(".susbscribe-card").show();
+                    $(".subscription-card").show();
                     $("#endpoint-id").html("");
                 }).catch(function(e) {
                     // Unsubscription failed
