@@ -54,7 +54,7 @@ if ('serviceWorker' in navigator) {
             $(".notification-card").show();
             $(".mdl-card__supporting-text", ".notification-card")
                 .find("p").text(messageObj.content);
-            $(".mdl-card__actions", ".notification-card").empty();
+            $(".options-container", ".notification-card").empty();
 
             if (messageObj.options && messageObj.options.length) {
                 var optLen = messageObj.options.length;
