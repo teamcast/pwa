@@ -68,7 +68,7 @@ if ('serviceWorker' in navigator) {
                     var newRadio = $(optMarkup)[0];
                     componentHandler.upgradeElement(newRadio);
 
-                    $(".mdl-card__actions", ".notification-card").append(newRadio);
+                    $(".options-container", ".notification-card").append(newRadio);
                 }
             }
 
