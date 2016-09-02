@@ -152,6 +152,11 @@ main {
 .teamcast-pwa.mdl-layout .mdl-radio {
     display: block;
     text-align: left;
+    margin-bottom: 10px;
+}
+
+.teamcast-pwa.mdl-layout .mdl-radio.is-checked {
+    color: #000080;
 }
 
 .teamcast-pwa.mdl-layout .mdl-radio.is-checked .mdl-radio__inner-circle {
