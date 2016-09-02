@@ -61,7 +61,7 @@ main {
     background-color: #000080;
 }
 .teamcast-pwa.mdl-layout .mdl-layout__content {
-    padding-top: 100px;
+    padding-top: 120px;
     position: relative;
 }
 .teamcast-pwa.mdl-layout .mdl-layout__content > .loading-overlay {
@@ -101,6 +101,7 @@ main {
 .teamcast-pwa.mdl-layout .mdl-card {
     width: 100%;
     margin: 10px 0;
+    padding: 10px;
     background-color: rgba(255, 255, 255, 0.75);
 }
 
