@@ -124,6 +124,9 @@ main {
 
 .teamcast-pwa.mdl-layout .mdl-button {
     color: #000080;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 320px;
 }
 .teamcast-pwa.mdl-layout .mdl-button.mdl-button--colored {
     background-color: #000080;
