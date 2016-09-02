@@ -11,7 +11,8 @@
     <title>TeamCast</title>
     <link rel="shortcut icon" href=images/logo-32x32.png>
     <link rel="manifest" href="manifest.json">
-    <link href="css/material.min.css" rel="stylesheet">
+    <!--<link href="css/material.min.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://code.getmdl.io/1.2.0/material.indigo-pink.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -43,6 +44,10 @@
             </div>
         </div>
         <div class="page-content">
+            <!--<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+                <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="1">
+                <span class="mdl-radio__label">First</span>
+            </label>-->
 
             <div class="subscription-card mdl-card" style="display: none;">
                 <div class="mdl-card__title">
@@ -118,12 +123,16 @@
 <script src="js/mustache.min.js"></script>
 <script src="js/main.js"></script>
 <script type="text/html" id="options-template">
-    <label class="mdl-radio mdl-js-radio" for="{{id}}">
-        <input type="radio" id="{{id}}" name="notif-options" class="mdl-radio__button">
+    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect mdl-js-ripple-effect--ignore-events is-upgraded" for="{{id}}" data-upgraded=",MaterialRadio,MaterialRipple">
+        <input type="radio" id="{{id}}" class="mdl-radio__button" name="notif-options" value="{{id}}">
         <span class="mdl-radio__label">{{name}}</span>
+        <span class="mdl-radio__outer-circle"></span>
+        <span class="mdl-radio__inner-circle"></span>
+        <span class="mdl-radio__ripple-container mdl-js-ripple-effect mdl-ripple--center" data-upgraded=",MaterialRipple">
+            <span class="mdl-ripple"></span>
+        </span>
     </label>
 </script>
-
 
 </body>
 </html>
