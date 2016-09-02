@@ -65,7 +65,7 @@ if ('serviceWorker' in navigator) {
                     }
                     var template = $("#options-template").html();
                     var optMarkup = Mustache.to_html(template, data);
-                    var newRadio = $(optMarkup);
+                    var newRadio = $(optMarkup)[0];
                     componentHandler.upgradeElement(newRadio);
 
                     $(".mdl-card__actions", ".notification-card").append(newRadio);
