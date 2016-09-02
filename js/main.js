@@ -65,7 +65,10 @@ if ('serviceWorker' in navigator) {
                     }
                     var template = $("#options-template").html();
                     var optMarkup = Mustache.to_html(template, data);
-                    $(".mdl-card__actions", ".notification-card").append(optMarkup);
+                    var newRadio = $(optMarkup);
+                    componentHandler.upgradeElement(newRadio);
+
+                    $(".mdl-card__actions", ".notification-card").append(newRadio);
                 }
             }
 
