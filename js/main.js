@@ -5,7 +5,10 @@ if ('serviceWorker' in navigator) {
         var controller = navigator.serviceWorker.controller;
 
         if (controller) {
+            //alert("HAS CONTROLLER");
            controller.postMessage("clientloaded");
+        } else {
+            alert("NO CONTROLLER");
         }
     });
 
