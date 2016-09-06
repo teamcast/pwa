@@ -86,19 +86,21 @@ self.addEventListener('fetch', function(event) {
 self.addEventListener('push', function(event) {
   console.log('Received push');
 
-  let notificationTitle = 'Notification Title';
+  let notificationTitle = 'This is the notif title';
 
   const notificationOptions = {
-    body: 'New Teamcast Notification',
+    body: 'This is the notif tray message',
     icon: './images/logo-192x192.png',
     badge: './images/logo-72x72.png',
     tag: 'teamcast-push-notification',
     vibrate: [300, 100, 400],
     data: {
-      announcementId: "1",
-      content: "",
-      options: [],
-      createTime: 1473153437414
+      body: {
+        announcementId: "1",
+        content: "",
+        options: [],
+        createTime: 1473153437414
+      }
     }
   };
 
