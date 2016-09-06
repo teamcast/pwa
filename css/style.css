@@ -151,7 +151,7 @@ main {
     line-height: normal;
     margin: 0;
     padding: 16px;
-    max-width: 80%;
+    max-width: 70%;
 }
 
 .teamcast-pwa.mdl-layout .mdl-card__actions.mdl-card--border {
@@ -195,4 +195,14 @@ main {
 }
 #unsubscribe-btn {
     display: none;
+}
+#notif-card-close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: gray;
+    padding: 10px;
+    min-width: initial;
+    line-height: normal;
+    height: auto;
 }

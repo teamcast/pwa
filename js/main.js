@@ -135,5 +135,13 @@ if ('serviceWorker' in navigator) {
                 })
             });
         });
+        $('#notif-card-close-btn').on('click', function(e) {
+            e.preventDefault();
+            $(".notification-card").hide();
+            $(".mdl-card__supporting-text", ".notification-card")
+                .find("p").text("");
+            $(".options-container", ".notification-card").empty();
+            $(".unsusbscribe-card").show();
+        });
     });
 }
