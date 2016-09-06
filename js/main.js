@@ -97,7 +97,7 @@ if ('serviceWorker' in navigator) {
                 }
 
                 //TODO: send subscription to REST API
-
+                $("#subscription-form").reset();
                 $(".mdl-card").hide(); // hide all cards
                 $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
                 $(".unsusbscribe-card, #unsubscribe-btn").show();
