@@ -233,3 +233,9 @@ main {
 .teamcast-pwa.mdl-layout .mdl-card.has-media .notif-close-btn {
     color: white;
 }
+.mdl-layout__drawer {
+    z-index: 6;
+}
+.mdl-layout__obfuscator {
+    z-index: 5;
+}

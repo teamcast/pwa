@@ -38,7 +38,7 @@ if ('serviceWorker' in navigator) {
                 }
 
                 $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
-                $(".unsusbscribe-card, #unsubscribe-btn").show();
+                $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show();
 
                 console.log(JSON.stringify(subscription));
 
@@ -112,7 +112,7 @@ if ('serviceWorker' in navigator) {
                 $("#subscription-form")[0].reset();
                 $(".mdl-card").hide(); // hide all cards
                 $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
-                $(".unsusbscribe-card, #unsubscribe-btn").show();
+                $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show();
 
                 $(".loading-overlay").addClass("hidden");
                 localStorage.setItem("profile", JSON.stringify(profileObj));
@@ -140,7 +140,7 @@ if ('serviceWorker' in navigator) {
                     var layout = document.querySelector('.mdl-layout');
                     layout.MaterialLayout.toggleDrawer();
 
-                    $(".mdl-card, #unsubscribe-btn").hide(); // hide all cards
+                    $(".mdl-card, #unsubscribe-btn, #profile-btn").hide(); // hide all cards
                     $(".subscription-card").show();
                     //$("#endpoint-id").html("");
                     $(".loading-overlay").addClass("hidden");
