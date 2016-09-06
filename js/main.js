@@ -161,7 +161,9 @@ if ('serviceWorker' in navigator) {
             $(".unsusbscribe-card").show();
         });
         $("input[type='text']").focus(function(e) {
-            $(e.currentTarget)[0].scrollIntoView(true);
+            var elem  = $(this);
+
+            $(".mdl-layout__content").animate({ scrollTop: $(".mdl-layout__content").scrollTop()+elem.offset().top }, { duration: 'fast' });
         })
 
     });
