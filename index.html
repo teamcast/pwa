@@ -20,12 +20,7 @@
     <header class="mdl-layout__header mdl-layout__header--transparent is-casting-shadow">
         <div class="mdl-layout__header-row">
             <span class="mdl-layout-title">TeamCast</span>
-            <!--<div class="mdl-layout-spacer"></div>
-            <nav class="mdl-navigation ">
-                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                    <i class="material-icons">share</i>
-                </button>
-            </nav>-->
+            <span class="teamcast-logo"></span>
         </div>
     </header>
     <div class="mdl-layout__drawer">
@@ -43,18 +38,13 @@
             </div>
         </div>
         <div class="page-content">
-            <!--<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
-                <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="1">
-                <span class="mdl-radio__label">First</span>
-            </label>-->
-
-            <div class="subscription-card mdl-card" style="display: none;">
+            <div class="subscription-card mdl-card mdl-shadow--2dp" style="display: none;">
                 <div class="mdl-card__title">
                     <h2 class="mdl-card__title-text">Welcome</h2>
                 </div>
                 <div class="mdl-card__supporting-text">
                     <form>
-                        Fill up the form below and subscribe to receive notifications from <strong>TeamCast</strong>.
+                        Fill up the form below and subscribe to receive notifications from <strong class="text-color-blue">TeamCast</strong>.
                         <div class="align-center">
                             <div class="mdl-textfield mdl-js-textfield">
                                 <input class="mdl-textfield__input" type="text" id="firstname">
@@ -69,8 +59,8 @@
                         </div>
                     </form>
                 </div>
-                <div class="mdl-card__actions mdl-card--border align-center">
-                    <a id="subscribe-btn" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                <div class="mdl-card__actions mdl-card--border">
+                    <a id="subscribe-btn" class="mdl-button mdl-js-button mdl-js-ripple-effect">
                         Subscribe
                     </a>
                 </div>
@@ -78,38 +68,37 @@
                 </div>
             </div>
 
-            <div class="unsusbscribe-card mdl-card" style="display: none;">
+            <div class="unsusbscribe-card mdl-card mdl-shadow--2dp" style="display: none;">
                 <h2>Welcome <span class="employee-name"></span></h2>
                 <div class="mdl-card__supporting-text">
-                    You are currently subscribed to <strong>TeamCast</strong>. Tap below to unsubscribe from receiving future notifications.
+                    You are currently subscribed to <strong class="text-color-blue">TeamCast</strong>. You can opt out from receiving notifications by tapping on "Unsubscribe" from the app menu.
                     <p id="endpoint-id"></p>
-                </div>
-                <div class="mdl-card__actions mdl-card--border align-center">
-                    <a id="unsubscribe-btn" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
-                        Unsubscribe
-                    </a>
-                </div>
-                <div class="mdl-card__menu">
                 </div>
             </div>
 
-            <div class="notification-card mdl-card" style="display: none;">
+            <div class="notification-card mdl-card mdl-shadow--2dp" style="display: none;">
                 <h2>Hi <span class="employee-name"></span></h2>
                 <div class="mdl-card__supporting-text">
                     <p></p>
                     <div class="options-container"></div>
                 </div>
-                <div class="mdl-card__actions mdl-card--border align-center">
-                    <a id="respond-btn" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                <div class="mdl-card__actions mdl-card--border">
+                    <a id="respond-btn" class="mdl-button mdl-js-button mdl-js-ripple-effect">
                         Send response
                     </a>
                 </div>
                 <div class="mdl-card__menu">
                 </div>
             </div>
-
         </div>
+
     </main>
+    <footer class="mdl-mini-footer">
+        <div class="mdl-mini-footer__left-section">
+            <div class="mdl-logo">Team Jack Daniel's<br/>Hackathon 2016<br/>Manila</div>
+        </div>
+    </footer>
+
 
 </div>
 

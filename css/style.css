@@ -23,11 +23,12 @@
 }
 
 body {
-    background-image: url("../images/logo.svg");
+    background-color: #eee;
+    /*background-image: url("../images/logo.svg");
     background-position: center 95px;
     background-size: 72px;
-    background-repeat: no-repeat;
-    font-family: "Roboto", sans-serif;
+    background-repeat: no-repeat;*/
+    font-family: "Roboto regular", "Droid sans", sans-serif;
 }
 
 h2,
@@ -40,7 +41,6 @@ p {
 }
 
 main {
-    padding: 15px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -48,6 +48,7 @@ main {
 .page-content {
     max-width: 600px;
     margin: 0 auto;
+    padding: 0 10px;
 }
 
 .align-center {
@@ -56,12 +57,20 @@ main {
 .text-danger {
     color: red;
 }
+.text-color-blue {
+    color: #000080;
+}
 
 .teamcast-pwa.mdl-layout .mdl-layout__header {
     background-color: #000080;
+    background-image: url("../images/logo.svg");
+    background-position: calc(100% - 15px) center;
+    background-size: auto 70%;
+    background-repeat: no-repeat;
+    z-index: 5;
 }
 .teamcast-pwa.mdl-layout .mdl-layout__content {
-    padding-top: 120px;
+    /*padding-top: 120px;*/
     position: relative;
 }
 .teamcast-pwa.mdl-layout .mdl-layout__content > .loading-overlay {
@@ -95,14 +104,15 @@ main {
     border-color: #82BC00;
 }
 .teamcast-pwa.mdl-layout .mdl-layout__content > .loading-overlay .mdl-spinner > .mdl-spinner__layer-4 {
-    border-color: #000080;
+    border-color: #40B4E5;
 }
 
 .teamcast-pwa.mdl-layout .mdl-card {
     width: 100%;
     margin: 10px 0;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.75);
+    /*padding: 10px;*/
+    background-color: white;
+    min-height: auto;
 }
 
 .teamcast-pwa.mdl-layout .mdl-card h3.quote:before,
@@ -125,9 +135,10 @@ main {
 
 .teamcast-pwa.mdl-layout .mdl-button {
     color: #000080;
-    width: 100%;
+    /*width: 100%;
     box-sizing: border-box;
-    max-width: 320px;
+    max-width: 320px;*/
+    font-weight: bold;
 }
 .teamcast-pwa.mdl-layout .mdl-button.mdl-button--colored {
     background-color: #000080;
@@ -143,8 +154,8 @@ main {
 }
 
 .teamcast-pwa.mdl-layout .mdl-card__actions.mdl-card--border {
-    border-top: 1px solid #82bc00;
-    padding-top: 20px;
+    /*border-top: 1px solid #82bc00;*/
+    /*padding-top: 20px;*/
 }
 .teamcast-pwa.mdl-layout .mdl-card__supporting-text {
     line-height: 24px;
@@ -165,4 +176,12 @@ main {
 
 .teamcast-pwa.mdl-layout .mdl-radio.is-checked .mdl-radio__inner-circle {
     background-color: #82bc00;
+}
+.mdl-mini-footer {
+    padding: 15px;
+    font-size: 12px;
+}
+.mdl-mini-footer .mdl-logo {
+    line-height: 1.4;
+    margin: 0;
 }

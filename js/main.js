@@ -32,6 +32,13 @@ if ('serviceWorker' in navigator) {
 
                 var profileObj = JSON.parse(localStorage.getItem("profile"));
 
+                if (!profileObj) {
+                    profileObj = {
+                        "firstName": "First Name",
+                        "lastName": "Last Name"
+                    }
+                }
+
                 $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
                 $(".unsusbscribe-card").show();
 
