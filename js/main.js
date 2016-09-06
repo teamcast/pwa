@@ -120,11 +120,13 @@ if ('serviceWorker' in navigator) {
                     subscription.unsubscribe().then(function(successful) {
                     //TODO: send delete subscription to REST API
 
+                    $(".mdl-layout__drawer").removeClass("is-visible");
                     $(".mdl-card, #unsubscribe-btn").hide(); // hide all cards
                     $(".subscription-card").show();
                     $("#endpoint-id").html("");
                     $(".loading-overlay").addClass("hidden");
                     localStorage.removeItem("profile");
+
                 }).catch(function(e) {
                     // Unsubscribe failed
                     $(".loading-overlay").addClass("hidden");
