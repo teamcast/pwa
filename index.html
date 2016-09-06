@@ -26,11 +26,13 @@
     <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">TeamCast</span>
         <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="">About</a>
+            <a id="about-btn" class="mdl-navigation__link" href="">About</a>
+            <a id="profile-btn" class="mdl-navigation__link" href="">Profile</a>
             <a id="unsubscribe-btn" class="mdl-navigation__link" href="">Unsubscribe</a>
         </nav>
     </div>
     <main class="mdl-layout__content">
+
         <div class="loading-overlay hidden">
             <div class="loading-overlay-row">
                 <div class="loading-overlay-col">
@@ -38,6 +40,7 @@
                 </div>
             </div>
         </div>
+
         <div class="page-content">
             <div class="subscription-card mdl-card mdl-shadow--2dp" style="display: nonex;">
                 <div class="mdl-card__title">
@@ -73,17 +76,19 @@
                 <h2>Welcome <span class="employee-name"></span></h2>
                 <div class="mdl-card__supporting-text">
                     You are currently subscribed to <strong class="text-color-blue">TeamCast</strong>. You can opt out from receiving notifications by tapping on "Unsubscribe" from the app menu.
-                    <strong>registrationId</strong>
-                    <input id="registrationId" type="text" style="width: 100%; padding: 5px; box-sizing: border-box;"/>
-                    <strong>userPublicKey</strong>
-                    <input id="userPublicKey" type="text" style="width: 100%; padding: 5px; box-sizing: border-box;"/>
-                    <strong>userAuthkey</strong>
-                    <input id="userAuthkey" type="text" style="width: 100%; padding: 5px; box-sizing: border-box;"/>
+                    <div>
+                        <strong>registrationId</strong>
+                        <input id="registrationId" type="text" style="width: 100%; padding: 5px; box-sizing: border-box;" readonly/>
+                        <strong>userPublicKey</strong>
+                        <input id="userPublicKey" type="text" style="width: 100%; padding: 5px; box-sizing: border-box;" readonly/>
+                        <strong>userAuthkey</strong>
+                        <input id="userAuthkey" type="text" style="width: 100%; padding: 5px; box-sizing: border-box;" readonly/>
+                    </div>
                 </div>
             </div>
 
             <div class="notification-card mdl-card mdl-shadow--2dp" style="display: nonex;">
-                <button id="notif-card-close-btn" class="mdl-button mdl-js-button">
+                <button id="notif-card-close-btn" class="mdl-button mdl-js-button notif-close-btn">
                     <i class="material-icons">close</i>
                 </button>
                 <h2>Hi <span class="employee-name"></span></h2>

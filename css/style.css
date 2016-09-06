@@ -178,13 +178,13 @@ main {
 .teamcast-pwa.mdl-layout .mdl-radio.is-checked .mdl-radio__inner-circle {
     background-color: #82bc00;
 }
-.mdl-mini-footer {
+.teamcast-pwa.mdl-layout .mdl-mini-footer {
     padding: 15px;
     font-size: 11px;
     background-color: #000;
     display: block;
 }
-.mdl-mini-footer .mdl-logo {
+.teamcast-pwa.mdl-layout .mdl-mini-footer .mdl-logo {
     padding-left: 25px;
     line-height: 1.4;
     margin: 0;
@@ -193,10 +193,11 @@ main {
     background-size: auto 100%;
     background-repeat: no-repeat;
 }
-#unsubscribe-btn {
+#unsubscribe-btn,
+#profile-btn{
     display: none;
 }
-#notif-card-close-btn {
+.teamcast-pwa.mdl-layout .notif-close-btn {
     position: absolute;
     top: 0;
     right: 0;
