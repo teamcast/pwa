@@ -15,17 +15,6 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js', {scope: '/'})
         .then(function(registrationObj) {
         console.log('sw.js registered. ', registrationObj);
-
-        $(document).ready(function() {
-            var controller = navigator.serviceWorker.controller;
-
-            if (controller) {
-                $(".unsusbscribe-card").append("<p>HAS CONTROLLER</p>")
-                controller.postMessage("clientloaded");
-            } else {
-                $(".unsusbscribe-card").append("<p>NO CONTROLLER</p>");
-            }
-        });
     }).catch(function(error) {
         console.log('Error: ', error);
     });
@@ -63,6 +52,17 @@ if ('serviceWorker' in navigator) {
                 $(".loading-overlay").addClass("hidden");
 
                 console.log(navigator.serviceWorker);
+
+                $(document).ready(function() {
+                    var controller = navigator.serviceWorker.controller;
+
+                    if (controller) {
+                        $(".unsusbscribe-card").append("<p>HAS CONTROLLER</p>")
+                        controller.postMessage("clientloaded");
+                    } else {
+                        $(".unsusbscribe-card").append("<p>NO CONTROLLER</p>");
+                    }
+                });
             })
             .catch(function(err) {
                 console.log('Error during getSubscription()', err);
