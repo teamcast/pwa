@@ -14,6 +14,7 @@ filesToCache = [
 	'/images/logo-72x72.png',
 	'/images/logo-192x192.png',
 	'/images/logo-512x512.png',
+    '/images/team-jackd-logo.svg',
 	'/css/style.css',
 	'/css/material.min.css',
 	'/js/jquery.min.js',

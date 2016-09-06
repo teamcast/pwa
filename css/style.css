@@ -179,9 +179,19 @@ main {
 }
 .mdl-mini-footer {
     padding: 15px;
-    font-size: 12px;
+    font-size: 11px;
+    background-color: #000;
+    display: block;
 }
 .mdl-mini-footer .mdl-logo {
+    padding-left: 25px;
     line-height: 1.4;
     margin: 0;
+    background-image: url("../images/team-jackd-logo.svg");
+    background-position: left center;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+}
+#unsubscribe-btn {
+    display: none;
 }

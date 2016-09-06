@@ -23,8 +23,6 @@ if ('serviceWorker' in navigator) {
                 $(".mdl-card").hide(); // hide all cards
 
                 if (!subscription) {
-                    // We aren’t subscribed to push, so set UI
-                    // to allow the user to enable push
                     $(".subscription-card").show();
                     $(".loading-overlay").addClass("hidden");
                     return;
@@ -98,11 +96,11 @@ if ('serviceWorker' in navigator) {
                     "userAuthkey": subscriptionObj["keys"]["auth"]
                 }
 
-                //TODO: send subscripttion to REST API
+                //TODO: send subscription to REST API
 
                 $(".mdl-card").hide(); // hide all cards
                 $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
-                $(".unsusbscribe-card").show();
+                $(".unsusbscribe-card, #unsubscribe-btn").show();
                 $("#endpoint-id").html(JSON.stringify(subscription));
                 $(".loading-overlay").addClass("hidden");
                 localStorage.setItem("profile", JSON.stringify(profileObj));
@@ -120,9 +118,9 @@ if ('serviceWorker' in navigator) {
             serviceWorkerRegistration.pushManager.getSubscription()
                 .then(function(subscription) {
                     subscription.unsubscribe().then(function(successful) {
-                    //TODO: send delete subscripttion to REST API
+                    //TODO: send delete subscription to REST API
 
-                    $(".mdl-card").hide(); // hide all cards
+                    $(".mdl-card, #unsubscribe-btn").hide(); // hide all cards
                     $(".subscription-card").show();
                     $("#endpoint-id").html("");
                     $(".loading-overlay").addClass("hidden");
