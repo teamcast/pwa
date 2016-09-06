@@ -1,7 +1,7 @@
 if ('serviceWorker' in navigator) {
     console.log('Service Worker is supported');
 
-    $(document).ready(function() {
+    /*$(document).ready(function() {
         var controller = navigator.serviceWorker.controller;
 
         if (controller) {
@@ -10,11 +10,22 @@ if ('serviceWorker' in navigator) {
         } else {
             $(".unsusbscribe-card").append("<p>NO CONTROLLER</p>");
         }
-    });
+    });*/
 
     navigator.serviceWorker.register('/sw.js', {scope: '/'})
         .then(function(registrationObj) {
         console.log('sw.js registered. ', registrationObj);
+
+        $(document).ready(function() {
+            var controller = navigator.serviceWorker.controller;
+
+            if (controller) {
+                $(".unsusbscribe-card").append("<p>HAS CONTROLLER</p>")
+                controller.postMessage("clientloaded");
+            } else {
+                $(".unsusbscribe-card").append("<p>NO CONTROLLER</p>");
+            }
+        });
     }).catch(function(error) {
         console.log('Error: ', error);
     });
