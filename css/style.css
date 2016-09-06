@@ -118,6 +118,7 @@ main {
     /*padding: 10px;*/
     background-color: white;
     min-height: auto;
+    display: none;
 }
 
 .teamcast-pwa.mdl-layout .mdl-card h3.quote:before,

@@ -59,8 +59,9 @@ if ('serviceWorker' in navigator) {
             var messageObj = event.data.body;
 
             $(".mdl-card").hide();
-            $(".notification-card").removeClass("has-media").show();
-            $(".mdl-card__title-text", ".notification-card").text(messageObj.heading)
+            $(".notification-card").removeClass("has-media");
+            $(".mdl-card__title-text", ".notification-card").text(messageObj.heading);
+            $(".mdl-card__title", ".notification-card").css({"background-image": "none"});
             $(".mdl-card__supporting-text", ".notification-card")
                 .find("p").text(messageObj.content);
             $(".options-container", ".notification-card").empty();
@@ -85,6 +86,8 @@ if ('serviceWorker' in navigator) {
                 $(".notification-card").addClass("has-media")
                     .find(".mdl-card__title").css({"background-image": "url('"+messageObj.imgUrl+"')"});
             }
+
+            $(".notification-card").show();
 
         });
 
