@@ -145,7 +145,7 @@ self.addEventListener("notificationclick", function(event) {
 			clientList[0].focus();
             clientList[0].postMessage(messageData);
 		} else {
-			self.clients.openWindow(pwaUrl).then(function(client) {
+			self.clients.openWindow("/").then(function(client) {
               self.clients.claim();
               client_id = client.id;
             })
