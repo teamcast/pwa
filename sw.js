@@ -160,9 +160,9 @@ self.addEventListener('message', function(event) {
     self.clients.matchAll()
         .then(function(clientList) {
           clientList.forEach(function(client){
-            if (client.id == client_id) {
+            //if (client.id == client_id) {
               client.postMessage(messageData);
-            }
+            //}
           })
         })
   }
