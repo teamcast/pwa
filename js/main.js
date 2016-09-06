@@ -1,7 +1,7 @@
 if ('serviceWorker' in navigator) {
     console.log('Service Worker is supported');
 
-    $(window).load(function() {
+    $(document).ready(function() {
         var controller = navigator.serviceWorker.controller;
 
         if (controller) {
