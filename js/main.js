@@ -5,10 +5,10 @@ if ('serviceWorker' in navigator) {
         var controller = navigator.serviceWorker.controller;
 
         if (controller) {
-            //alert("HAS CONTROLLER");
+            $(".unsusbscribe-card").append("<p>HAS CONTROLLER</p>")
            controller.postMessage("clientloaded");
         } else {
-            $(".unsusbscribe-card").append("NO CONTROLLER")
+            $(".unsusbscribe-card").append("<p>NO CONTROLLER</p>");
         }
     });
 
