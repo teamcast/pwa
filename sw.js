@@ -15,6 +15,7 @@ filesToCache = [
 	'/images/logo-192x192.png',
 	'/images/logo-512x512.png',
     '/images/team-jackd-logo.svg',
+    '/images/asurion-logo-white.svg',
 	'/css/style.css',
 	'/css/material.min.css',
 	'/js/jquery.min.js',
@@ -31,7 +32,6 @@ self.addEventListener("install", function(event) {
 	self.skipWaiting(),
     caches.open(staticCache)
     .then(function (cache) {
-      //[] of files to cache & any of the file not present compelete 'addAll' will fail
       return cache.addAll(filesToCache.map(function (fileUrl) {
         return new Request(fileUrl);
       }))
@@ -99,7 +99,8 @@ self.addEventListener('push', function(event) {
         announcementId: "1",
         content: "",
         options: [],
-        createTime: 1473153437414
+        createTime: 1473153437414,
+        imgUrl: ""
       }
     }
   };
@@ -112,10 +113,12 @@ self.addEventListener('push', function(event) {
 
     notificationTitle = jsonPayload.title;
     notificationOptions.body = jsonPayload.message;
+    notificationOptions.tag = notificationOptions.tag + jsonPayload.id;
     notificationOptions.data.body.announcementId = jsonPayload.id;
     notificationOptions.data.body.content = jsonPayload.content;
     notificationOptions.data.body.options = jsonPayload.options;
     notificationOptions.data.body.createTime = jsonPayload.createTime;
+    notificationOptions.data.body.imgUrl = jsonPayload.imgUrl;
   }
 
   event.waitUntil(

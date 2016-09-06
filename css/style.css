@@ -34,6 +34,11 @@ body {
 h2,
 .mdl-card__title h2{
     color: #000080;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: normal;
+    margin: 0;
+    max-width: 70%;
 }
 
 p {
@@ -145,14 +150,14 @@ main {
     color: white;
 }
 
-.teamcast-pwa.mdl-layout .mdl-card > h2 {
+/*.teamcast-pwa.mdl-layout .mdl-card > h2 {
     font-size: 24px;
     font-weight: 300;
     line-height: normal;
     margin: 0;
     padding: 16px;
     max-width: 70%;
-}
+}*/
 
 .teamcast-pwa.mdl-layout .mdl-card__actions.mdl-card--border {
     /*border-top: 1px solid #82bc00;*/
@@ -176,15 +181,21 @@ main {
 }
 
 .teamcast-pwa.mdl-layout .mdl-radio.is-checked .mdl-radio__inner-circle {
-    background-color: #82bc00;
+    background-color: #000080;
 }
 .teamcast-pwa.mdl-layout .mdl-mini-footer {
     padding: 15px;
     font-size: 11px;
-    background-color: #000;
+    background-color: #40B4E5;
     display: block;
+    background-image: url("../images/asurion-logo-white.svg");
+    background-position: calc(100% - 15px) center;
+    background-size: 100px auto;
+    background-repeat: no-repeat;
+    border-top: solid 2px #82BC00;
+    z-index: 5;
 }
-.teamcast-pwa.mdl-layout .mdl-mini-footer .mdl-logo {
+.teamcast-pwa.mdl-layout .mdl-mini-footer .mdl-mini-footer__left-section .mdl-logo {
     padding-left: 25px;
     line-height: 1.4;
     margin: 0;
@@ -206,4 +217,17 @@ main {
     min-width: initial;
     line-height: normal;
     height: auto;
+}
+
+.teamcast-pwa.mdl-layout .mdl-card.has-media .mdl-card__title {
+    height: 150px;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.teamcast-pwa.mdl-layout .mdl-card.has-media .mdl-card__title h2 {
+    color: white;
+}
+.teamcast-pwa.mdl-layout .mdl-card.has-media .notif-close-btn {
+    color: white;
 }
