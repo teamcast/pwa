@@ -96,6 +96,7 @@ self.addEventListener('push', function(event) {
     vibrate: [300, 100, 400],
     data: {
       body: {
+        heading: "",
         announcementId: "1",
         content: "",
         options: [],
@@ -114,6 +115,7 @@ self.addEventListener('push', function(event) {
     notificationTitle = jsonPayload.title;
     notificationOptions.body = jsonPayload.message;
     notificationOptions.tag = notificationOptions.tag + jsonPayload.id;
+    notificationOptions.data.body.heading = jsonPayload.message;
     notificationOptions.data.body.announcementId = jsonPayload.id;
     notificationOptions.data.body.content = jsonPayload.content;
     notificationOptions.data.body.options = jsonPayload.options;

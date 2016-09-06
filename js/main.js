@@ -60,6 +60,7 @@ if ('serviceWorker' in navigator) {
 
             $(".mdl-card").hide();
             $(".notification-card").removeClass("has-media").show();
+            $(".mdl-card__title-text", ".notification-card").text(messageObj.heading)
             $(".mdl-card__supporting-text", ".notification-card")
                 .find("p").text(messageObj.content);
             $(".options-container", ".notification-card").empty();
