@@ -38,7 +38,7 @@ if ('serviceWorker' in navigator) {
                 }
 
                 $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
-                $(".unsusbscribe-card").show();
+                $(".unsusbscribe-card, #unsubscribe-btn").show();
 
                 console.log(JSON.stringify(subscription));
 
