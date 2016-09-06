@@ -160,5 +160,9 @@ if ('serviceWorker' in navigator) {
             $(".options-container", ".notification-card").empty();
             $(".unsusbscribe-card").show();
         });
+        $("input[type='text']").focus(function(e) {
+            $(e.currentTarget)[0].scrollIntoView(true);
+        })
+
     });
 }
