@@ -53,16 +53,14 @@ if ('serviceWorker' in navigator) {
 
                 console.log(navigator.serviceWorker);
 
-                $(document).ready(function() {
-                    var controller = navigator.serviceWorker.controller;
+                var controller = navigator.serviceWorker.controller;
 
-                    if (controller) {
-                        $(".unsusbscribe-card").append("<p>HAS CONTROLLER</p>")
-                        controller.postMessage("clientloaded");
-                    } else {
-                        $(".unsusbscribe-card").append("<p>NO CONTROLLER</p>");
-                    }
-                });
+                if (controller) {
+                    $(".unsusbscribe-card").append("<p>HAS CONTROLLER</p>")
+                    controller.postMessage("clientloaded");
+                } else {
+                    $(".unsusbscribe-card").append("<p>NO CONTROLLER</p>");
+                }
             })
             .catch(function(err) {
                 console.log('Error during getSubscription()', err);
