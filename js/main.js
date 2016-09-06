@@ -42,7 +42,10 @@ if ('serviceWorker' in navigator) {
 
                 console.log(JSON.stringify(subscription));
 
-                $("#endpoint-id").html(JSON.stringify(subscription));
+                $("#registrationId").val(profileObj.registrationId);
+                $("#userPublicKey").val(profileObj.userPublicKey);
+                $("#userAuthkey").val(profileObj.userAuthkey);
+
                 $(".loading-overlay").addClass("hidden");
 
                 console.log(navigator.serviceWorker);
@@ -101,9 +104,14 @@ if ('serviceWorker' in navigator) {
                 $(".mdl-card").hide(); // hide all cards
                 $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
                 $(".unsusbscribe-card, #unsubscribe-btn").show();
-                $("#endpoint-id").html(JSON.stringify(subscription));
+
                 $(".loading-overlay").addClass("hidden");
                 localStorage.setItem("profile", JSON.stringify(profileObj));
+
+                //$("#endpoint-id").html(JSON.stringify(profileObj));
+                $("#registrationId").val(profileObj.registrationId);
+                $("#userPublicKey").val(profileObj.userPublicKey);
+                $("#userAuthkey").val(profileObj.userAuthkey);
 
             })
             .catch(function(err) {
@@ -125,7 +133,7 @@ if ('serviceWorker' in navigator) {
 
                     $(".mdl-card, #unsubscribe-btn").hide(); // hide all cards
                     $(".subscription-card").show();
-                    $("#endpoint-id").html("");
+                    //$("#endpoint-id").html("");
                     $(".loading-overlay").addClass("hidden");
                     localStorage.removeItem("profile");
 
