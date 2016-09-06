@@ -8,7 +8,7 @@ if ('serviceWorker' in navigator) {
             //alert("HAS CONTROLLER");
            controller.postMessage("clientloaded");
         } else {
-            alert("NO CONTROLLER");
+            $(".unsusbscribe-card").append("NO CONTROLLER")
         }
     });
 
