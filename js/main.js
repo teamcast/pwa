@@ -160,11 +160,11 @@ if ('serviceWorker' in navigator) {
             $(".options-container", ".notification-card").empty();
             $(".unsusbscribe-card").show();
         });
-        $("input[type='text']").focus(function(e) {
+        /*$("input[type='text']").focus(function(e) {
             var elem  = $(this);
 
             $(".mdl-layout__content").animate({ scrollTop: $(".mdl-layout__content").scrollTop()+elem.offset().top }, { duration: 'fast' });
-        })
+        })*/
 
     });
 }

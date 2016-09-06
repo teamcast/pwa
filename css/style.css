@@ -197,6 +197,12 @@ main {
     border-top: solid 2px #82BC00;
     z-index: 5;
 }
+@media (max-height: 320px) {
+    .teamcast-pwa.mdl-layout .mdl-mini-footer {
+        display: none;
+    }
+}
+
 .teamcast-pwa.mdl-layout .mdl-mini-footer .mdl-mini-footer__left-section .mdl-logo {
     padding-left: 25px;
     line-height: 1.4;
