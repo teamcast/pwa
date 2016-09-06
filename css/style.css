@@ -168,6 +168,7 @@ main {
 }
 .teamcast-pwa.mdl-layout .employee-name {
     text-transform: capitalize;
+    text-indent: 8px;
 }
 
 .teamcast-pwa.mdl-layout .mdl-radio {
