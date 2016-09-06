@@ -110,10 +110,10 @@ self.addEventListener('push', function(event) {
 
     notificationTitle = jsonPayload.title;
     notificationOptions.body = jsonPayload.message;
-    notificationOptions.data.announcementId = jsonPayload.id;
-    notificationOptions.data.content = jsonPayload.content;
-    notificationOptions.data.options = jsonPayload.options;
-    notificationOptions.data.createTime = jsonPayload.createTime;
+    notificationOptions.data.body.announcementId = jsonPayload.id;
+    notificationOptions.data.body.content = jsonPayload.content;
+    notificationOptions.data.body.options = jsonPayload.options;
+    notificationOptions.data.body.createTime = jsonPayload.createTime;
   }
 
   event.waitUntil(
