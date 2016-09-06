@@ -144,6 +144,7 @@ self.addEventListener("notificationclick", function(event) {
 		if (clientList.length > 0) {
 			clientList[0].focus();
             clientList[0].postMessage(messageData);
+            messageData = null;
 		} else {
 			self.clients.openWindow("/").then(function(client) {
               self.clients.claim();
@@ -156,12 +157,13 @@ self.addEventListener("notificationclick", function(event) {
 });
 
 self.addEventListener('message', function(event) {
-  if (event.data == "clientloaded") {
+  if (event.data == "clientloaded" && messageData !== null) {
     self.clients.matchAll()
         .then(function(clientList) {
           clientList.forEach(function(client){
             //if (client.id == client_id) {
               client.postMessage(messageData);
+              messageData = null;
             //}
           })
         })
