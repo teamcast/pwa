@@ -96,10 +96,9 @@ self.addEventListener('push', function(event) {
     vibrate: [300, 100, 400],
     data: {
       announcementId: "1",
-      body: {
-        content: "",
-        options: []
-      }
+      content: "",
+      options: [],
+      createTime: 1473153437414
     }
   };
 
@@ -109,10 +108,12 @@ self.addEventListener('push', function(event) {
 
 	const jsonPayload = JSON.parse(event.data.text());
 
-    notificationTitle = jsonPayload.headline;
+    notificationTitle = jsonPayload.title;
     notificationOptions.body = jsonPayload.message;
-    notificationOptions.data.announcementId = jsonPayload.announcementId;
-    notificationOptions.data.body = jsonPayload.body;
+    notificationOptions.data.announcementId = jsonPayload.id;
+    notificationOptions.data.content = jsonPayload.content;
+    notificationOptions.data.options = jsonPayload.options;
+    notificationOptions.data.createTime = jsonPayload.createTime;
   }
 
   event.waitUntil(
