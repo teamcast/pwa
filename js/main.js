@@ -5,10 +5,7 @@ if ('serviceWorker' in navigator) {
         var controller = navigator.serviceWorker.controller;
 
         if (controller) {
-            $(".unsusbscribe-card").append("<p>HAS CONTROLLER</p>")
            controller.postMessage("clientloaded");
-        } else {
-            $(".unsusbscribe-card").append("<p>NO CONTROLLER</p>");
         }
     });
 
@@ -91,7 +88,6 @@ if ('serviceWorker' in navigator) {
             }
 
             $(".notification-card").show();
-
         });
 
         $('#subscribe-btn').on('click', function(e) {
@@ -131,6 +127,7 @@ if ('serviceWorker' in navigator) {
                 $(".loading-overlay").addClass("hidden");
             });
         });
+
         $('#unsubscribe-btn').on('click', function(e) {
             e.preventDefault();
             $(".loading-overlay").removeClass("hidden");
@@ -155,6 +152,7 @@ if ('serviceWorker' in navigator) {
                 })
             });
         });
+
         $('#notif-card-close-btn').on('click', function(e) {
             e.preventDefault();
             $(".notification-card").hide();
@@ -163,11 +161,5 @@ if ('serviceWorker' in navigator) {
             $(".options-container", ".notification-card").empty();
             $(".unsusbscribe-card").show();
         });
-        /*$("input[type='text']").focus(function(e) {
-            var elem  = $(this);
-
-            $(".mdl-layout__content").animate({ scrollTop: $(".mdl-layout__content").scrollTop()+elem.offset().top }, { duration: 'fast' });
-        })*/
-
     });
 }
