@@ -82,7 +82,7 @@ if ('serviceWorker' in navigator) {
 
             if (messageObj.imgUrl != "") {
                 $(".notification-card").addClass("has-media")
-                    .find(".mdl-card__title").css({"background-image": messageObj.imgUrl});
+                    .find(".mdl-card__title").css({"background-image": "url('"+messageObj.imgUrl+"')"});
             }
 
         });
