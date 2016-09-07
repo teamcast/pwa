@@ -49,6 +49,17 @@ self.addEventListener("install", function(event) {
 self.addEventListener("activate", function(event) {
   console.log("Event: Activate");
 
+  const apiUrl = "http://10.40.176.189:8080/panawagan/rest/accounts";
+
+  fetch(apiUrl, {
+    method: 'GET',
+    mode: 'cors',
+    redirect: 'follow',
+    headers: new Headers({
+      'Content-Type': 'text/plain'
+    })
+  }).then(function() { console.log("HERE") });
+
   var cacheWhitelist = ["teamcast-static-cache", "teamcast-data-cache"];
 
   //Delete unwanted caches
