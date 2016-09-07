@@ -101,7 +101,8 @@ self.addEventListener('push', function(event) {
         content: "",
         options: [],
         createTime: 1473153437414,
-        imgUrl: ""
+        //imgUrl: ""
+        url: ""
       }
     }
   };
@@ -137,7 +138,8 @@ self.addEventListener('push', function(event) {
     notificationOptions.data.body.content = jsonPayload.content;
     notificationOptions.data.body.options = jsonPayload.options;
     notificationOptions.data.body.createTime = jsonPayload.createTime;
-    notificationOptions.data.body.imgUrl = jsonPayload.imgUrl;
+    //notificationOptions.data.body.imgUrl = jsonPayload.imgUrl;
+    notificationOptions.data.body.url = jsonPayload.url;
   }
 
   event.waitUntil(

@@ -83,9 +83,11 @@ if ('serviceWorker' in navigator) {
                     }
                 }
 
-                if (messageObj.imgUrl != "") {
+                //if (messageObj.imgUrl != "") {
+                if (messageObj.url != "") {
                     $(".notification-card").addClass("has-media")
-                        .find(".mdl-card__title").css({"background-image": "url('"+messageObj.imgUrl+"')"});
+                        //.find(".mdl-card__title").css({"background-image": "url('"+messageObj.imgUrl+"')"});
+                        .find(".mdl-card__title").css({"background-image": "url('"+messageObj.url+"')"});
                 }
 
                 $(".notification-card").show();
