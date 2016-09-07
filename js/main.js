@@ -112,8 +112,8 @@ if ('serviceWorker' in navigator) {
                         data: JSON.stringify(profileObj),
                         crossDomain: true,
                         contentType: "application/json",
-                        //url: "https://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts",
-                        url: "http://10.40.176.189:8080/panawagan/rest/accounts",
+                        url: "https://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts",
+                        //url: "http://10.40.176.189:8080/panawagan/rest/accounts",
                         success: function(resp) {
                             var controller = navigator.serviceWorker.controller;
 
@@ -159,8 +159,8 @@ if ('serviceWorker' in navigator) {
                             type: 'DELETE',
                             data: JSON.stringify(profileObj),
                             crossDomain: true,
-                            //url: "http://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts/" + profileObj.accountId,
-                            url: "http://10.40.176.189:8080/panawagan/rest/accounts/" + profileObj.accountId,
+                            url: "http://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts/" + profileObj.accountId,
+                            //url: "http://10.40.176.189:8080/panawagan/rest/accounts/" + profileObj.accountId,
                             complete: function() {
                                 localStorage.removeItem("profile");
                                 var layout = document.querySelector('.mdl-layout');
