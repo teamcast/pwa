@@ -86,6 +86,7 @@ if ('serviceWorker' in navigator) {
                         $(".options-container", ".notification-card").append(newRadio);
                     }
                     $("#respond-btn").data("announcementid", messageObj.announcementId);
+                    $("#respond-btn").prop("disabled", true);
                     $(".mdl-card__actions", ".notification-card").show();
                 } else {
                     $(".mdl-card__actions", ".notification-card").hide();
@@ -192,6 +193,10 @@ if ('serviceWorker' in navigator) {
                 .find("p").text("");
             $(".options-container", ".notification-card").empty();
             $(".unsusbscribe-card").show();
+        });
+
+        $("body").on( "click", ".mdl-radio", function() {
+            $("#respond-btn").prop("disabled", false);
         });
 
         $("#respond-btn").on("click", function(e) {
