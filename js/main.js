@@ -108,9 +108,10 @@ if ('serviceWorker' in navigator) {
             }
         });
 
-        $("input[type='text']", "#subscription-form").on("change", function(e) {
+        $("input[type='text']", "#subscription-form").on("keyup", function(e) {
             var filledUp = true;
 
+            $("#subscribe-btn").prop("disabled", true);
             $("input[type='text']", "#subscription-form").each(function() {
                 if (!$.trim($(this).val()).length) filledUp = false;
             })
