@@ -56,38 +56,40 @@ if ('serviceWorker' in navigator) {
             });
 
         navigator.serviceWorker.addEventListener('message', function(event) {
-            var messageObj = event.data.body;
+            if (event && event.data) {
+                var messageObj = event.data.body;
 
-            $(".mdl-card").hide();
-            $(".notification-card").removeClass("has-media");
-            $(".mdl-card__title-text", ".notification-card").text(messageObj.heading);
-            $(".mdl-card__title", ".notification-card").css({"background-image": "none"});
-            $(".mdl-card__supporting-text", ".notification-card")
-                .find("p").text(messageObj.content);
-            $(".options-container", ".notification-card").empty();
+                $(".mdl-card").hide();
+                $(".notification-card").removeClass("has-media");
+                $(".mdl-card__title-text", ".notification-card").text(messageObj.heading);
+                $(".mdl-card__title", ".notification-card").css({"background-image": "none"});
+                $(".mdl-card__supporting-text", ".notification-card")
+                    .find("p").text(messageObj.content);
+                $(".options-container", ".notification-card").empty();
 
-            if (messageObj.options && messageObj.options.length) {
-                var optLen = messageObj.options.length;
-                for (x=0; x < optLen; x++) {
-                    var data = {
-                        "id": messageObj.options[x].toLowerCase(),
-                        "name": messageObj.options[x].toUpperCase()
+                if (messageObj.options && messageObj.options.length) {
+                    var optLen = messageObj.options.length;
+                    for (x=0; x < optLen; x++) {
+                        var data = {
+                            "id": messageObj.options[x].toLowerCase(),
+                            "name": messageObj.options[x].toUpperCase()
+                        }
+                        var template = $("#options-template").html();
+                        var optMarkup = Mustache.to_html(template, data);
+                        var newRadio = $(optMarkup)[0];
+                        componentHandler.upgradeElement(newRadio);
+
+                        $(".options-container", ".notification-card").append(newRadio);
                     }
-                    var template = $("#options-template").html();
-                    var optMarkup = Mustache.to_html(template, data);
-                    var newRadio = $(optMarkup)[0];
-                    componentHandler.upgradeElement(newRadio);
-
-                    $(".options-container", ".notification-card").append(newRadio);
                 }
-            }
 
-            if (messageObj.imgUrl != "") {
-                $(".notification-card").addClass("has-media")
-                    .find(".mdl-card__title").css({"background-image": "url('"+messageObj.imgUrl+"')"});
-            }
+                if (messageObj.imgUrl != "") {
+                    $(".notification-card").addClass("has-media")
+                        .find(".mdl-card__title").css({"background-image": "url('"+messageObj.imgUrl+"')"});
+                }
 
-            $(".notification-card").show();
+                $(".notification-card").show();
+            }
         });
 
         $('#subscribe-btn').on('click', function(e) {

@@ -166,7 +166,7 @@ self.addEventListener("notificationclick", function(event) {
               console.log(clientList[x].url)
               if(clientList[x].url.indexOf('teamcast.github.io') >= 0 ) {
                 //clients.openWindow(clientList[x]);
-                clientList[x].focus()
+                clientList[x].focus();
                 clientList[x].postMessage(messageData);
                 messageData = null;
               }
