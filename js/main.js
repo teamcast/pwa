@@ -82,9 +82,9 @@ if ('serviceWorker' in navigator) {
                 }
             }
 
-            if (messageObj.url != "") {
+            if (messageObj.imgUrl != "") {
                 $(".notification-card").addClass("has-media")
-                    .find(".mdl-card__title").css({"background-image": "url('"+messageObj.url+"')"});
+                    .find(".mdl-card__title").css({"background-image": "url('"+messageObj.imgUrl+"')"});
             }
 
             $(".notification-card").show();
