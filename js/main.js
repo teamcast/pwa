@@ -30,12 +30,12 @@ if ('serviceWorker' in navigator) {
 
                 var profileObj = JSON.parse(localStorage.getItem("profile"));
 
-                if (!profileObj) {
+                /*if (!profileObj) {
                     profileObj = {
                         "firstName": "First Name",
                         "lastName": "Last Name"
                     }
-                }
+                }*/
 
                 $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
                 $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show();
@@ -94,38 +94,44 @@ if ('serviceWorker' in navigator) {
             e.preventDefault();
             $(".loading-overlay").removeClass("hidden");
             serviceWorkerRegistration.pushManager.subscribe(
-                {
-                    userVisibleOnly: true
-                }
-            ).then(function(subscription) {
-                var subscriptionObj = JSON.parse(JSON.stringify(subscription));
-                var profileObj = {
-                    "firstName": $("#firstname").val(),
-                    "lastName": $("#lastname").val(),
-                    "registrationId": subscriptionObj.endpoint.split("https://android.googleapis.com/gcm/send/")[1],
-                    "userPublicKey": subscriptionObj["keys"]["p256dh"],
-                    "userAuthkey": subscriptionObj["keys"]["auth"]
-                }
+                    {
+                        userVisibleOnly: true
+                    }
+                ).then(function(subscription) {
+                    var subscriptionObj = JSON.parse(JSON.stringify(subscription));
+                    var profileObj = {
+                        "firstName": $("#firstname").val().toUpperCase(),
+                        "lastName": $("#lastname").val().toUpperCase(),
+                        "registrationId": subscriptionObj.endpoint.split("https://android.googleapis.com/gcm/send/")[1],
+                        "publicKey": subscriptionObj["keys"]["p256dh"],
+                        "auth": subscriptionObj["keys"]["auth"]
+                    }
 
-                //TODO: send subscription to REST API
-                $("#subscription-form")[0].reset();
-                $(".mdl-card").hide(); // hide all cards
-                $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
-                $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show();
+                    $.ajax({
+                        type: 'POST',
+                        data: JSON.stringify(profileObj),
+                        dataType: 'json',
+                        contentType: "application/json",
+                        url: "http://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts",
+                        success: function(resp) {
+                            profileObj.accountId = resp.id;
+                            localStorage.setItem("profile", JSON.stringify(profileObj));
 
-                $(".loading-overlay").addClass("hidden");
-                localStorage.setItem("profile", JSON.stringify(profileObj));
-
-                //$("#endpoint-id").html(JSON.stringify(profileObj));
-                $("#registrationId").val(profileObj.registrationId);
-                $("#userPublicKey").val(profileObj.userPublicKey);
-                $("#userAuthkey").val(profileObj.userAuthkey);
-
-            })
-            .catch(function(err) {
-                console.log('Error during getSubscription()', err);
-                $(".loading-overlay").addClass("hidden");
-            });
+                            $("#subscription-form")[0].reset();
+                            $(".mdl-card").hide(); // hide all cards
+                            $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
+                            $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show();
+                            $("#registrationId").val(profileObj.registrationId);
+                            $("#userPublicKey").val(profileObj.publicKey);
+                            $("#userAuthkey").val(profileObj.auth);
+                            $(".loading-overlay").addClass("hidden");
+                        }
+                    });
+                })
+                .catch(function(err) {
+                        console.log('Error during getSubscription()', err);
+                        $(".loading-overlay").addClass("hidden");
+                });
         });
 
         $('#unsubscribe-btn').on('click', function(e) {
@@ -135,21 +141,28 @@ if ('serviceWorker' in navigator) {
             serviceWorkerRegistration.pushManager.getSubscription()
                 .then(function(subscription) {
                     subscription.unsubscribe().then(function(successful) {
-                    //TODO: send delete subscription to REST API
+                        var profileObj = JSON.parse(localStorage.getItem("profile"));
 
-                    var layout = document.querySelector('.mdl-layout');
-                    layout.MaterialLayout.toggleDrawer();
+                        $.ajax({
+                            type: 'DELETE',
+                            data: JSON.stringify(profileObj),
+                            dataType: 'json',
+                            contentType: "application/json",
+                            url: "http://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts/" + profileObj.accountId,
+                            success: function(resp) {
+                                localStorage.removeItem("profile");
+                                var layout = document.querySelector('.mdl-layout');
+                                layout.MaterialLayout.toggleDrawer();
 
-                    $(".mdl-card, #unsubscribe-btn, #profile-btn").hide(); // hide all cards
-                    $(".subscription-card").show();
-                    //$("#endpoint-id").html("");
-                    $(".loading-overlay").addClass("hidden");
-                    localStorage.removeItem("profile");
-
-                }).catch(function(e) {
-                    // Unsubscribe failed
-                    $(".loading-overlay").addClass("hidden");
-                })
+                                $(".mdl-card, #unsubscribe-btn, #profile-btn").hide(); // hide all cards
+                                $(".subscription-card").show();
+                                $(".loading-overlay").addClass("hidden");
+                            }
+                        });
+                    }).catch(function(e) {
+                        // Unsubscribe failed
+                        $(".loading-overlay").addClass("hidden");
+                    })
             });
         });
 

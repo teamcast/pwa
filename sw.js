@@ -110,7 +110,24 @@ self.addEventListener('push', function(event) {
 	console.log("GCM includes DATA!");
 	console.log(event.data.text());
 
+    var profileObj = JSON.parse(localStorage.getItem("profile"));
 	const jsonPayload = JSON.parse(event.data.text());
+    const apiUrl = "http://teamcast.us-east-1.elasticbeanstalk.com/rest/announcements/"+jsonPayload.id+"/received/"+profileObj.accountId;
+
+    fetch(url, {
+      method: 'put',
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: {}
+    })
+        .then(json)
+        .then(function (data) {
+          console.log('Successfully sent notification received status for announcement with ID: ' + jsonPayload.id);
+        })
+        .catch(function (error) {
+          console.log('Sending notification received status failed: ', error);
+        });
 
     notificationTitle = jsonPayload.title;
     notificationOptions.body = jsonPayload.message;
