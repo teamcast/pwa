@@ -131,7 +131,7 @@ self.addEventListener('push', function(event) {
 
     caches.open(dataCache).then(function(cache) {
       cache.matchAll('https://teamcast-rest.herokuapp.com/rest/accounts').then(function(response) {
-        accountId = response.json().id;
+        accountId = response.body.json().id;
       });
     })
 
