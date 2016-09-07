@@ -150,6 +150,10 @@ if ('serviceWorker' in navigator) {
 
         $('#unsubscribe-btn').on('click', function(e) {
             e.preventDefault();
+
+            var layout = document.querySelector('.mdl-layout');
+            layout.MaterialLayout.toggleDrawer();
+
             $(".loading-overlay").removeClass("hidden");
 
             serviceWorkerRegistration.pushManager.getSubscription()
@@ -163,8 +167,6 @@ if ('serviceWorker' in navigator) {
                             url: "https://teamcast-rest.herokuapp.com/rest/accounts/" + profileObj.accountId,
                             complete: function() {
                                 localStorage.removeItem("profile");
-                                var layout = document.querySelector('.mdl-layout');
-                                layout.MaterialLayout.toggleDrawer();
 
                                 $(".mdl-card, #unsubscribe-btn, #profile-btn").hide(); // hide all cards
                                 $(".subscription-card").show();
