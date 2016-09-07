@@ -110,7 +110,6 @@ if ('serviceWorker' in navigator) {
                     $.ajax({
                         type: 'POST',
                         data: JSON.stringify(profileObj),
-                        dataType: 'json',
                         contentType: "application/json",
                         url: "https://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts",
                         success: function(resp) {
@@ -125,6 +124,11 @@ if ('serviceWorker' in navigator) {
                             $("#userPublicKey").val(profileObj.publicKey);
                             $("#userAuthkey").val(profileObj.auth);
                             $(".loading-overlay").addClass("hidden");
+                        },
+                        error: function(jqxhr, error, thrownError) {
+                            console.log(jqxhr);
+                            console.log(error);
+                            console.log(thrownError);
                         }
                     });
                 })
@@ -146,8 +150,6 @@ if ('serviceWorker' in navigator) {
                         $.ajax({
                             type: 'DELETE',
                             data: JSON.stringify(profileObj),
-                            dataType: 'json',
-                            contentType: "application/json",
                             url: "https://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts/" + profileObj.accountId,
                             success: function(resp) {
                                 localStorage.removeItem("profile");
@@ -157,6 +159,11 @@ if ('serviceWorker' in navigator) {
                                 $(".mdl-card, #unsubscribe-btn, #profile-btn").hide(); // hide all cards
                                 $(".subscription-card").show();
                                 $(".loading-overlay").addClass("hidden");
+                            },
+                            error: function(jqxhr, error, thrownError) {
+                                console.log(jqxhr);
+                                console.log(error);
+                                console.log(thrownError);
                             }
                         });
                     }).catch(function(e) {
