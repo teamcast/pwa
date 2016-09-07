@@ -214,7 +214,7 @@ main {
 .teamcast-pwa.mdl-layout .mdl-card.has-media .mdl-card__title {
     height: 220px;
     background-size: cover;
-    background-position: center center;
+    background-position: center top;
     background-repeat: no-repeat;
 }
 .teamcast-pwa.mdl-layout .mdl-card.has-media .mdl-card__title h2 {
