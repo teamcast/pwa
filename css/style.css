@@ -219,11 +219,13 @@ main {
 }
 .teamcast-pwa.mdl-layout .mdl-card.has-media .mdl-card__title h2 {
     color: white;
-    background-color: rgba(0, 0, 0, 0.30);
+    background-color: rgba(0,0,0,0.125);
     padding: 2px 5px;
+    font-weight: 600;
 }
 .teamcast-pwa.mdl-layout .mdl-card.has-media .notif-close-btn {
     color: white;
+    background-color: rgba(0,0,0,0.125);
 }
 .mdl-layout__drawer {
     z-index: 6;
