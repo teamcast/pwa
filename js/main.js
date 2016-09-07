@@ -112,7 +112,7 @@ if ('serviceWorker' in navigator) {
                         data: JSON.stringify(profileObj),
                         dataType: 'json',
                         contentType: "application/json",
-                        url: "http://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts",
+                        url: "https://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts",
                         success: function(resp) {
                             profileObj.accountId = resp.id;
                             localStorage.setItem("profile", JSON.stringify(profileObj));
@@ -148,7 +148,7 @@ if ('serviceWorker' in navigator) {
                             data: JSON.stringify(profileObj),
                             dataType: 'json',
                             contentType: "application/json",
-                            url: "http://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts/" + profileObj.accountId,
+                            url: "https://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts/" + profileObj.accountId,
                             success: function(resp) {
                                 localStorage.removeItem("profile");
                                 var layout = document.querySelector('.mdl-layout');

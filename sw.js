@@ -112,7 +112,7 @@ self.addEventListener('push', function(event) {
 
     var profileObj = JSON.parse(localStorage.getItem("profile"));
 	const jsonPayload = JSON.parse(event.data.text());
-    const apiUrl = "http://teamcast.us-east-1.elasticbeanstalk.com/rest/announcements/"+jsonPayload.id+"/received/"+profileObj.accountId;
+    const apiUrl = "https://teamcast.us-east-1.elasticbeanstalk.com/rest/announcements/"+jsonPayload.id+"/received/"+profileObj.accountId;
 
     fetch(url, {
       method: 'put',
