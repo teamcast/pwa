@@ -113,6 +113,8 @@ if ('serviceWorker' in navigator) {
                         contentType: "application/json",
                         url: "https://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts",
                         success: function(resp) {
+                            var controller = navigator.serviceWorker.controller;
+
                             profileObj.accountId = resp.id;
                             localStorage.setItem("profile", JSON.stringify(profileObj));
 
@@ -124,6 +126,10 @@ if ('serviceWorker' in navigator) {
                             $("#userPublicKey").val(profileObj.publicKey);
                             $("#userAuthkey").val(profileObj.auth);
                             $(".loading-overlay").addClass("hidden");
+
+                            if (controller) {
+                                controller.postMessage("newsubscription:" + profileObj.accountId);
+                            }
                         },
                         error: function(jqxhr, error, thrownError) {
                             console.log(jqxhr);

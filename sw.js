@@ -109,10 +109,9 @@ self.addEventListener('push', function(event) {
   if (event.data) {
 	console.log("GCM includes DATA!");
 	console.log(event.data.text());
-
-    var profileObj = JSON.parse(localStorage.getItem("profile"));
 	const jsonPayload = JSON.parse(event.data.text());
-    const apiUrl = "https://teamcast.us-east-1.elasticbeanstalk.com/rest/announcements/"+jsonPayload.id+"/received/"+profileObj.accountId;
+
+    const apiUrl = "https://teamcast.us-east-1.elasticbeanstalk.com/rest/announcements/"+jsonPayload.id+"/received/"+accountId;
 
     fetch(url, {
       method: 'put',
@@ -193,6 +192,9 @@ self.addEventListener('message', function(event) {
             //}
           })
         })
+  }
+  if (event.data.indexOf('newsubscription') >= 0) {
+    accountId = event.data.split(':')[1];
   }
 
 });
