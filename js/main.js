@@ -83,11 +83,11 @@ if ('serviceWorker' in navigator) {
                     }
                 }
 
-                //if (messageObj.imgUrl != "") {
-                if (messageObj.url != "") {
+                if (messageObj.imgUrl != "") {
+                //if (messageObj.url != "") {
                     $(".notification-card").addClass("has-media")
-                        //.find(".mdl-card__title").css({"background-image": "url('"+messageObj.imgUrl+"')"});
-                        .find(".mdl-card__title").css({"background-image": "url('"+messageObj.url+"')"});
+                        .find(".mdl-card__title").css({"background-image": "url('"+messageObj.imgUrl+"')"});
+                        //.find(".mdl-card__title").css({"background-image": "url('"+messageObj.url+"')"});
                 }
 
                 $(".notification-card").show();
@@ -118,7 +118,7 @@ if ('serviceWorker' in navigator) {
                         url: "https://teamcast-rest.herokuapp.com/rest/accounts",
                         //url: "http://10.40.176.189:8080/panawagan/rest/accounts",
                         success: function(resp) {
-                            var controller = navigator.serviceWorker.controller;
+                            //var controller = navigator.serviceWorker.controller;
 
                             profileObj.accountId = resp.id;
                             localStorage.setItem("profile", JSON.stringify(profileObj));
@@ -132,9 +132,9 @@ if ('serviceWorker' in navigator) {
                             $("#userAuthkey").val(profileObj.auth);
                             $(".loading-overlay").addClass("hidden");
 
-                            if (controller) {
+                            /*if (controller) {
                                 controller.postMessage("newsubscription:" + profileObj.accountId);
-                            }
+                            }*/
                         },
                         error: function(jqxhr, error, thrownError) {
                             console.log(jqxhr);

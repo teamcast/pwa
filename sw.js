@@ -2,6 +2,7 @@ importScripts("/cache-polyfill.js");
 
 var pwaUrl = "https://teamcast.github.io",
 staticCache = "teamcast-static-cache",
+dataCache = "teamcast-data-cache",
 client_id,
 messageData,
 filesToCache = [
@@ -66,21 +67,40 @@ self.addEventListener("activate", function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-		var fetchRequest = event.request.clone();
+  console.log('[ServiceWorker] Fetch', event.request.url);
+  var dataUrl = 'https://teamcast-rest.herokuapp.com/rest/accounts';
 
-		// Cache hit - return response
-		if (response) {
-			var onlineResponse = self.updateStaticCache(fetchRequest);
+  if (event.request.url === dataUrl) {
+    event.respondWith(
+        fetch(event.request)
+            .then(function(response) {
+              return caches.open(dataCache).then(function(cache) {
+                cache.put(event.request.url, response.clone());
 
-			return response;
-		} else {
-			return self.updateStaticCache(fetchRequest);
-		}
-      })
+                console.log('[ServiceWorker] Fetched and Cached Data');
+
+                return response;
+              });
+            })
     );
+  } else {
+    event.respondWith(
+        caches.match(event.request)
+            .then(function(response) {
+              var fetchRequest = event.request.clone();
+
+              // Cache hit - return response
+              if (response) {
+                var onlineResponse = self.updateStaticCache(fetchRequest);
+
+                return response;
+              } else {
+                return self.updateStaticCache(fetchRequest);
+              }
+            })
+    );
+  }
+
 });
 
 self.addEventListener('push', function(event) {
@@ -101,19 +121,22 @@ self.addEventListener('push', function(event) {
         content: "",
         options: [],
         createTime: 1473153437414,
-        //imgUrl: ""
-        url: ""
+        imgUrl: ""
       }
     }
   };
 
   if (event.data) {
 	console.log("GCM includes DATA!");
-	console.log(event.data.text());
-	const jsonPayload = JSON.parse(event.data.text());
 
-    const apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/"+jsonPayload.id+"/received/"+accountId;
-    //const apiUrl = "http://10.40.176.189/panawagan/rest/announcements/"+jsonPayload.id+"/received/"+accountId;
+    var postAccountResponse = caches.open(dataCache).then(function(cache) {
+      cache.matchAll('https://teamcast-rest.herokuapp.com/rest/accounts').then(function(response) {
+        return response;
+      });
+    })
+
+	var jsonPayload = JSON.parse(event.data.text());
+    var apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/"+jsonPayload.id+"/received/"+postAccountResponse.json().id;
 
     fetch(apiUrl, {
       method: 'put',
@@ -122,12 +145,12 @@ self.addEventListener('push', function(event) {
       },
       body: {}
     })
-        .then(function (data) {
-          console.log('Successfully sent notification received status for announcement with ID: ' + jsonPayload.id);
-        })
-        .catch(function (error) {
-          console.log('Sending notification received status failed: ', error);
-        });
+      .then(function (data) {
+        console.log('Successfully sent notification received status for announcement with ID: ' + jsonPayload.id);
+      })
+      .catch(function (error) {
+        console.log('Sending notification received status failed: ', error);
+      });
 
     notificationTitle = jsonPayload.title;
     notificationOptions.body = jsonPayload.message;
@@ -137,8 +160,7 @@ self.addEventListener('push', function(event) {
     notificationOptions.data.body.content = jsonPayload.content;
     notificationOptions.data.body.options = jsonPayload.options;
     notificationOptions.data.body.createTime = jsonPayload.createTime;
-    //notificationOptions.data.body.imgUrl = jsonPayload.imgUrl;
-    notificationOptions.data.body.url = jsonPayload.url;
+    notificationOptions.data.body.imgUrl = jsonPayload.imgUrl;
   }
 
   event.waitUntil(
@@ -195,10 +217,6 @@ self.addEventListener('message', function(event) {
           })
         })
   }
-  if (event.data.indexOf('newsubscription') >= 0) {
-    accountId = event.data.split(':')[1];
-  }
-
 });
 
 self.updateStaticCache = function(request) {
