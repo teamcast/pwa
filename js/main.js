@@ -30,14 +30,7 @@ if ('serviceWorker' in navigator) {
 
                 var profileObj = JSON.parse(localStorage.getItem("profile"));
 
-                /*if (!profileObj) {
-                    profileObj = {
-                        "firstName": "First Name",
-                        "lastName": "Last Name"
-                    }
-                }*/
-
-                $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
+                $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
                 $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show();
 
                 console.log(JSON.stringify(subscription));
@@ -58,6 +51,17 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.addEventListener('message', function(event) {
             if (event && event.data) {
                 var messageObj = event.data.body;
+                var profileObj = JSON.parse(localStorage.getItem("profile"));
+
+                $.ajax({
+                    type: 'PUT',
+                    url: "https://teamcast-rest.herokuapp.com/rest/announcements/"+messageObj.announcementId+"/seen/"+profileObj.accountId,
+                    error: function(jqxhr, error, thrownError) {
+                        console.log(jqxhr);
+                        console.log(error);
+                        console.log(thrownError);
+                    }
+                });
 
                 $(".mdl-card").hide();
                 $(".notification-card").removeClass("has-media");
@@ -71,7 +75,7 @@ if ('serviceWorker' in navigator) {
                     var optLen = messageObj.options.length;
                     for (x=0; x < optLen; x++) {
                         var data = {
-                            "id": messageObj.options[x].toLowerCase(),
+                            "id": messageObj.options[x],
                             "name": messageObj.options[x].toUpperCase()
                         }
                         var template = $("#options-template").html();
@@ -81,13 +85,15 @@ if ('serviceWorker' in navigator) {
 
                         $(".options-container", ".notification-card").append(newRadio);
                     }
+                    $("#respond-btn").data("announcementid", messageObj.announcementId);
+                    $(".mdl-card__actions", ".notification-card").show();
+                } else {
+                    $(".mdl-card__actions", ".notification-card").hide();
                 }
 
                 if (messageObj.imgUrl != "") {
-                //if (messageObj.url != "") {
                     $(".notification-card").addClass("has-media")
                         .find(".mdl-card__title").css({"background-image": "url('"+messageObj.imgUrl+"')"});
-                        //.find(".mdl-card__title").css({"background-image": "url('"+messageObj.url+"')"});
                 }
 
                 $(".notification-card").show();
@@ -116,25 +122,18 @@ if ('serviceWorker' in navigator) {
                         data: JSON.stringify(profileObj),
                         contentType: "application/json",
                         url: "https://teamcast-rest.herokuapp.com/rest/accounts",
-                        //url: "http://10.40.176.189:8080/panawagan/rest/accounts",
                         success: function(resp) {
-                            //var controller = navigator.serviceWorker.controller;
-
                             profileObj.accountId = resp.id;
                             localStorage.setItem("profile", JSON.stringify(profileObj));
 
                             $("#subscription-form")[0].reset();
                             $(".mdl-card").hide(); // hide all cards
-                            $(".employee-name").html(profileObj.firstName + " " + profileObj.lastName);
+                            $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
                             $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show();
                             $("#registrationId").val(profileObj.registrationId);
                             $("#userPublicKey").val(profileObj.publicKey);
                             $("#userAuthkey").val(profileObj.auth);
                             $(".loading-overlay").addClass("hidden");
-
-                            /*if (controller) {
-                                controller.postMessage("newsubscription:" + profileObj.accountId);
-                            }*/
                         },
                         error: function(jqxhr, error, thrownError) {
                             console.log(jqxhr);
@@ -162,7 +161,6 @@ if ('serviceWorker' in navigator) {
                             type: 'DELETE',
                             data: JSON.stringify(profileObj),
                             url: "https://teamcast-rest.herokuapp.com/rest/accounts/" + profileObj.accountId,
-                            //url: "http://10.40.176.189:8080/panawagan/rest/accounts/" + profileObj.accountId,
                             complete: function() {
                                 localStorage.removeItem("profile");
                                 var layout = document.querySelector('.mdl-layout');
@@ -192,6 +190,38 @@ if ('serviceWorker' in navigator) {
                 .find("p").text("");
             $(".options-container", ".notification-card").empty();
             $(".unsusbscribe-card").show();
+        });
+
+        $("#respond-btn").on("click", function(e) {
+            var profileObj = JSON.parse(localStorage.getItem("profile"));
+            var responseObj = {
+                "option": $("input[type='radio']", ".mdl-radio.is-checked").val()
+            }
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(responseObj),
+                contentType: "application/json",
+                url: "https://teamcast-rest.herokuapp.com/rest/announcements/"+$(this).data("announcementid")+"/acknowledge/"+profileObj.accountId,
+                beforeSend: function() {
+                    $(".loading-overlay").removeClass("hidden");
+                },
+                success: function(resp) {
+                    $(".notification-card").hide();
+                    $(".mdl-card__supporting-text", ".notification-card")
+                        .find("p").text("");
+                    $(".options-container", ".notification-card").empty();
+                    $(".unsusbscribe-card").show();
+                },
+                error: function(jqxhr, error, thrownError) {
+                    console.log(jqxhr);
+                    console.log(error);
+                    console.log(thrownError);
+                },
+                complete: function() {
+                    $(".loading-overlay").addClass("hidden");
+                }
+            });
         });
     });
 }

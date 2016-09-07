@@ -67,7 +67,7 @@ self.addEventListener("activate", function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-  console.log('[ServiceWorker] Fetch', event.request.url);
+  console.log('Event: Fetch', event.request.url);
   var dataUrl = 'https://teamcast-rest.herokuapp.com/rest/accounts';
 
   if (event.request.url === dataUrl) {
@@ -104,11 +104,10 @@ self.addEventListener('fetch', function(event) {
 });
 
 self.addEventListener('push', function(event) {
-  console.log('Received push');
+  console.log('Event: Push');
 
-  let notificationTitle = 'This is the notif title';
-
-  const notificationOptions = {
+  var notificationTitle = 'This is the notif title';
+  var notificationOptions = {
     body: 'This is the notif tray message',
     icon: './images/logo-192x192.png',
     badge: './images/logo-72x72.png',
@@ -117,10 +116,10 @@ self.addEventListener('push', function(event) {
     data: {
       body: {
         heading: "",
-        announcementId: "1",
+        announcementId: "0",
         content: "",
         options: [],
-        createTime: 1473153437414,
+        createTime: 0,
         imgUrl: ""
       }
     }
@@ -176,7 +175,7 @@ self.addEventListener('push', function(event) {
 });
 
 self.addEventListener("notificationclick", function(event) {
-  console.log("Notification is clicked ", event);
+  console.log("Event: NotificationClick", event);
 
   messageData = event.notification.data;
   event.notification.close();
@@ -186,13 +185,9 @@ self.addEventListener("notificationclick", function(event) {
     clients.matchAll({includeUncontrolled: true, type: 'window'})
     .then(function(clientList) {
 		if (clientList.length > 0) {
-			/*clientList[0].focus();
-            clientList[0].postMessage(messageData);
-            messageData = null;*/
             for(var x = 0; x < clientList.length; x++) {
               console.log(clientList[x].url)
               if(clientList[x].url.indexOf('teamcast.github.io') >= 0 ) {
-                //clients.openWindow(clientList[x]);
                 clientList[x].focus();
                 clientList[x].postMessage(messageData);
                 messageData = null;
@@ -210,14 +205,13 @@ self.addEventListener("notificationclick", function(event) {
 });
 
 self.addEventListener('message', function(event) {
+  console.log("Event: PostMessage", event);
   if (event.data == "clientloaded" && messageData !== null) {
     self.clients.matchAll()
         .then(function(clientList) {
           clientList.forEach(function(client){
-            //if (client.id == client_id) {
-              client.postMessage(messageData);
-              messageData = null;
-            //}
+            client.postMessage(messageData);
+            messageData = null;
           })
         })
   }
