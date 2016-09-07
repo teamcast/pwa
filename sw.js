@@ -139,14 +139,22 @@ self.addEventListener("notificationclick", function(event) {
 
   //To open the app after click notification
   event.waitUntil(
-    self.clients.matchAll()
+    self.clients.matchAll({includeUncontrolled: true, type: 'window'})
     .then(function(clientList) {
 		if (clientList.length > 0) {
-			clientList[0].focus();
+			/*clientList[0].focus();
             clientList[0].postMessage(messageData);
-            messageData = null;
+            messageData = null;*/
+            for(var x = 0; x < clientList.length; x++) {
+              console.log(clientList[x].url)
+              if(clientList[x].url.indexOf('teamcast.github.io') >= 0 ) {
+                self.clients.openWindow(clientList[x]);
+                clientList[0].postMessage(messageData);
+                messageData = null;
+              }
+            }
 		} else {
-			self.clients.openWindow("/?utm_source=web_app_manifest").then(function(client) {
+			self.clients.openWindow("/").then(function(client) {
               self.clients.claim();
               client_id = client.id;
             })
