@@ -26,7 +26,7 @@ if ('serviceWorker' in navigator) {
                     $(".subscription-card").show()
                         .promise()
                         .done(function() {
-                            $("footer").removeClass("hidden");
+                            $("footer").removeClass("invisible");
                         });
                     $(".loading-overlay").addClass("hidden");
                     return;
@@ -38,7 +38,7 @@ if ('serviceWorker' in navigator) {
                 $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show()
                     .promise()
                     .done(function() {
-                        $("footer").removeClass("hidden");
+                        $("footer").removeClass("invisible");
                     });
 
                 console.log(JSON.stringify(subscription));
