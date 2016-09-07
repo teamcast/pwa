@@ -43,8 +43,8 @@ if ('serviceWorker' in navigator) {
                 console.log(JSON.stringify(subscription));
 
                 $("#registrationId").val(profileObj.registrationId);
-                $("#userPublicKey").val(profileObj.userPublicKey);
-                $("#userAuthkey").val(profileObj.userAuthkey);
+                $("#userPublicKey").val(profileObj.publicKey);
+                $("#userAuthkey").val(profileObj.auth);
 
                 $(".loading-overlay").addClass("hidden");
 
