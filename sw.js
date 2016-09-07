@@ -122,7 +122,6 @@ self.addEventListener('push', function(event) {
       },
       body: {}
     })
-        .then(json)
         .then(function (data) {
           console.log('Successfully sent notification received status for announcement with ID: ' + jsonPayload.id);
         })
