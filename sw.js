@@ -129,14 +129,14 @@ self.addEventListener('push', function(event) {
   if (event.data) {
 	console.log("GCM includes DATA!");
 
-    var postAccountResponse = caches.open(dataCache).then(function(cache) {
+    caches.open(dataCache).then(function(cache) {
       cache.matchAll('https://teamcast-rest.herokuapp.com/rest/accounts').then(function(response) {
-        return response;
+        accountId = response.json().id;
       });
     })
 
 	var jsonPayload = JSON.parse(event.data.text());
-    var apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/"+jsonPayload.id+"/received/"+postAccountResponse.json().id;
+    var apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/"+jsonPayload.id+"/received/"+accountId;
 
     fetch(apiUrl, {
       method: 'put',
