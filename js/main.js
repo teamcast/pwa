@@ -113,7 +113,7 @@ if ('serviceWorker' in navigator) {
                         type: 'POST',
                         data: JSON.stringify(profileObj),
                         contentType: "application/json",
-                        url: "https://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts",
+                        url: "https://teamcast-rest.herokuapp.com/rest/accounts",
                         //url: "http://10.40.176.189:8080/panawagan/rest/accounts",
                         success: function(resp) {
                             var controller = navigator.serviceWorker.controller;
@@ -159,7 +159,7 @@ if ('serviceWorker' in navigator) {
                         $.ajax({
                             type: 'DELETE',
                             data: JSON.stringify(profileObj),
-                            url: "http://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts/" + profileObj.accountId,
+                            url: "https://teamcast-rest.herokuapp.com/rest/accounts/" + profileObj.accountId,
                             //url: "http://10.40.176.189:8080/panawagan/rest/accounts/" + profileObj.accountId,
                             complete: function() {
                                 localStorage.removeItem("profile");

@@ -111,7 +111,7 @@ self.addEventListener('push', function(event) {
 	console.log(event.data.text());
 	const jsonPayload = JSON.parse(event.data.text());
 
-    const apiUrl = "https://teamcast.us-east-1.elasticbeanstalk.com/rest/announcements/"+jsonPayload.id+"/received/"+accountId;
+    const apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/"+jsonPayload.id+"/received/"+accountId;
     //const apiUrl = "http://10.40.176.189/panawagan/rest/announcements/"+jsonPayload.id+"/received/"+accountId;
 
     fetch(apiUrl, {
