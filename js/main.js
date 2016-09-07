@@ -26,6 +26,7 @@ if ('serviceWorker' in navigator) {
                     $(".subscription-card").show()
                         .promise()
                         .done(function() {
+                            $("#subscribe-btn").prop("disabled", true);
                             $("footer").removeClass("invisible");
                         });
                     $(".loading-overlay").addClass("hidden");
@@ -107,53 +108,65 @@ if ('serviceWorker' in navigator) {
             }
         });
 
+        $("input[type='text']", "#subscription-form").on("change", function(e) {
+            var filledUp = true;
+
+            $("input[type='text']", "#subscription-form").each(function() {
+                if (!$.trim($(this).val()).length) filledUp = false;
+            })
+
+            if (filledUp) $("#subscribe-btn").prop("disabled", false);
+        });
+
         $('#subscribe-btn').on('click', function(e) {
             e.preventDefault();
 
-            $(".loading-overlay").removeClass("hidden");
-            serviceWorkerRegistration.pushManager.subscribe(
+            if (!$(this).is(":disabled")) {
+                $(".loading-overlay").removeClass("hidden");
+                serviceWorkerRegistration.pushManager.subscribe(
                     {
                         userVisibleOnly: true
                     }
                 ).then(function(subscription) {
-                    var subscriptionObj = JSON.parse(JSON.stringify(subscription));
-                    var profileObj = {
-                        "firstName": $("#firstname").val().toUpperCase(),
-                        "lastName": $("#lastname").val().toUpperCase(),
-                        "registrationId": subscriptionObj.endpoint.split("https://android.googleapis.com/gcm/send/")[1],
-                        "publicKey": subscriptionObj["keys"]["p256dh"],
-                        "auth": subscriptionObj["keys"]["auth"]
-                    }
-
-                    $.ajax({
-                        type: 'POST',
-                        data: JSON.stringify(profileObj),
-                        contentType: "application/json",
-                        url: "https://teamcast-rest.herokuapp.com/rest/accounts",
-                        success: function(resp) {
-                            profileObj.accountId = resp.id;
-                            localStorage.setItem("profile", JSON.stringify(profileObj));
-
-                            $("#subscription-form")[0].reset();
-                            $(".mdl-card").hide(); // hide all cards
-                            $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
-                            $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show();
-                            $("#registrationId").val(profileObj.registrationId);
-                            $("#userPublicKey").val(profileObj.publicKey);
-                            $("#userAuthkey").val(profileObj.auth);
-                            $(".loading-overlay").addClass("hidden");
-                        },
-                        error: function(jqxhr, error, thrownError) {
-                            console.log(jqxhr);
-                            console.log(error);
-                            console.log(thrownError);
+                        var subscriptionObj = JSON.parse(JSON.stringify(subscription));
+                        var profileObj = {
+                            "firstName": $("#firstname").val().toUpperCase(),
+                            "lastName": $("#lastname").val().toUpperCase(),
+                            "registrationId": subscriptionObj.endpoint.split("https://android.googleapis.com/gcm/send/")[1],
+                            "publicKey": subscriptionObj["keys"]["p256dh"],
+                            "auth": subscriptionObj["keys"]["auth"]
                         }
-                    });
-                })
-                .catch(function(err) {
+
+                        $.ajax({
+                            type: 'POST',
+                            data: JSON.stringify(profileObj),
+                            contentType: "application/json",
+                            url: "https://teamcast-rest.herokuapp.com/rest/accounts",
+                            success: function(resp) {
+                                profileObj.accountId = resp.id;
+                                localStorage.setItem("profile", JSON.stringify(profileObj));
+
+                                $("#subscription-form")[0].reset();
+                                $(".mdl-card").hide(); // hide all cards
+                                $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
+                                $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show();
+                                $("#registrationId").val(profileObj.registrationId);
+                                $("#userPublicKey").val(profileObj.publicKey);
+                                $("#userAuthkey").val(profileObj.auth);
+                                $(".loading-overlay").addClass("hidden");
+                            },
+                            error: function(jqxhr, error, thrownError) {
+                                console.log(jqxhr);
+                                console.log(error);
+                                console.log(thrownError);
+                            }
+                        });
+                    })
+                    .catch(function(err) {
                         console.log('Error during getSubscription()', err);
                         $(".loading-overlay").addClass("hidden");
-                });
+                    });
+            }
         });
 
         $('#unsubscribe-btn').on('click', function(e) {
@@ -178,6 +191,7 @@ if ('serviceWorker' in navigator) {
 
                                 $(".mdl-card, #unsubscribe-btn, #profile-btn").hide(); // hide all cards
                                 $(".subscription-card").show();
+                                $("#subscribe-btn").prop("disabled", true)
                                 $(".loading-overlay").addClass("hidden");
                             },
                             error: function(jqxhr, error, thrownError) {
@@ -195,6 +209,7 @@ if ('serviceWorker' in navigator) {
 
         $('#notif-card-close-btn').on('click', function(e) {
             e.preventDefault();
+
             $(".notification-card").hide();
             $(".mdl-card__supporting-text", ".notification-card")
                 .find("p").text("");
