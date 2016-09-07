@@ -133,22 +133,26 @@ self.addEventListener('push', function(event) {
 
     caches.open(dataCache).then(function(cache) {
       cache.matchAll('https://teamcast-rest.herokuapp.com/rest/accounts').then(function(response) {
-        accountId = response[0].json().id;
-        var apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/"+jsonPayload.id+"/received/"+accountId;
 
-        fetch(apiUrl, {
-          method: 'put',
-          headers: {
-            "Content-type": "application/json"
-          },
-          body: {}
-        })
-            .then(function (data) {
-              console.log('Successfully sent notification received status for announcement with ID: ' + jsonPayload.id);
-            })
-            .catch(function (error) {
-              console.log('Sending notification received status failed: ', error);
-            });
+        response[0].json().then(function(json) {
+          accountId = json.id;
+
+          var apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/"+jsonPayload.id+"/received/"+accountId;
+
+          fetch(apiUrl, {
+            method: 'put',
+            headers: {
+              "Content-type": "application/json"
+            },
+            body: {}
+          })
+              .then(function (data) {
+                console.log('Successfully sent notification received status for announcement with ID: ' + jsonPayload.id);
+              })
+              .catch(function (error) {
+                console.log('Sending notification received status failed: ', error);
+              });
+        });
       });
     })
 
