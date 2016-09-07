@@ -157,7 +157,7 @@ if ('serviceWorker' in navigator) {
                             type: 'DELETE',
                             data: JSON.stringify(profileObj),
                             url: "https://teamcast.us-east-1.elasticbeanstalk.com/rest/accounts/" + profileObj.accountId,
-                            success: function(resp) {
+                            complete: function() {
                                 localStorage.removeItem("profile");
                                 var layout = document.querySelector('.mdl-layout');
                                 layout.MaterialLayout.toggleDrawer();
