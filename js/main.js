@@ -103,6 +103,7 @@ if ('serviceWorker' in navigator) {
 
         $('#subscribe-btn').on('click', function(e) {
             e.preventDefault();
+
             $(".loading-overlay").removeClass("hidden");
             serviceWorkerRegistration.pushManager.subscribe(
                     {
@@ -200,35 +201,37 @@ if ('serviceWorker' in navigator) {
         });
 
         $("#respond-btn").on("click", function(e) {
-            var profileObj = JSON.parse(localStorage.getItem("profile"));
-            var responseObj = {
-                "option": $("input[type='radio']", ".mdl-radio.is-checked").val()
-            }
-
-            $.ajax({
-                type: 'POST',
-                data: JSON.stringify(responseObj),
-                contentType: "application/json",
-                url: "https://teamcast-rest.herokuapp.com/rest/announcements/"+$(this).data("announcementid")+"/acknowledge/"+profileObj.accountId,
-                beforeSend: function() {
-                    $(".loading-overlay").removeClass("hidden");
-                },
-                success: function(resp) {
-                    $(".notification-card").hide();
-                    $(".mdl-card__supporting-text", ".notification-card")
-                        .find("p").text("");
-                    $(".options-container", ".notification-card").empty();
-                    $(".unsusbscribe-card").show();
-                },
-                error: function(jqxhr, error, thrownError) {
-                    console.log(jqxhr);
-                    console.log(error);
-                    console.log(thrownError);
-                },
-                complete: function() {
-                    $(".loading-overlay").addClass("hidden");
+            if (!$(this).is(":disabled")) {
+                var profileObj = JSON.parse(localStorage.getItem("profile"));
+                var responseObj = {
+                    "option": $("input[type='radio']", ".mdl-radio.is-checked").val()
                 }
-            });
+
+                $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(responseObj),
+                    contentType: "application/json",
+                    url: "https://teamcast-rest.herokuapp.com/rest/announcements/"+$(this).data("announcementid")+"/acknowledge/"+profileObj.accountId,
+                    beforeSend: function() {
+                        $(".loading-overlay").removeClass("hidden");
+                    },
+                    success: function(resp) {
+                        $(".notification-card").hide();
+                        $(".mdl-card__supporting-text", ".notification-card")
+                            .find("p").text("");
+                        $(".options-container", ".notification-card").empty();
+                        $(".unsusbscribe-card").show();
+                    },
+                    error: function(jqxhr, error, thrownError) {
+                        console.log(jqxhr);
+                        console.log(error);
+                        console.log(thrownError);
+                    },
+                    complete: function() {
+                        $(".loading-overlay").addClass("hidden");
+                    }
+                });
+            }
         });
     });
 }

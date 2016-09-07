@@ -128,7 +128,7 @@ main {
     color: white;
     background-color: #82bc00;
 }
-.teamcast-pwa.mdl-layout .mdl-button {
+.teamcast-pwa.mdl-layout .mdl-button:not([disabled]) {
     color: #000080;
     /*width: 100%;
     box-sizing: border-box;
