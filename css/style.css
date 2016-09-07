@@ -1,11 +1,11 @@
 /* fallback */
+
 @font-face {
     font-family: 'Material Icons';
     font-style: normal;
     font-weight: 400;
     src: local('Material Icons'), local('MaterialIcons-Regular'), url(../fonts/material-icons.woff2) format('woff2');
 }
-
 .material-icons {
     font-family: 'Material Icons';
     font-weight: normal;
@@ -21,18 +21,17 @@
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
 }
-
 body {
     background-color: #eee;
     /*background-image: url("../images/logo.svg");
     background-position: center 95px;
     background-size: 72px;
     background-repeat: no-repeat;*/
+
     font-family: "Roboto regular", "Droid sans", sans-serif;
 }
-
 h2,
-.mdl-card__title h2{
+.mdl-card__title h2 {
     color: #000080;
     font-size: 24px;
     font-weight: 300;
@@ -40,22 +39,18 @@ h2,
     margin: 0;
     max-width: 70%;
 }
-
 p {
     word-wrap: break-word;
 }
-
 main {
     width: 100%;
     box-sizing: border-box;
 }
-
 .page-content {
     max-width: 600px;
     margin: 0 auto;
     padding: 0 10px;
 }
-
 .align-center {
     text-align: center;
 }
@@ -65,7 +60,6 @@ main {
 .text-color-blue {
     color: #000080;
 }
-
 .teamcast-pwa.mdl-layout .mdl-layout__header {
     background-color: #000080;
     background-image: url("../images/logo.svg");
@@ -76,6 +70,7 @@ main {
 }
 .teamcast-pwa.mdl-layout .mdl-layout__content {
     /*padding-top: 120px;*/
+
     position: relative;
 }
 .teamcast-pwa.mdl-layout .mdl-layout__content > .loading-overlay {
@@ -88,17 +83,14 @@ main {
     background-color: #fff;
     z-index: 10;
 }
-
 .teamcast-pwa.mdl-layout .mdl-layout__content > .loading-overlay > .loading-overlay-row {
     display: table-row;
 }
-
 .teamcast-pwa.mdl-layout .mdl-layout__content > .loading-overlay > .loading-overlay-row > .loading-overlay-col {
     display: table-cell;
     vertical-align: middle;
     text-align: center;
 }
-
 .teamcast-pwa.mdl-layout .mdl-layout__content > .loading-overlay .mdl-spinner > .mdl-spinner__layer-1 {
     border-color: #000080;
 }
@@ -111,18 +103,17 @@ main {
 .teamcast-pwa.mdl-layout .mdl-layout__content > .loading-overlay .mdl-spinner > .mdl-spinner__layer-4 {
     border-color: #40B4E5;
 }
-
 .teamcast-pwa.mdl-layout .mdl-card {
     width: 100%;
     margin: 10px 0;
     /*padding: 10px;*/
+
     background-color: white;
     min-height: auto;
     display: none;
 }
-
 .teamcast-pwa.mdl-layout .mdl-card h3.quote:before,
-.teamcast-pwa.mdl-layout  .mdl-card h3.quote:after {
+.teamcast-pwa.mdl-layout .mdl-card h3.quote:after {
     display: block;
     font-size: 3em;
     margin-top: 0.5em;
@@ -133,24 +124,22 @@ main {
 .teamcast-pwa.mdl-layout .mdl-card h3.quote:after {
     content: close-quote;
 }
-
 .teamcast-pwa.mdl-layout .testimonial.mdl-card .mdl-card__title {
     color: white;
     background-color: #82bc00;
 }
-
 .teamcast-pwa.mdl-layout .mdl-button {
     color: #000080;
     /*width: 100%;
     box-sizing: border-box;
     max-width: 320px;*/
+
     font-weight: bold;
 }
 .teamcast-pwa.mdl-layout .mdl-button.mdl-button--colored {
     background-color: #000080;
     color: white;
 }
-
 /*.teamcast-pwa.mdl-layout .mdl-card > h2 {
     font-size: 24px;
     font-weight: 300;
@@ -171,17 +160,14 @@ main {
     text-transform: capitalize;
     text-indent: 8px;
 }
-
 .teamcast-pwa.mdl-layout .mdl-radio {
     display: block;
     text-align: left;
     margin-bottom: 10px;
 }
-
 .teamcast-pwa.mdl-layout .mdl-radio.is-checked {
     color: #000080;
 }
-
 .teamcast-pwa.mdl-layout .mdl-radio.is-checked .mdl-radio__inner-circle {
     background-color: #000080;
 }
@@ -202,7 +188,6 @@ main {
         display: none;
     }
 }
-
 .teamcast-pwa.mdl-layout .mdl-mini-footer .mdl-mini-footer__left-section .mdl-logo {
     padding-left: 25px;
     line-height: 1.4;
@@ -213,7 +198,7 @@ main {
     background-repeat: no-repeat;
 }
 #unsubscribe-btn,
-#profile-btn{
+#profile-btn {
     display: none;
 }
 .teamcast-pwa.mdl-layout .notif-close-btn {
@@ -226,7 +211,6 @@ main {
     line-height: normal;
     height: auto;
 }
-
 .teamcast-pwa.mdl-layout .mdl-card.has-media .mdl-card__title {
     height: 220px;
     background-size: cover;
@@ -235,6 +219,8 @@ main {
 }
 .teamcast-pwa.mdl-layout .mdl-card.has-media .mdl-card__title h2 {
     color: white;
+    background-color: rgba(0, 0, 0, 0.30);
+    padding: 2px 5px;
 }
 .teamcast-pwa.mdl-layout .mdl-card.has-media .notif-close-btn {
     color: white;
