@@ -23,7 +23,11 @@ if ('serviceWorker' in navigator) {
                 $(".mdl-card").hide(); // hide all cards
 
                 if (!subscription) {
-                    $(".subscription-card").show();
+                    $(".subscription-card").show()
+                        .promise()
+                        .done(function() {
+                            $("footer").removeClass("hidden");
+                        });
                     $(".loading-overlay").addClass("hidden");
                     return;
                 }
@@ -31,7 +35,11 @@ if ('serviceWorker' in navigator) {
                 var profileObj = JSON.parse(localStorage.getItem("profile"));
 
                 $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
-                $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show();
+                $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show()
+                    .promise()
+                    .done(function() {
+                        $("footer").removeClass("hidden");
+                    });
 
                 console.log(JSON.stringify(subscription));
 
@@ -40,8 +48,6 @@ if ('serviceWorker' in navigator) {
                 $("#userAuthkey").val(profileObj.auth);
 
                 $(".loading-overlay").addClass("hidden");
-
-                console.log(navigator.serviceWorker);
             })
             .catch(function(err) {
                 console.log('Error during getSubscription()', err);
