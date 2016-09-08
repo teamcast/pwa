@@ -234,6 +234,13 @@ if ('serviceWorker' in navigator) {
             $lastShownCard.show();
         });
 
+        $("#profile-card-close-btn").on("click", function(e) {
+            e.preventDefault();
+
+            $(".profile-card").hide();
+            $lastShownCard.show();
+        });
+
         $("body").on( "click", ".mdl-radio", function() {
             $("#respond-btn").prop("disabled", false);
         });
