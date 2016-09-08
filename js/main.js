@@ -284,7 +284,7 @@ if ('serviceWorker' in navigator) {
             e.preventDefault();
 
             var layout = document.querySelector('.mdl-layout');
-            $lastShownCard = $(".mdl-card:visible");
+            $lastShownCard = $(".mdl-card:visible").hasClass("about-card") ? $lastShownCard : $(".mdl-card:visible");
 
             $(".mdl-card").hide();
             $(".about-card").show();
@@ -296,7 +296,7 @@ if ('serviceWorker' in navigator) {
             e.preventDefault();
 
             var layout = document.querySelector('.mdl-layout');
-            $lastShownCard = $(".mdl-card:visible");
+            $lastShownCard = $(".mdl-card:visible").hasClass("profile-card") ? $lastShownCard : $(".mdl-card:visible");
 
             $(".mdl-card").hide();
             $(".profile-card").show();
