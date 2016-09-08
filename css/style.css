@@ -212,3 +212,11 @@ main {
     background-size: auto 100%;
     background-position: right top;
 }
+.profile-card .mdl-card__supporting-text {
+    box-sizing: border-box;
+}
+.profile-card input[type=text] {
+    border: 0;
+    font-size: 1.1rem;
+    color: #000080;
+}
