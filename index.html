@@ -17,12 +17,14 @@
 <body>
 <!-- Always shows a header, even in smaller screens. -->
 <div class="teamcast-pwa mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    
     <header class="mdl-layout__header mdl-layout__header--transparent is-casting-shadow">
         <div class="mdl-layout__header-row">
             <span class="mdl-layout-title">TeamCast</span>
             <span class="teamcast-logo"></span>
         </div>
     </header>
+
     <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">TeamCast</span>
         <nav class="mdl-navigation">
@@ -31,6 +33,7 @@
             <a id="unsubscribe-btn" class="mdl-navigation__link" href="">Unsubscribe</a>
         </nav>
     </div>
+
     <main class="mdl-layout__content">
 
         <div class="loading-overlay">
@@ -77,7 +80,10 @@
                     <h2>Welcome <span class="employee-name"></span></h2>
                 </div>
                 <div class="mdl-card__supporting-text">
-                    You are currently subscribed to <strong class="text-color-blue">TeamCast</strong>.<br/>You can opt out from receiving notifications by tapping on "Unsubscribe" from the app menu.
+                    You are currently subscribed to <strong class="text-color-blue">TeamCast</strong>.
+                    <br/>
+                    <br/>
+                    You can opt out from receiving notifications by tapping on "Unsubscribe" from the app menu.
                     <!--<div>
                         <strong>registrationId</strong>
                         <input id="registrationId" type="text" style="width: 100%; padding: 5px; box-sizing: border-box;" readonly/>
@@ -126,16 +132,38 @@
                         <li><strong>D</strong>J Pichay</li>
                     </ul>
                 </div>
-                <!--<div class="mdl-card__actions mdl-card--border">
-                    <button type="button" id="respond-btn" class="mdl-button mdl-js-button mdl-js-ripple-effect" disabled>
-                        Send response
-                    </button>
-                </div>
-                <div class="mdl-card__menu">
-                </div>-->
             </div>
-        </div>
 
+            <div class="profile-card mdl-card mdl-shadow--2dp">
+                <button id="profile-card-close-btn" class="mdl-button mdl-js-button card-close-btn">
+                    <i class="material-icons">close</i>
+                </button>
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">Profile</h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    <form id="profile-form">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td align="right">Subscription ID:</td>
+                                <td align="left"><input id="profile-accountid" type="text" readonly/></td>
+                            </tr>
+                            <tr>
+                                <td align="right">First Name:</td>
+                                <td align="left"><input id="profile-firstname" type="text" readonly/></td>
+                            </tr>
+                            <tr>
+                                <td align="right">First Name:</td>
+                                <td align="left"><input id="profile-lastname" type="text" readonly/></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+
+        </div>
     </main>
 
     <footer class="mdl-mini-footer">

@@ -45,9 +45,13 @@ if ('serviceWorker' in navigator) {
 
                 console.log(JSON.stringify(subscription));
 
-                $("#registrationId").val(profileObj.registrationId);
+                /*$("#registrationId").val(profileObj.registrationId);
                 $("#userPublicKey").val(profileObj.publicKey);
-                $("#userAuthkey").val(profileObj.auth);
+                $("#userAuthkey").val(profileObj.auth);*/
+                $("#profile-accountid").val(profileObj.accountId);
+                $("#profile-firstname").val(profileObj.firstName);
+                $("#profile-lastname").val(profileObj.lastName);
+
 
                 $(".loading-overlay").addClass("hidden");
             })
@@ -152,9 +156,12 @@ if ('serviceWorker' in navigator) {
                                 $(".mdl-card").hide(); // hide all cards
                                 $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
                                 $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show();
-                                $("#registrationId").val(profileObj.registrationId);
+                                /*$("#registrationId").val(profileObj.registrationId);
                                 $("#userPublicKey").val(profileObj.publicKey);
-                                $("#userAuthkey").val(profileObj.auth);
+                                $("#userAuthkey").val(profileObj.auth);*/
+                                $("#profile-accountid").val(profileObj.accountId);
+                                $("#profile-firstname").val(profileObj.firstName);
+                                $("#profile-lastname").val(profileObj.lastName);
                                 $(".loading-overlay").addClass("hidden");
                             },
                             error: function(jqxhr, error, thrownError) {
@@ -191,6 +198,7 @@ if ('serviceWorker' in navigator) {
                             complete: function() {
                                 localStorage.removeItem("profile");
 
+                                $("#profile-form").reset();
                                 $(".mdl-card, #unsubscribe-btn, #profile-btn").hide(); // hide all cards
                                 $(".subscription-card").show();
                                 $("#subscribe-btn").prop("disabled", true)
