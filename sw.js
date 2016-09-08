@@ -6,7 +6,7 @@ var pwaUrl = "https://teamcast.github.io",
     client_id,
     messageData,
     filesToCache = [
-      './',
+      //'./',
       '/index.html',
       '/index.html?homescreen=1',
       '/?homescreen=1',
