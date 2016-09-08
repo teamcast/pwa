@@ -111,6 +111,11 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                 }
 
                 $(".notification-card").show();
+
+                if ($(".mdl-layout__drawer.is-visible").length) {
+                    var layout = document.querySelector('.mdl-layout');
+                    layout.MaterialLayout.toggleDrawer();
+                }
             }
         });
 
