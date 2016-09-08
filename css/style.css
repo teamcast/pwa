@@ -38,11 +38,13 @@ p {
 main {
     width: 100%;
     box-sizing: border-box;
+    height: calc(100% - 56px);
 }
 .page-content {
     max-width: 600px;
     margin: 0 auto;
     padding: 0 10px;
+    min-height: calc(100% - 100px);
 }
 .inivisible {
     visibility: hidden;
@@ -148,18 +150,20 @@ main {
     padding: 15px;
     font-size: 11px;
     background-color: #40B4E5;
-    display: block;
+    /*display: block;*/
     background-image: url("../images/asurion-logo-white.svg");
     background-position: calc(100% - 15px) center;
     background-size: 100px auto;
     background-repeat: no-repeat;
     border-top: solid 2px #82BC00;
     z-index: 5;
-    transition: visibility 1s;
+    /*transition: visibility 1s;
+    display: flex;
+    align-self: flex-end;*/
 }
 @media (max-height: 320px) {
     .teamcast-pwa.mdl-layout .mdl-mini-footer {
-        display: none;
+        /*display: none;*/
     }
 }
 .teamcast-pwa.mdl-layout .mdl-mini-footer .mdl-mini-footer__left-section .mdl-logo {
