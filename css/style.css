@@ -159,7 +159,7 @@ main {
 }
 @media (max-height: 320px) {
     .teamcast-pwa.mdl-layout .mdl-mini-footer {
-        display: none;
+        /*display: none;*/
     }
 }
 .teamcast-pwa.mdl-layout .mdl-mini-footer .mdl-mini-footer__left-section .mdl-logo {
