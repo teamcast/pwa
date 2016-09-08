@@ -304,5 +304,7 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
         })
     });
 } else {
+    $("header, footer").remove();
+    $(".loading-overlay").addClass("hidden");
     $(".not-supported-card").show();
 }
