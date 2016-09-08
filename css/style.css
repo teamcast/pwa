@@ -98,8 +98,8 @@ main {
     width: 100%;
     margin: 10px 0;
     background-color: white;
-    min-height: auto;
-    display: none;
+    min-height: initial;
+    display: nonex;
 }
 .teamcast-pwa.mdl-layout .mdl-card h3.quote:before,
 .teamcast-pwa.mdl-layout .mdl-card h3.quote:after {
@@ -127,6 +127,7 @@ main {
 }
 .teamcast-pwa.mdl-layout .mdl-card__supporting-text {
     line-height: 24px;
+    font-size: 1.1rem;
 }
 .teamcast-pwa.mdl-layout .employee-name {
     text-transform: capitalize;
@@ -174,7 +175,7 @@ main {
 #profile-btn {
     display: none;
 }
-.teamcast-pwa.mdl-layout .notif-close-btn {
+.teamcast-pwa.mdl-layout .card-close-btn {
     position: absolute;
     top: 0;
     right: 0;
@@ -195,7 +196,7 @@ main {
     background-color: rgba(0,0,0,0.125);
     padding: 2px 5px;
 }
-.teamcast-pwa.mdl-layout .mdl-card.has-media .notif-close-btn {
+.teamcast-pwa.mdl-layout .mdl-card.has-media .card-close-btn {
     color: white;
     background-color: rgba(0,0,0,0.125);
 }
@@ -204,4 +205,10 @@ main {
 }
 .mdl-layout__obfuscator {
     z-index: 5;
+}
+.about-card .mdl-card__title {
+    background-image: url("../images/about-img.gif");
+    background-color: #3D3C53;
+    background-size: auto 100%;
+    background-position: right top;
 }

@@ -33,7 +33,7 @@
     </div>
     <main class="mdl-layout__content">
 
-        <div class="loading-overlay hidden">
+        <div class="loading-overlay">
             <div class="loading-overlay-row">
                 <div class="loading-overlay-col">
                     <div class="mdl-spinner mdl-js-spinner is-active"></div>
@@ -77,20 +77,20 @@
                     <h2>Welcome <span class="employee-name"></span></h2>
                 </div>
                 <div class="mdl-card__supporting-text">
-                    You are currently subscribed to <strong class="text-color-blue">TeamCast</strong>. You can opt out from receiving notifications by tapping on "Unsubscribe" from the app menu.
-                    <div>
+                    You are currently subscribed to <strong class="text-color-blue">TeamCast</strong>.<br/>You can opt out from receiving notifications by tapping on "Unsubscribe" from the app menu.
+                    <!--<div>
                         <strong>registrationId</strong>
                         <input id="registrationId" type="text" style="width: 100%; padding: 5px; box-sizing: border-box;" readonly/>
                         <strong>userPublicKey</strong>
                         <input id="userPublicKey" type="text" style="width: 100%; padding: 5px; box-sizing: border-box;" readonly/>
                         <strong>userAuthkey</strong>
                         <input id="userAuthkey" type="text" style="width: 100%; padding: 5px; box-sizing: border-box;" readonly/>
-                    </div>
+                    </div>-->
                 </div>
             </div>
 
             <div class="notification-card mdl-card mdl-shadow--2dp">
-                <button id="notif-card-close-btn" class="mdl-button mdl-js-button notif-close-btn">
+                <button id="notif-card-close-btn" class="mdl-button mdl-js-button card-close-btn">
                     <i class="material-icons">close</i>
                 </button>
                 <div class="mdl-card__title">
@@ -108,13 +108,39 @@
                 <div class="mdl-card__menu">
                 </div>
             </div>
+
+            <div class="about-card mdl-card mdl-shadow--2dp has-media">
+                <button id="about-card-close-btn" class="mdl-button mdl-js-button card-close-btn">
+                    <i class="material-icons">close</i>
+                </button>
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">Team Jack Daniel's</h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    <p>Meet the team:</p>
+                    <ul>
+                        <li><strong>J</strong>ames Sarmiento</li>
+                        <li><strong>A</strong>lex Basa</li>
+                        <li><strong>C</strong>arlo Cordoviz</li>
+                        <li><strong>K</strong>enneth So</li>
+                        <li><strong>D</strong>J Pichay</li>
+                    </ul>
+                </div>
+                <!--<div class="mdl-card__actions mdl-card--border">
+                    <button type="button" id="respond-btn" class="mdl-button mdl-js-button mdl-js-ripple-effect" disabled>
+                        Send response
+                    </button>
+                </div>
+                <div class="mdl-card__menu">
+                </div>-->
+            </div>
         </div>
 
     </main>
 
-    <footer class="mdl-mini-footer invisible">
+    <footer class="mdl-mini-footer">
         <div class="mdl-mini-footer__left-section">
-            <div class="mdl-logo">Team Jack Daniel's<br/>Hackathon 2016<br/>Manila</div>
+            <div class="mdl-logo">Team Jack Daniel's<br/>asurionhackathon<br/>2016 - Manila</div>
         </div>
     </footer>
 

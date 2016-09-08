@@ -17,6 +17,7 @@ if ('serviceWorker' in navigator) {
     });
 
     navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
+        var $lastShownCard;
         serviceWorkerRegistration.pushManager.getSubscription()
             .then(function(subscription) {
                 $(".loading-overlay").removeClass("hidden");
@@ -218,6 +219,13 @@ if ('serviceWorker' in navigator) {
             $(".unsusbscribe-card").show();
         });
 
+        $("#about-card-close-btn").on("click", function(e) {
+            e.preventDefault();
+
+            $(".about-card").hide();
+            $lastShownCard.show();
+        });
+
         $("body").on( "click", ".mdl-radio", function() {
             $("#respond-btn").prop("disabled", false);
         });
@@ -255,5 +263,17 @@ if ('serviceWorker' in navigator) {
                 });
             }
         });
+
+        $("#about-btn").on("click", function(e) {
+            e.preventDefault();
+
+            var layout = document.querySelector('.mdl-layout');
+            $lastShownCard = $(".modl-card:visible");
+
+            $(".mdl-card").hide();
+            $(".about-card").show();
+
+            layout.MaterialLayout.toggleDrawer();
+        })
     });
 }
