@@ -219,6 +219,7 @@ self.addEventListener('message', function(event) {
 });
 
 self.updateStaticCache = function(request) {
+    request.url += new Date().getTime();
 	return fetch(request).then(
 		function(response) {
 			// Check if we received a valid response
