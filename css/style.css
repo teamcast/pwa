@@ -44,7 +44,7 @@ main {
     max-width: 600px;
     margin: 0 auto;
     padding: 0 10px;
-    min-height: calc(100% - 100px);
+    min-height: calc(100% - 97px);
 }
 .inivisible {
     visibility: hidden;
