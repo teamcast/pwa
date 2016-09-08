@@ -217,6 +217,10 @@ main {
     padding-top: 0;
     width: 100%;
 }
+.profile-card table {
+    table-layout: fixed;
+    border-collapse: collapse;
+}
 .profile-card input[type=text] {
     border: 0;
     font-size: 1.1rem;
