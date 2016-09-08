@@ -1,4 +1,4 @@
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && 'PushManager' in window) {
     console.log('Service Worker is supported');
 
     $(document).ready(function() {
@@ -303,4 +303,6 @@ if ('serviceWorker' in navigator) {
             layout.MaterialLayout.toggleDrawer();
         })
     });
+} else {
+    $(".not-supported-card").show();
 }

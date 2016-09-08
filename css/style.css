@@ -99,7 +99,7 @@ main {
     margin: 10px 0;
     background-color: white;
     min-height: initial;
-    display: nonex;
+    display: none;
 }
 .teamcast-pwa.mdl-layout .mdl-card h3.quote:before,
 .teamcast-pwa.mdl-layout .mdl-card h3.quote:after {
@@ -225,4 +225,19 @@ main {
     border: 0;
     font-size: 1rem;
     color: #000080;
+}
+.teamcast-pwa.mdl-layout .not-supported-card {
+    background-color: transparent;
+}
+.teamcast-pwa.mdl-layout .not-supported-card .mdl-card__supporting-text > ul {
+    list-style-type: none;
+    padding: 0;
+}
+.teamcast-pwa.mdl-layout .not-supported-card .mdl-card__supporting-text > ul > li {
+    padding-bottom: 10px;
+}
+.teamcast-pwa.mdl-layout .not-supported-card .material-icons {
+    vertical-align: middle;
+    font-size: 20px;
+    margin-right: 5px;
 }
