@@ -283,5 +283,17 @@ if ('serviceWorker' in navigator) {
 
             layout.MaterialLayout.toggleDrawer();
         })
+
+        $("#profile-btn").on("click", function(e) {
+            e.preventDefault();
+
+            var layout = document.querySelector('.mdl-layout');
+            $lastShownCard = $(".mdl-card:visible");
+
+            $(".mdl-card").hide();
+            $(".profile-card").show();
+
+            layout.MaterialLayout.toggleDrawer();
+        })
     });
 }
