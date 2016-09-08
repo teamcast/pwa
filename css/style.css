@@ -56,9 +56,6 @@ main {
 .text-color-blue {
     color: #000080;
 }
-.teamcast-pwa.mdl-layout {
-    display: none;
-}
 .teamcast-pwa.mdl-layout .mdl-layout__header {
     background-color: #000080;
     background-image: url("../images/logo.svg");

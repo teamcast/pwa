@@ -1,7 +1,7 @@
 if ('serviceWorker' in navigator && 'PushManager' in window) {
     console.log('Service Worker is supported');
 
-    $(".teamcast-pwa.mdl-layout").show();
+    $(".teamcast-pwa.mdl-layout").removeClass("invisible");
     $(document).ready(function() {
         var controller = navigator.serviceWorker.controller;
 
@@ -308,5 +308,5 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
     $("header, footer").remove();
     $(".loading-overlay").addClass("hidden");
     $(".not-supported-card").show();
-    $(".teamcast-pwa.mdl-layout").show();
+    $(".teamcast-pwa.mdl-layout").removeClass("invisible");
 }
