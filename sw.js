@@ -17,6 +17,7 @@ filesToCache = [
 	'/images/logo-512x512.png',
     '/images/team-jackd-logo.svg',
     '/images/asurion-logo-white.svg',
+    '/images/about-img.gif',
 	'/css/style.css',
 	'/css/material.min.css',
 	'/js/jquery.min.js',

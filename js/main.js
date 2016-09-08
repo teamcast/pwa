@@ -268,7 +268,7 @@ if ('serviceWorker' in navigator) {
             e.preventDefault();
 
             var layout = document.querySelector('.mdl-layout');
-            $lastShownCard = $(".modl-card:visible");
+            $lastShownCard = $(".mdl-card:visible");
 
             $(".mdl-card").hide();
             $(".about-card").show();
