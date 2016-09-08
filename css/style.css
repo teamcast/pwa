@@ -214,6 +214,7 @@ main {
 }
 .profile-card .mdl-card__supporting-text {
     box-sizing: border-box;
+    padding-top: 0;
 }
 .profile-card input[type=text] {
     border: 0;
