@@ -1,49 +1,49 @@
 importScripts("/cache-polyfill.js");
 
 var pwaUrl = "https://teamcast.github.io",
-staticCache = "teamcast-static-cache",
-dataCache = "teamcast-data-cache",
-client_id,
-messageData,
-filesToCache = [
-    './',
-	'/index.html',
-	'/index.html?homescreen=1',
-	'/?homescreen=1',
-	'/images/logo.svg',
-	'/images/logo-32x32.png',
-	'/images/logo-72x72.png',
-	'/images/logo-192x192.png',
-	'/images/logo-512x512.png',
-    '/images/team-jackd-logo.svg',
-    '/images/asurion-logo-white.svg',
-    '/images/about-img.gif',
-	'/css/style.css',
-	'/css/material.min.css',
-	'/js/jquery.min.js',
-	'/js/main.js',
-	'/js/material.min.js',
-    '/js/mustache.min.js',
-	'/fonts/material-icons.woff2'
-];
+    staticCache = "teamcast-static-cache",
+    dataCache = "teamcast-data-cache",
+    client_id,
+    messageData,
+    filesToCache = [
+      './',
+      '/index.html',
+      '/index.html?homescreen=1',
+      '/?homescreen=1',
+      '/images/logo.svg',
+      '/images/logo-32x32.png',
+      '/images/logo-72x72.png',
+      '/images/logo-192x192.png',
+      '/images/logo-512x512.png',
+      '/images/team-jackd-logo.svg',
+      '/images/asurion-logo-white.svg',
+      '/images/about-img.gif',
+      '/css/style.css',
+      '/css/material.min.css',
+      '/js/jquery.min.js',
+      '/js/main.js',
+      '/js/material.min.js',
+      '/js/mustache.min.js',
+      '/fonts/material-icons.woff2'
+    ];
 
 self.addEventListener("install", function(event) {
   console.log("Event: Install");
 
   event.waitUntil(
-	self.skipWaiting(),
-    caches.open(staticCache)
-    .then(function (cache) {
-      return cache.addAll(filesToCache.map(function (fileUrl) {
-        return new Request(fileUrl);
-      }))
-      .then(function () {
-        console.log("All the files are cached.");
-      })
-      .catch(function (error) {
-        console.error("Failed to cache the files.", error);
-      })
-    })
+      self.skipWaiting(),
+      caches.open(staticCache)
+          .then(function(cache) {
+            return cache.addAll(filesToCache.map(function(fileUrl) {
+              return new Request(fileUrl);
+            }))
+                .then(function() {
+                  console.log("All the files are cached.");
+                })
+                .catch(function(error) {
+                  console.error("Failed to cache the files.", error);
+                })
+          })
   );
 });
 
@@ -55,15 +55,15 @@ self.addEventListener("activate", function(event) {
 
   //Delete unwanted caches
   event.waitUntil(
-	self.clients.claim(),
-    caches.keys()
-      .then(function (allCaches) {
-        allCaches.map(function (cacheName) {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        });
-      })
+      self.clients.claim(),
+      caches.keys()
+          .then(function(allCaches) {
+            allCaches.map(function(cacheName) {
+              if (cacheWhitelist.indexOf(cacheName) === -1) {
+                return caches.delete(cacheName);
+              }
+            });
+          })
   );
 });
 
@@ -113,7 +113,7 @@ self.addEventListener('push', function(event) {
     icon: './images/logo-192x192.png',
     badge: './images/logo-72x72.png',
     tag: 'teamcast-push-notification',
-    vibrate: [300, 100, 400],
+    vibrate: [300, 100, 300, 100, 300, 100, 300],
     data: {
       body: {
         heading: "",
@@ -127,7 +127,7 @@ self.addEventListener('push', function(event) {
   };
 
   if (event.data) {
-	console.log("GCM includes DATA!");
+    console.log("GCM includes DATA!");
 
     var jsonPayload = JSON.parse(event.data.text());
 
@@ -137,7 +137,7 @@ self.addEventListener('push', function(event) {
         response[0].json().then(function(json) {
           accountId = json.id;
 
-          var apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/"+jsonPayload.id+"/received/"+accountId;
+          var apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/" + jsonPayload.id + "/received/" + accountId;
 
           fetch(apiUrl, {
             method: 'put',
@@ -146,10 +146,10 @@ self.addEventListener('push', function(event) {
             },
             body: {}
           })
-              .then(function (data) {
+              .then(function(data) {
                 console.log('Successfully sent notification received status for announcement with ID: ' + jsonPayload.id);
               })
-              .catch(function (error) {
+              .catch(function(error) {
                 console.log('Sending notification received status failed: ', error);
               });
         });
@@ -168,10 +168,10 @@ self.addEventListener('push', function(event) {
   }
 
   event.waitUntil(
-    Promise.all([
-      self.registration.showNotification(
-        notificationTitle, notificationOptions)
-    ])
+      Promise.all([
+        self.registration.showNotification(
+            notificationTitle, notificationOptions)
+      ])
   );
 });
 
@@ -183,25 +183,28 @@ self.addEventListener("notificationclick", function(event) {
 
   //To open the app after click notification
   event.waitUntil(
-    clients.matchAll({includeUncontrolled: true, type: 'window'})
-    .then(function(clientList) {
-		if (clientList.length > 0) {
-            for(var x = 0; x < clientList.length; x++) {
-              console.log(clientList[x].url)
-              if(clientList[x].url.indexOf('teamcast.github.io') >= 0 ) {
-                clientList[x].focus();
-                clientList[x].postMessage(messageData);
-                messageData = null;
+      clients.matchAll({
+        includeUncontrolled: true,
+        type: 'window'
+      })
+          .then(function(clientList) {
+            if (clientList.length > 0) {
+              for (var x = 0; x < clientList.length; x++) {
+                console.log(clientList[x].url)
+                if (clientList[x].url.indexOf('teamcast.github.io') >= 0) {
+                  clientList[x].focus();
+                  clientList[x].postMessage(messageData);
+                  messageData = null;
+                }
               }
+            } else {
+              self.clients.openWindow("/").then(function(client) {
+                self.clients.claim();
+                client_id = client.id;
+              })
             }
-		} else {
-			self.clients.openWindow("/").then(function(client) {
-              self.clients.claim();
-              client_id = client.id;
-            })
-		}
-        return
-    })
+            return
+          })
   );
 });
 
@@ -210,7 +213,7 @@ self.addEventListener('message', function(event) {
   if (event.data == "clientloaded" && messageData !== null) {
     self.clients.matchAll()
         .then(function(clientList) {
-          clientList.forEach(function(client){
+          clientList.forEach(function(client) {
             client.postMessage(messageData);
             messageData = null;
           })
@@ -219,22 +222,21 @@ self.addEventListener('message', function(event) {
 });
 
 self.updateStaticCache = function(request) {
-    request.url += new Date().getTime();
-	return fetch(request).then(
-		function(response) {
-			// Check if we received a valid response
-			if(!response || response.status !== 200 || response.type !== 'basic') {
-				return response;
-			}
+  return fetch(request).then(
+      function(response) {
+        // Check if we received a valid response
+        if (!response || response.status !== 200 || response.type !== 'basic') {
+          return response;
+        }
 
-			var responseToCache = response.clone();
+        var responseToCache = response.clone();
 
-			caches.open(staticCache)
-			.then(function(cache) {
-				cache.put(request, responseToCache);
-			});
+        caches.open(staticCache)
+            .then(function(cache) {
+              cache.put(request, responseToCache);
+            });
 
-			return response;
-		}
-	)
+        return response;
+      }
+  )
 }
