@@ -198,7 +198,7 @@ self.addEventListener("notificationclick", function(event) {
                 }
               }
             } else {
-              self.clients.openWindow("/").then(function(client) {
+              self.clients.openWindow("./?utm_source=web_app_manifest").then(function(client) {
                 self.clients.claim();
                 client_id = client.id;
               })
