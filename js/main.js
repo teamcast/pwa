@@ -199,7 +199,7 @@ if ('serviceWorker' in navigator) {
                             complete: function() {
                                 localStorage.removeItem("profile");
 
-                                $("#profile-form").reset();
+                                $("#profile-form")[0].reset();
                                 $(".mdl-card, #unsubscribe-btn, #profile-btn").hide(); // hide all cards
                                 $(".subscription-card").show();
                                 $("#subscribe-btn").prop("disabled", true)
