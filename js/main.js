@@ -1,4 +1,4 @@
-if ('serviceWorker' in navigator && 'PushManager' in window) {
+if ('serviceWorker' in navigator) {
     console.log('Service Worker is supported');
 
     $(".teamcast-pwa.mdl-layout").removeClass("invisible");
