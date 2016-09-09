@@ -18,7 +18,6 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
     });
 
     navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-        var $lastShownCard;
         serviceWorkerRegistration.pushManager.getSubscription()
             .then(function(subscription) {
                 $(".loading-overlay").removeClass("hidden");
@@ -240,12 +239,16 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         $("#about-card-close-btn").on("click", function(e) {
             e.preventDefault();
 
+            var $lastShownCard = (localStorage.getItem("profile")) ? $(".unsubscribe-card") : $(".subscribtion-card");
+
             $(".about-card").hide();
             $lastShownCard.show();
         });
 
         $("#profile-card-close-btn").on("click", function(e) {
             e.preventDefault();
+
+            var $lastShownCard = (localStorage.getItem("profile")) ? $(".unsubscribe-card") : $(".subscribtion-card");
 
             $(".profile-card").hide();
             $lastShownCard.show();
@@ -293,7 +296,6 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
             e.preventDefault();
 
             var layout = document.querySelector('.mdl-layout');
-            $lastShownCard = $(".mdl-card:visible").hasClass("about-card") ? $lastShownCard : $(".mdl-card:visible");
 
             $(".mdl-card").hide();
             $(".about-card").show();
@@ -305,7 +307,6 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
             e.preventDefault();
 
             var layout = document.querySelector('.mdl-layout');
-            $lastShownCard = $(".mdl-card:visible").hasClass("profile-card") ? $lastShownCard : $(".mdl-card:visible");
 
             $(".mdl-card").hide();
             $(".profile-card").show();
