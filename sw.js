@@ -113,7 +113,7 @@ self.addEventListener('push', function(event) {
     icon: './images/logo-192x192.png',
     badge: './images/logo-72x72.png',
     tag: 'teamcast-push-notification',
-    vibrate: [300, 100, 300, 100, 300, 100, 300],
+    vibrate: [300, 100, 300, 100, 300],
     data: {
       body: {
         heading: "",
