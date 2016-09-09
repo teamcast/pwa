@@ -204,11 +204,12 @@ self.addEventListener('push', function(event) {
     var transaction = teamcastIDB.transaction("users", "readwrite");
     var store = transaction.objectStore("users");
     var request = store.get("https://teamcast-rest.herokuapp.com/rest/accounts/");
-    request.onerror = function() {
+    request.onerror = function(e) {
       console.log("Error getting accountId from IndexedDB");
     }
-    request.onsuccess = function() {
-      var accountId = this.result.id;
+    request.onsuccess = function(e) {
+      console.log(e.target);
+      var accountId = e.target.result.id;
       console.log("accountId from IndexedDB :", accountId);
 
       var apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/" + jsonPayload.id + "/received/" + accountId;
