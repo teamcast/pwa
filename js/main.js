@@ -111,9 +111,9 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                     $(".mdl-card__actions", ".notification-card").hide();
                 }
 
-                if (messageObj.imgUrl != "") {
+                if (messageObj.imgId != "") {
                     $(".notification-card").addClass("has-media")
-                        .find(".mdl-card__title").css({"background-image": "url('"+messageObj.imgUrl+"')"});
+                        .find(".mdl-card__title").css({"background-image": "url('https://teamcast-rest.herokuapp.com/rest/images/"+messageObj.imgId+"')"});
                 }
 
                 $(".notification-card").show();
