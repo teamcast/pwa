@@ -46,15 +46,21 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
                 console.log(JSON.stringify(subscription));
 
-                /*$("#registrationId").val(profileObj.registrationId);
-                $("#userPublicKey").val(profileObj.publicKey);
-                $("#userAuthkey").val(profileObj.auth);*/
                 $("#profile-accountid").val(profileObj.accountId);
                 $("#profile-firstname").val(profileObj.firstName);
                 $("#profile-lastname").val(profileObj.lastName);
 
 
                 $(".loading-overlay").addClass("hidden");
+
+                serviceWorkerRegistration.getNotifications()
+                    .then(function(notifications) {
+                        if (notifications.length > 0) {
+                            for (var x = 0; x < notifications.length; x++) {
+                                console.log(notifications[x].data);
+                            }
+                        }
+                    })
             })
             .catch(function(err) {
                 console.log('Error during getSubscription()', err);
@@ -135,7 +141,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
             if (!$(this).is(":disabled")) {
                 $(".loading-overlay").removeClass("hidden");
-                serviceWorkerRegistration.pushManager.subscribe(
+                serviceWorkerRegistration.pushManager.subscribe (
                     {
                         userVisibleOnly: true
                     }
@@ -145,6 +151,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                             "firstName": $("#firstname").val().toUpperCase(),
                             "lastName": $("#lastname").val().toUpperCase(),
                             "registrationId": subscriptionObj.endpoint.split("https://android.googleapis.com/gcm/send/")[1],
+                            //"registrationId": subscriptionObj.endpoint,
                             "publicKey": subscriptionObj["keys"]["p256dh"],
                             "auth": subscriptionObj["keys"]["auth"]
                         }
@@ -162,9 +169,6 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                                 $(".mdl-card").hide(); // hide all cards
                                 $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
                                 $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show();
-                                /*$("#registrationId").val(profileObj.registrationId);
-                                $("#userPublicKey").val(profileObj.publicKey);
-                                $("#userAuthkey").val(profileObj.auth);*/
                                 $("#profile-accountid").val(profileObj.accountId);
                                 $("#profile-firstname").val(profileObj.firstName);
                                 $("#profile-lastname").val(profileObj.lastName);
