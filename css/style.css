@@ -193,7 +193,7 @@ main {
 }
 .teamcast-pwa.mdl-layout .mdl-card.has-media .mdl-card__title h2 {
     color: white;
-    background-color: rgba(0,0,0,0.125);
+    background-color: rgba(0,0,0,0.25);
     padding: 2px 5px;
 }
 .teamcast-pwa.mdl-layout .mdl-card.has-media .card-close-btn {
