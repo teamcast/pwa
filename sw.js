@@ -88,7 +88,7 @@ self.addEventListener('fetch', function(event) {
   if (event.request.url === dataUrl) {
     var transaction = teamcastIDB.transaction("users", "readwrite");
     var store = transaction.objectStore("users");
-    var deleteRequest = store.delete(event.request.url);
+    var deleteRequest = store.delete("accountId");
     deleteRequest.onerror = function() {
       console.log("Error deleting accountId from IndexedDB");
     }
@@ -113,10 +113,7 @@ self.addEventListener('fetch', function(event) {
               var accountId = json.id;
               var transaction = teamcastIDB.transaction("users", "readwrite");
               var store = transaction.objectStore("users");
-              var addRequest = store.add({
-                url: event.request.url,
-                id: accountId
-              });
+              var addRequest = store.add(accountId, "accountId");
               addRequest.onerror = function() {
                 console.log("Error saving accountId to IndexedDB");
 
@@ -203,7 +200,7 @@ self.addEventListener('push', function(event) {
 
     var transaction = teamcastIDB.transaction("users", "readwrite");
     var store = transaction.objectStore("users");
-    var request = store.get("1");
+    var request = store.get("accountId");
     request.onerror = function(e) {
       console.log("Error getting accountId from IndexedDB");
     }
