@@ -86,17 +86,17 @@ self.addEventListener('fetch', function(event) {
   var dataUrl = 'https://teamcast-rest.herokuapp.com/rest/accounts';
 
   if (event.request.url === dataUrl) {
-    event.respondWith(
-      var transaction = teamcastIDB.transaction("users", "readwrite");
-      var store = transaction.objectStore("users");
-      var deleteRequest = store.delete(event.request.url);
-      deleteRequest.onerror = function() {
-        console.log("Error deleting accountId from IndexedDB");
-      }
-      deleteRequest.onsuccess = function() {
-        console.log("Successfullt deleted accountId from IndexedDB");
-      }
+    var transaction = teamcastIDB.transaction("users", "readwrite");
+    var store = transaction.objectStore("users");
+    var deleteRequest = store.delete(event.request.url);
+    deleteRequest.onerror = function() {
+      console.log("Error deleting accountId from IndexedDB");
+    }
+    deleteRequest.onsuccess = function() {
+      console.log("Successfullt deleted accountId from IndexedDB");
+    }
 
+    event.respondWith(
       fetch(event.request)
           .then(function(response) {
             /*return caches.open(dataCache).then(function(cache) {
