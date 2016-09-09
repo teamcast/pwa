@@ -206,7 +206,7 @@ main {
 .mdl-layout__obfuscator {
     z-index: 5;
 }
-.about-card .mdl-card__title {
+.teamcast-pwa.mdl-layout .mdl-card.about-card .mdl-card__title {
     background-image: url("../images/about-img.gif");
     background-color: #3D3C53;
     background-size: auto 100%;
