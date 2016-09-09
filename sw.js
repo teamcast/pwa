@@ -201,7 +201,7 @@ self.addEventListener('push', function(event) {
       });
     })*/
 
-    var transaction = db.transaction("users", "readwrite");
+    var transaction = teamcastIDB.transaction("users", "readwrite");
     var store = transaction.objectStore("users");
     var request = store.get("https://teamcast-rest.herokuapp.com/rest/accounts/");
     request.onerror = function() {
