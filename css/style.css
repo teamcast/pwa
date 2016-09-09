@@ -241,6 +241,9 @@ main {
     font-size: 20px;
     margin-right: 5px;
 }
+.teamcast-pwa.mdl-layout .mdl-layout__drawer {
+    border-right: 0;
+}
 .teamcast-pwa.mdl-layout .mdl-layout__drawer .mdl-layout-title {
     color: white;
     background-color: #000080;
