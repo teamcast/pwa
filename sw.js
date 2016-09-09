@@ -205,8 +205,7 @@ self.addEventListener('push', function(event) {
       console.log("Error getting accountId from IndexedDB");
     }
     request.onsuccess = function(e) {
-      console.log(request.result);
-      var accountId = request.result.id;
+      var accountId = request.result;
       console.log("accountId from IndexedDB :", accountId);
 
       var apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/" + jsonPayload.id + "/received/" + accountId;
