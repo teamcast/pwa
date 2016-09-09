@@ -261,10 +261,10 @@ main {
     background-size: auto 235px;
     background-repeat: no-repeat;
     background-position: calc(100% + 145px) bottom;
-    padding: 25px;
+    padding: 25px 25px 10px;
     background-color: black;
 }
 .teamcast-pwa.mdl-layout .testimonial-card p {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     width: 50%;
 }
