@@ -106,12 +106,13 @@ self.addEventListener('fetch', function(event) {
 
               return response;
             });*/
-            var transaction = teamcastIDB.transaction("users", "readwrite");
-            var store = transaction.objectStore("users");
+
             var clonedResponse = response.clone();
 
             clonedResponse.json().then(function(json) {
               var accountId = json.id;
+              var transaction = teamcastIDB.transaction("users", "readwrite");
+              var store = transaction.objectStore("users");
               var addRequest = store.add({
                 url: event.request.url,
                 id: accountId
