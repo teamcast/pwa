@@ -163,7 +163,7 @@ self.addEventListener('push', function(event) {
         content: "",
         options: [],
         createTime: 0,
-        imgUrl: ""
+        imgId: ""
       }
     }
   };
@@ -232,7 +232,7 @@ self.addEventListener('push', function(event) {
     notificationOptions.data.body.content = jsonPayload.content;
     notificationOptions.data.body.options = jsonPayload.options;
     notificationOptions.data.body.createTime = jsonPayload.createTime;
-    notificationOptions.data.body.imgUrl = jsonPayload.imgUrl;
+    notificationOptions.data.body.imgId = jsonPayload.imgId;
   }
 
   event.waitUntil(
