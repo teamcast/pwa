@@ -254,3 +254,17 @@ main {
     text-align: right;
     padding: 15px 40px;
 }
+
+.teamcast-pwa.mdl-layout .testimonial-card {
+    color: white;
+    background-image: url("../images/testimonial-bg.jpg");
+    background-size: auto 235px;
+    background-repeat: no-repeat;
+    background-position: calc(100% + 145px) bottom;
+    padding: 25px;
+    background-color: black;
+}
+.teamcast-pwa.mdl-layout .testimonial-card p {
+    font-size: 1.4rem;
+    width: 50%;
+}
