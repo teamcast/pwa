@@ -105,7 +105,7 @@ self.addEventListener('fetch', function(event) {
                 console.log("Error deleting accountId from IndexedDB");
               }
               deleteRequest.onsuccess = function() {
-                clonedResponse.json().then(function(json) {
+                clonedResponse.body.json().then(function(json) {
                   var accountId = json.id;
                   var addRequest = store.add({
                     url: event.request.url,
