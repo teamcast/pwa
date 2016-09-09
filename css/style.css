@@ -241,3 +241,13 @@ main {
     font-size: 20px;
     margin-right: 5px;
 }
+.teamcast-pwa.mdl-layout .mdl-layout__drawer .mdl-layout-title {
+    color: white;
+    background-color: #000080;
+    background-image: url("../images/teamcast-icon.png");
+    background-size: auto 80px;
+    background-repeat: no-repeat;
+    background-position: 15px center;
+    text-align: right;
+    padding: 15px 40px;
+}

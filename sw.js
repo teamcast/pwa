@@ -18,6 +18,7 @@ var teamcastIDB,
       '/images/team-jackd-logo.svg',
       '/images/asurion-logo-white.svg',
       '/images/about-img.gif',
+      '/images/teamcast-icon.png',
       '/css/style.css',
       '/css/material.min.css',
       '/js/jquery.min.js',
@@ -233,6 +234,17 @@ self.addEventListener('push', function(event) {
     notificationOptions.data.body.options = jsonPayload.options;
     notificationOptions.data.body.createTime = jsonPayload.createTime;
     notificationOptions.data.body.imgId = jsonPayload.imgId;
+
+    var transaction = teamcastIDB.transaction("notifications", "readwrite");
+    var store = transaction.objectStore("notifications");
+    var addRequest = store.add(notificationOptions.data.body);
+    addRequest.onerror = function() {
+      console.log("Error saving notification to IndexedDB");
+
+    }
+    addRequest.onsuccess = function() {
+      console.log("Notification saved to IndexedDB");
+    }
   }
 
   event.waitUntil(
