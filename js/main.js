@@ -37,7 +37,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                 var profileObj = JSON.parse(localStorage.getItem("profile"));
 
                 $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
-                $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show()
+                $(".unsubscribe-card, #unsubscribe-btn, #profile-btn").show()
                     .promise()
                     .done(function() {
                         $("footer").removeClass("invisible");
@@ -167,7 +167,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                                 $("#subscription-form")[0].reset();
                                 $(".mdl-card").hide(); // hide all cards
                                 $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
-                                $(".unsusbscribe-card, #unsubscribe-btn, #profile-btn").show();
+                                $(".unsubscribe-card, #unsubscribe-btn, #profile-btn").show();
                                 $("#profile-accountid").val(profileObj.accountId);
                                 $("#profile-firstname").val(profileObj.firstName);
                                 $("#profile-lastname").val(profileObj.lastName);
@@ -233,13 +233,13 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
             $(".mdl-card__supporting-text", ".notification-card")
                 .find("p").text("");
             $(".options-container", ".notification-card").empty();
-            $(".unsusbscribe-card").show();
+            $(".unsubscribe-card").show();
         });
 
         $("#about-card-close-btn").on("click", function(e) {
             e.preventDefault();
 
-            var $lastShownCard = (localStorage.getItem("profile")) ? $(".unsubscribe-card") : $(".subscribtion-card");
+            var $lastShownCard = (localStorage.getItem("profile")) ? $(".unsubscribe-card") : $(".subscription-card");
 
             $(".about-card").hide();
             $lastShownCard.show();
@@ -248,7 +248,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         $("#profile-card-close-btn").on("click", function(e) {
             e.preventDefault();
 
-            var $lastShownCard = (localStorage.getItem("profile")) ? $(".unsubscribe-card") : $(".subscribtion-card");
+            var $lastShownCard = (localStorage.getItem("profile")) ? $(".unsubscribe-card") : $(".subscription-card");
 
             $(".profile-card").hide();
             $lastShownCard.show();
@@ -278,7 +278,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                         $(".mdl-card__supporting-text", ".notification-card")
                             .find("p").text("");
                         $(".options-container", ".notification-card").empty();
-                        $(".unsusbscribe-card").show();
+                        $(".unsubscribe-card").show();
                     },
                     error: function(jqxhr, error, thrownError) {
                         console.log(jqxhr);
