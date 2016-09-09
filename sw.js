@@ -1,6 +1,5 @@
 importScripts("/cache-polyfill.js");
-
-var pwaUrl = "https://teamcast.github.io",
+var teamcastIDB,
     staticCache = "teamcast-static-cache",
     dataCache = "teamcast-data-cache",
     client_id,
@@ -10,6 +9,7 @@ var pwaUrl = "https://teamcast.github.io",
       '/index.html',
       '/index.html?homescreen=1',
       '/?homescreen=1',
+      '/?utm_source=web_app_manifest',
       '/images/logo.svg',
       '/images/logo-32x32.png',
       '/images/logo-72x72.png',
@@ -26,6 +26,20 @@ var pwaUrl = "https://teamcast.github.io",
       '/js/mustache.min.js',
       '/fonts/material-icons.woff2'
     ];
+
+var openDBRequest = indexedDB.open("teamcastIDB", 1);
+openDBRequest.onupgradeneeded = function(e) {
+  var thisDB = e.target.result;
+  if(!thisDB.objectStoreNames.contains("users")) {
+    thisDB.createObjectStore("users", { autoIncrement: true });
+  }
+}
+openDBRequest.onsuccess = function(e) {
+  teamcastIDB = e.target.result;
+}
+openDBRequest.onerror = function(e) {
+  console.log("Error opening IndexedDB");
+}
 
 self.addEventListener("install", function(event) {
   console.log("Event: Install");
@@ -75,29 +89,55 @@ self.addEventListener('fetch', function(event) {
     event.respondWith(
         fetch(event.request)
             .then(function(response) {
-              return caches.open(dataCache).then(function(cache) {
+              /*return caches.open(dataCache).then(function(cache) {
                 cache.put(event.request.url, response.clone());
 
                 console.log('[ServiceWorker] Fetched and Cached Data');
 
                 return response;
-              });
+              });*/
+              var transaction = teamcastIDB.transaction("users", "readwrite");
+              var store = transaction.objectStore("users");
+              var clonedResponse = response.clone();
+
+              var deleteRequest = store.delete(event.request.url);
+              deleteRequest.onerror = function() {
+                console.log("Error deleting accountId from IndexedDB");
+              }
+              deleteRequest.onsuccess = function() {
+                clonedResponse[0].json().then(function(json) {
+                  var accountId = json.id;
+                  var addRequest = store.add({
+                    url: event.request.url,
+                    id: accountId
+                  });
+                  addRequest.onerror = function() {
+                    console.log("Error saving accountId to IndexedDB");
+
+                  }
+                  addRequest.onsuccess = function() {
+                    console.log("accountId saved to IndexedDB");
+                  }
+                });
+              }
+
+              return response;
             })
     );
   } else {
     event.respondWith(
         caches.match(event.request)
             .then(function(response) {
-              var fetchRequest = event.request.clone();
+                var fetchRequest = event.request.clone();
 
-              // Cache hit - return response
-              if (response) {
-                var onlineResponse = self.updateStaticCache(fetchRequest);
+                // Cache hit - return response
+                if (response) {
+                    var onlineResponse = self.updateStaticCache(fetchRequest);
 
-                return response;
-              } else {
-                return self.updateStaticCache(fetchRequest);
-              }
+                    return response;
+                } else {
+                    return self.updateStaticCache(fetchRequest);
+                }
             })
     );
   }
@@ -131,7 +171,7 @@ self.addEventListener('push', function(event) {
 
     var jsonPayload = JSON.parse(event.data.text());
 
-    caches.open(dataCache).then(function(cache) {
+    /*caches.open(dataCache).then(function(cache) {
       cache.matchAll('https://teamcast-rest.herokuapp.com/rest/accounts').then(function(response) {
 
         response[0].json().then(function(json) {
@@ -154,7 +194,33 @@ self.addEventListener('push', function(event) {
               });
         });
       });
-    })
+    })*/
+
+    var transaction = db.transaction("users", "readwrite");
+    var store = transaction.objectStore("users");
+    var request = store.get("https://teamcast-rest.herokuapp.com/rest/accounts/");
+    request.onerror = function() {
+      console.log("Error getting accountId from IndexedDB");
+    }
+    request.onsuccess = function() {
+      var accountId = this.result.id;
+      console.log("accountId from IndexedDB :", accountId);
+
+      var apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/" + jsonPayload.id + "/received/" + accountId;
+      fetch(apiUrl, {
+        method: 'put',
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: {}
+      })
+        .then(function(data) {
+          console.log('Successfully sent notification received status for announcement with ID: ' + jsonPayload.id);
+        })
+        .catch(function(error) {
+          console.log('Sending notification received status failed: ', error);
+        });
+    }
 
     notificationTitle = jsonPayload.title;
     notificationOptions.body = jsonPayload.message;
