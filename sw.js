@@ -33,6 +33,7 @@ openDBRequest.onupgradeneeded = function(e) {
   var thisDB = e.target.result;
   if(!thisDB.objectStoreNames.contains("users")) {
     thisDB.createObjectStore("users", { autoIncrement: true });
+    thisDB.createObjectStore("notifications", { autoIncrement: true });
   }
 }
 openDBRequest.onsuccess = function(e) {
