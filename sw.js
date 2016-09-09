@@ -87,42 +87,46 @@ self.addEventListener('fetch', function(event) {
 
   if (event.request.url === dataUrl) {
     event.respondWith(
-        fetch(event.request)
-            .then(function(response) {
-              /*return caches.open(dataCache).then(function(cache) {
-                cache.put(event.request.url, response.clone());
+      var transaction = teamcastIDB.transaction("users", "readwrite");
+      var store = transaction.objectStore("users");
+      var deleteRequest = store.delete(event.request.url);
+      deleteRequest.onerror = function() {
+        console.log("Error deleting accountId from IndexedDB");
+      }
+      deleteRequest.onsuccess = function() {
+        console.log("Successfullt deleted accountId from IndexedDB");
+      }
 
-                console.log('[ServiceWorker] Fetched and Cached Data');
+      fetch(event.request)
+          .then(function(response) {
+            /*return caches.open(dataCache).then(function(cache) {
+              cache.put(event.request.url, response.clone());
 
-                return response;
-              });*/
-              var transaction = teamcastIDB.transaction("users", "readwrite");
-              var store = transaction.objectStore("users");
-              var clonedResponse = response.clone();
-
-              var deleteRequest = store.delete(event.request.url);
-              deleteRequest.onerror = function() {
-                console.log("Error deleting accountId from IndexedDB");
-              }
-              deleteRequest.onsuccess = function() {
-                clonedResponse.body.json().then(function(json) {
-                  var accountId = json.id;
-                  var addRequest = store.add({
-                    url: event.request.url,
-                    id: accountId
-                  });
-                  addRequest.onerror = function() {
-                    console.log("Error saving accountId to IndexedDB");
-
-                  }
-                  addRequest.onsuccess = function() {
-                    console.log("accountId saved to IndexedDB");
-                  }
-                });
-              }
+              console.log('[ServiceWorker] Fetched and Cached Data');
 
               return response;
-            })
+            });*/
+            var transaction = teamcastIDB.transaction("users", "readwrite");
+            var store = transaction.objectStore("users");
+            var clonedResponse = response.clone();
+
+            clonedResponse.json().then(function(json) {
+              var accountId = json.id;
+              var addRequest = store.add({
+                url: event.request.url,
+                id: accountId
+              });
+              addRequest.onerror = function() {
+                console.log("Error saving accountId to IndexedDB");
+
+              }
+              addRequest.onsuccess = function() {
+                console.log("accountId saved to IndexedDB");
+              }
+            });
+
+            return response;
+          })
     );
   } else {
     event.respondWith(
