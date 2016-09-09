@@ -53,14 +53,14 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
                 $(".loading-overlay").addClass("hidden");
 
-                serviceWorkerRegistration.getNotifications()
+                /*serviceWorkerRegistration.getNotifications()
                     .then(function(notifications) {
                         if (notifications.length > 0) {
                             for (var x = 0; x < notifications.length; x++) {
                                 console.log(notifications[x].data);
                             }
                         }
-                    })
+                    })*/
             })
             .catch(function(err) {
                 console.log('Error during getSubscription()', err);
