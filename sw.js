@@ -91,6 +91,7 @@ self.addEventListener("activate", function(event) {
 
 self.addEventListener('fetch', function(event) {
   console.log('Event: Fetch', event.request.url);
+
   var accountsUrl = restBaseUrl + "accounts";
   var imagesUrl = restBaseUrl + "images";
 
@@ -138,12 +139,10 @@ self.addEventListener('fetch', function(event) {
 
               // Cache hit - return response
               if (response) {
-                //var onlineResponse = self.updateImageDataCache(fetchRequest);
                 var onlineResponse = self.updateStorageCache(fetchRequest, dataImageCache);
 
                 return response;
               } else {
-                //return self.updateImageDataCache(fetchRequest);
                 return self.updateStorageCache(fetchRequest, dataImageCache);
               }
             })
@@ -157,12 +156,10 @@ self.addEventListener('fetch', function(event) {
 
               // Cache hit - return response
               if (response) {
-                //var onlineResponse = self.updateStaticCache(fetchRequest);
                 var onlineResponse = self.updateStorageCache(fetchRequest, staticCache);
 
                 return response;
               } else {
-                //return self.updateStaticCache(fetchRequest);
                 return self.updateStorageCache(fetchRequest, staticCache);
               }
             })
@@ -194,8 +191,6 @@ self.addEventListener('push', function(event) {
   };
 
   if (event.data) {
-    console.log("GCM includes DATA!");
-
     var jsonPayload = JSON.parse(event.data.text());
     var transaction = teamcastIDB.transaction("users", "readwrite");
     var store = transaction.objectStore("users");
