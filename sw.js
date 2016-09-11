@@ -223,7 +223,7 @@ self.addEventListener('push', function(event) {
       var accountId = request.result;
       console.log("accountId from IndexedDB :", accountId);
 
-      var apiUrl = restBaseUrl + +"announcements/" + jsonPayload.id + "/received/" + accountId;
+      var apiUrl = restBaseUrl +"announcements/" + jsonPayload.id + "/received/" + accountId;
       fetch(apiUrl, {
         method: 'put',
         headers: {
