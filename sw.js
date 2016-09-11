@@ -90,6 +90,7 @@ self.addEventListener('fetch', function(event) {
   var imagesUrl = 'https://teamcast-rest.herokuapp.com/rest/images';
 
   if (event.request.url === accountsUrl) {
+    console.log("FETCH REQUEST FOR ACCOUNTS URL - ", event.request.url);
     var transaction = teamcastIDB.transaction("users", "readwrite");
     var store = transaction.objectStore("users");
     var deleteRequest = store.delete("accountId");
@@ -131,6 +132,7 @@ self.addEventListener('fetch', function(event) {
             })
     );
   } else if (event.request.url.indexOf(imagesUrl) == 0) {
+    console.log("FETCH REQUEST FOR IMAGES URL - ", event.request.url);
     event.respondWith(
         caches.match(event.request)
             .then(function(response) {
@@ -147,6 +149,7 @@ self.addEventListener('fetch', function(event) {
             })
     );
   } else {
+    console.log("FETCH REQUEST FOR OTHER URL - ", event.request.url);
     event.respondWith(
         caches.match(event.request)
             .then(function(response) {
@@ -321,6 +324,7 @@ self.addEventListener('message', function(event) {
 });
 
 self.updateStaticCache = function(request) {
+  console.log("updateStaticCache called");
   return fetch(request).then(
       function(response) {
         // Check if we received a valid response
@@ -341,6 +345,7 @@ self.updateStaticCache = function(request) {
 }
 
 self.updateImageDataCache = function(request) {
+  console.log("updateImageDataCache called");
   return fetch(request).then(
       function(response) {
         // Check if we received a valid response

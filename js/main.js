@@ -85,6 +85,9 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                 $(".notification-card").removeClass("has-media");
                 $(".mdl-card__title-text", ".notification-card").text(messageObj.heading);
                 $(".mdl-card__title", ".notification-card").css({"background-image": "none"});
+
+                console.log($(".mdl-card__title", ".notification-card").attr("style"));
+
                 $(".mdl-card__supporting-text", ".notification-card")
                     .find("p").text(messageObj.content);
                 $(".options-container", ".notification-card").empty();
@@ -111,8 +114,11 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                 }
 
                 if (messageObj.imgId != "") {
+                    console.log("imgId = ", messageObj.imgId);
                     $(".notification-card").addClass("has-media")
                         .find(".mdl-card__title").css({"background-image": "url('https://teamcast-rest.herokuapp.com/rest/images/"+messageObj.imgId+"')"});
+
+                    console.log($(".mdl-card__title", ".notification-card").attr("style"));
                 }
 
                 $(".notification-card").show();
