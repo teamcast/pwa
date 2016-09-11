@@ -115,8 +115,10 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
                 if (messageObj.imgId != "") {
                     console.log("imgId = ", messageObj.imgId);
+                    var imgUrl = "https://teamcast-rest.herokuapp.com/rest/images/" + messageObj.imgId;
+
                     $(".notification-card").addClass("has-media")
-                        .find(".mdl-card__title").css({"background-image": "url('https://teamcast-rest.herokuapp.com/rest/images/"+messageObj.imgId+"')"});
+                        .find(".mdl-card__title").css({'background-image': 'url('+ imgUrl +')'});
 
                     console.log($(".mdl-card__title", ".notification-card").attr("style"));
                 }
