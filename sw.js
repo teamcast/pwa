@@ -200,7 +200,8 @@ self.addEventListener('push', function(event) {
 
     if (jsonPayload.imgId && jsonPayload.imgId.length) {
       var imagesUrl = "https://teamcast-rest.herokuapp.com/rest/images/" + jsonPayload.imgId;
-      fetch(apiUrl, {
+
+      fetch(imagesUrl, {
         method: 'get'
       })
           .then(function(data) {
