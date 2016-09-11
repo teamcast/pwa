@@ -195,35 +195,24 @@ self.addEventListener('push', function(event) {
     console.log("GCM includes DATA!");
 
     var jsonPayload = JSON.parse(event.data.text());
-
-    /*caches.open(dataCache).then(function(cache) {
-      cache.matchAll('https://teamcast-rest.herokuapp.com/rest/accounts').then(function(response) {
-
-        response[0].json().then(function(json) {
-          accountId = json.id;
-
-          var apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/" + jsonPayload.id + "/received/" + accountId;
-
-          fetch(apiUrl, {
-            method: 'put',
-            headers: {
-              "Content-type": "application/json"
-            },
-            body: {}
-          })
-              .then(function(data) {
-                console.log('Successfully sent notification received status for announcement with ID: ' + jsonPayload.id);
-              })
-              .catch(function(error) {
-                console.log('Sending notification received status failed: ', error);
-              });
-        });
-      });
-    })*/
-
     var transaction = teamcastIDB.transaction("users", "readwrite");
     var store = transaction.objectStore("users");
+
+    if (jsonPayload.imgId && jsonPayload.imgId.length) {
+      var imagesUrl = "https://teamcast-rest.herokuapp.com/rest/images/" + jsonPayload.imgId;
+      fetch(apiUrl, {
+        method: 'get'
+      })
+          .then(function(data) {
+            console.log('Successfully requested image in notification content');
+          })
+          .catch(function(error) {
+            console.log('Failed requesting image in notification content: ', error);
+          });
+    }
+
     var request = store.get("accountId");
+
     request.onerror = function(e) {
       console.log("Error getting accountId from IndexedDB");
     }
@@ -260,6 +249,7 @@ self.addEventListener('push', function(event) {
     var transaction = teamcastIDB.transaction("notifications", "readwrite");
     var store = transaction.objectStore("notifications");
     var addRequest = store.add(notificationOptions.data.body);
+
     addRequest.onerror = function() {
       console.log("Error saving notification to IndexedDB");
 
