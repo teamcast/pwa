@@ -86,48 +86,65 @@ self.addEventListener("activate", function(event) {
 
 self.addEventListener('fetch', function(event) {
   console.log('Event: Fetch', event.request.url);
-  var dataUrl = 'https://teamcast-rest.herokuapp.com/rest/accounts';
+  var accountsUrl = 'https://teamcast-rest.herokuapp.com/rest/accounts';
+  var imagesUrl = 'https://teamcast-rest.herokuapp.com/rest/images';
 
-  if (event.request.url === dataUrl) {
+  if (event.request.url === accountsUrl) {
     var transaction = teamcastIDB.transaction("users", "readwrite");
     var store = transaction.objectStore("users");
     var deleteRequest = store.delete("accountId");
-    deleteRequest.onerror = function() {
+    deleteRequest.onerror = function () {
       console.log("Error deleting accountId from IndexedDB");
     }
-    deleteRequest.onsuccess = function() {
-      console.log("Successfullt deleted accountId from IndexedDB");
+    deleteRequest.onsuccess = function () {
+      console.log("Successfully deleted accountId from IndexedDB");
     }
 
     event.respondWith(
-      fetch(event.request)
-          .then(function(response) {
-            /*return caches.open(dataCache).then(function(cache) {
-              cache.put(event.request.url, response.clone());
+        fetch(event.request)
+            .then(function (response) {
+              /*return caches.open(dataCache).then(function(cache) {
+               cache.put(event.request.url, response.clone());
 
-              console.log('[ServiceWorker] Fetched and Cached Data');
+               console.log('[ServiceWorker] Fetched and Cached Data');
+
+               return response;
+               });*/
+
+              var clonedResponse = response.clone();
+
+              clonedResponse.json().then(function (json) {
+                var accountId = json.id;
+                var transaction = teamcastIDB.transaction("users", "readwrite");
+                var store = transaction.objectStore("users");
+                var addRequest = store.add(accountId, "accountId");
+                addRequest.onerror = function () {
+                  console.log("Error saving accountId to IndexedDB");
+
+                }
+                addRequest.onsuccess = function () {
+                  console.log("accountId saved to IndexedDB");
+                }
+              });
 
               return response;
-            });*/
+            })
+    );
+  } else if (event.request.url.indexOf(imagesUrl) == 0) {
+    event.respondWith(
+        caches.match(event.request)
+            .then(function(response) {
+              var fetchRequest = event.request.clone();
 
-            var clonedResponse = response.clone();
+              // Cache hit - return response
+              if (response) {
+                var onlineResponse = self.updateImageDataCache(fetchRequest);
 
-            clonedResponse.json().then(function(json) {
-              var accountId = json.id;
-              var transaction = teamcastIDB.transaction("users", "readwrite");
-              var store = transaction.objectStore("users");
-              var addRequest = store.add(accountId, "accountId");
-              addRequest.onerror = function() {
-                console.log("Error saving accountId to IndexedDB");
-
+                return response;
+              } else {
+                return self.updateImageDataCache(fetchRequest);
               }
-              addRequest.onsuccess = function() {
-                console.log("accountId saved to IndexedDB");
-              }
-            });
-
-            return response;
-          })
+            })
     );
   } else {
     event.respondWith(
@@ -314,6 +331,26 @@ self.updateStaticCache = function(request) {
         var responseToCache = response.clone();
 
         caches.open(staticCache)
+            .then(function(cache) {
+              cache.put(request, responseToCache);
+            });
+
+        return response;
+      }
+  )
+}
+
+self.updateImageDataCache = function(request) {
+  return fetch(request).then(
+      function(response) {
+        // Check if we received a valid response
+        if (!response || response.status !== 200 || response.type !== 'basic') {
+          return response;
+        }
+
+        var responseToCache = response.clone();
+
+        caches.open(dataCache)
             .then(function(cache) {
               cache.put(request, responseToCache);
             });
