@@ -1,27 +1,31 @@
 if (('serviceWorker' in navigator) && ('PushManager' in window)) {
     console.log('Service Worker is supported');
 
+    var restBaseUrl = "https://teamcast-rest.herokuapp.com/rest/";
+
     $(".teamcast-pwa.mdl-layout").removeClass("invisible");
     $(document).ready(function() {
         var controller = navigator.serviceWorker.controller;
 
         if (controller) {
-           controller.postMessage("clientloaded");
+            controller.postMessage("clientloaded");
         }
     });
 
-    navigator.serviceWorker.register('/sw.js', {scope: '/'})
+    navigator.serviceWorker.register('/sw.js', {
+        scope: '/'
+    })
         .then(function(registrationObj) {
-        console.log('sw.js registered. ', registrationObj);
-    }).catch(function(error) {
-        console.log('Error: ', error);
-    });
+            console.log('sw.js registered. ', registrationObj);
+        }).catch(function(error) {
+            console.log('Error: ', error);
+        });
 
     navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
         serviceWorkerRegistration.pushManager.getSubscription()
             .then(function(subscription) {
                 $(".loading-overlay").removeClass("hidden");
-                $(".mdl-card").hide(); // hide all cards
+                $(".mdl-card").hide();
 
                 if (!subscription) {
                     $(".subscription-card").show()
@@ -49,17 +53,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                 $("#profile-firstname").val(profileObj.firstName);
                 $("#profile-lastname").val(profileObj.lastName);
 
-
                 $(".loading-overlay").addClass("hidden");
-
-                /*serviceWorkerRegistration.getNotifications()
-                    .then(function(notifications) {
-                        if (notifications.length > 0) {
-                            for (var x = 0; x < notifications.length; x++) {
-                                console.log(notifications[x].data);
-                            }
-                        }
-                    })*/
             })
             .catch(function(err) {
                 console.log('Error during getSubscription()', err);
@@ -73,7 +67,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
                 $.ajax({
                     type: 'PUT',
-                    url: "https://teamcast-rest.herokuapp.com/rest/announcements/"+messageObj.announcementId+"/seen/"+profileObj.accountId,
+                    url: restBaseUrl + "announcements/" + messageObj.announcementId + "/seen/" + profileObj.accountId,
                     error: function(jqxhr, error, thrownError) {
                         console.log(jqxhr);
                         console.log(error);
@@ -84,7 +78,9 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                 $(".mdl-card").hide();
                 $(".notification-card").removeClass("has-media");
                 $(".mdl-card__title-text", ".notification-card").text(messageObj.heading);
-                $(".mdl-card__title", ".notification-card").css({"background-image": "none"});
+                $(".mdl-card__title", ".notification-card").css({
+                    "background-image": "none"
+                });
 
                 console.log($(".mdl-card__title", ".notification-card").attr("style"));
 
@@ -94,7 +90,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
                 if (messageObj.options && messageObj.options.length) {
                     var optLen = messageObj.options.length;
-                    for (x=0; x < optLen; x++) {
+                    for (x = 0; x < optLen; x++) {
                         var data = {
                             "id": messageObj.options[x],
                             "name": messageObj.options[x].toUpperCase()
@@ -115,10 +111,12 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
                 if (messageObj.imgId != "") {
                     console.log("imgId = ", messageObj.imgId);
-                    var imgUrl = "https://teamcast-rest.herokuapp.com/rest/images/" + messageObj.imgId;
+                    var imgUrl = restBaseUrl + "images/" + messageObj.imgId;
 
                     $(".notification-card").addClass("has-media")
-                        .find(".mdl-card__title").css({'background-image': 'url('+ imgUrl +')'});
+                        .find(".mdl-card__title").css({
+                            'background-image': 'url(' + imgUrl + ')'
+                        });
 
                     console.log($(".mdl-card__title", ".notification-card").attr("style"));
                 }
@@ -148,46 +146,43 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
             if (!$(this).is(":disabled")) {
                 $(".loading-overlay").removeClass("hidden");
-                serviceWorkerRegistration.pushManager.subscribe (
-                    {
-                        userVisibleOnly: true
+                serviceWorkerRegistration.pushManager.subscribe({
+                    userVisibleOnly: true
+                }).then(function(subscription) {
+                    var subscriptionObj = JSON.parse(JSON.stringify(subscription));
+                    var profileObj = {
+                        "firstName": $("#firstname").val().toUpperCase(),
+                        "lastName": $("#lastname").val().toUpperCase(),
+                        "registrationId": subscriptionObj.endpoint.split("https://android.googleapis.com/gcm/send/")[1],
+                        "publicKey": subscriptionObj["keys"]["p256dh"],
+                        "auth": subscriptionObj["keys"]["auth"]
                     }
-                ).then(function(subscription) {
-                        var subscriptionObj = JSON.parse(JSON.stringify(subscription));
-                        var profileObj = {
-                            "firstName": $("#firstname").val().toUpperCase(),
-                            "lastName": $("#lastname").val().toUpperCase(),
-                            "registrationId": subscriptionObj.endpoint.split("https://android.googleapis.com/gcm/send/")[1],
-                            //"registrationId": subscriptionObj.endpoint,
-                            "publicKey": subscriptionObj["keys"]["p256dh"],
-                            "auth": subscriptionObj["keys"]["auth"]
+
+                    $.ajax({
+                        type: 'POST',
+                        data: JSON.stringify(profileObj),
+                        contentType: "application/json",
+                        url: restBaseUrl + "accounts",
+                        success: function(resp) {
+                            profileObj.accountId = resp.id;
+                            localStorage.setItem("profile", JSON.stringify(profileObj));
+
+                            $("#subscription-form")[0].reset();
+                            $(".mdl-card").hide();
+                            $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
+                            $(".unsubscribe-card, #unsubscribe-btn, #profile-btn").show();
+                            $("#profile-accountid").val(profileObj.accountId);
+                            $("#profile-firstname").val(profileObj.firstName);
+                            $("#profile-lastname").val(profileObj.lastName);
+                            $(".loading-overlay").addClass("hidden");
+                        },
+                        error: function(jqxhr, error, thrownError) {
+                            console.log(jqxhr);
+                            console.log(error);
+                            console.log(thrownError);
                         }
-
-                        $.ajax({
-                            type: 'POST',
-                            data: JSON.stringify(profileObj),
-                            contentType: "application/json",
-                            url: "https://teamcast-rest.herokuapp.com/rest/accounts",
-                            success: function(resp) {
-                                profileObj.accountId = resp.id;
-                                localStorage.setItem("profile", JSON.stringify(profileObj));
-
-                                $("#subscription-form")[0].reset();
-                                $(".mdl-card").hide(); // hide all cards
-                                $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
-                                $(".unsubscribe-card, #unsubscribe-btn, #profile-btn").show();
-                                $("#profile-accountid").val(profileObj.accountId);
-                                $("#profile-firstname").val(profileObj.firstName);
-                                $("#profile-lastname").val(profileObj.lastName);
-                                $(".loading-overlay").addClass("hidden");
-                            },
-                            error: function(jqxhr, error, thrownError) {
-                                console.log(jqxhr);
-                                console.log(error);
-                                console.log(thrownError);
-                            }
-                        });
-                    })
+                    });
+                })
                     .catch(function(err) {
                         console.log('Error during getSubscription()', err);
                         $(".loading-overlay").addClass("hidden");
@@ -211,12 +206,12 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                         $.ajax({
                             type: 'DELETE',
                             data: JSON.stringify(profileObj),
-                            url: "https://teamcast-rest.herokuapp.com/rest/accounts/" + profileObj.accountId,
+                            url: restBaseUrl + "accounts/" + profileObj.accountId,
                             complete: function() {
                                 localStorage.removeItem("profile");
 
                                 $("#profile-form")[0].reset();
-                                $(".mdl-card, #unsubscribe-btn, #profile-btn").hide(); // hide all cards
+                                $(".mdl-card, #unsubscribe-btn, #profile-btn").hide();
                                 $(".subscription-card").show();
                                 $("#subscribe-btn").prop("disabled", true)
                                 $(".loading-overlay").addClass("hidden");
@@ -231,7 +226,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                         // Unsubscribe failed
                         $(".loading-overlay").addClass("hidden");
                     })
-            });
+                });
         });
 
         $('#notif-card-close-btn').on('click', function(e) {
@@ -262,7 +257,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
             $lastShownCard.show();
         });
 
-        $("body").on( "click", ".mdl-radio", function() {
+        $("body").on("click", ".mdl-radio", function() {
             $("#respond-btn").prop("disabled", false);
         });
 
@@ -277,7 +272,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                     type: 'POST',
                     data: JSON.stringify(responseObj),
                     contentType: "application/json",
-                    url: "https://teamcast-rest.herokuapp.com/rest/announcements/"+$(this).data("announcementid")+"/acknowledge/"+profileObj.accountId,
+                    url: restBaseUrl + "announcements/" + $(this).data("announcementid") + "/acknowledge/" + profileObj.accountId,
                     beforeSend: function() {
                         $(".loading-overlay").removeClass("hidden");
                     },

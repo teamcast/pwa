@@ -1,11 +1,11 @@
 importScripts("/cache-polyfill.js");
+
 var teamcastIDB,
     staticCache = "teamcast-static-cache",
-    dataCache = "teamcast-data-cache",
-    client_id,
+    dataImageCache = "teamcast-data-cache",
+    restBaseUrl = "https://teamcast-rest.herokuapp.com/rest/",
     messageData,
     filesToCache = [
-      //'./',
       '/index.html',
       '/index.html?homescreen=1',
       '/?homescreen=1',
@@ -30,11 +30,16 @@ var teamcastIDB,
     ];
 
 var openDBRequest = indexedDB.open("teamcastIDB", 1);
+
 openDBRequest.onupgradeneeded = function(e) {
   var thisDB = e.target.result;
-  if(!thisDB.objectStoreNames.contains("users")) {
-    thisDB.createObjectStore("users", { autoIncrement: true });
-    thisDB.createObjectStore("notifications", { autoIncrement: true });
+  if (!thisDB.objectStoreNames.contains("users")) {
+    thisDB.createObjectStore("users", {
+      autoIncrement: true
+    });
+    thisDB.createObjectStore("notifications", {
+      autoIncrement: true
+    });
   }
 }
 openDBRequest.onsuccess = function(e) {
@@ -55,10 +60,10 @@ self.addEventListener("install", function(event) {
               return new Request(fileUrl);
             }))
                 .then(function() {
-                  console.log("All the files are cached.");
+                  console.log("All the static files are cached.");
                 })
                 .catch(function(error) {
-                  console.error("Failed to cache the files.", error);
+                  console.error("Failed to cache the static files.", error);
                 })
           })
   );
@@ -86,44 +91,37 @@ self.addEventListener("activate", function(event) {
 
 self.addEventListener('fetch', function(event) {
   console.log('Event: Fetch', event.request.url);
-  var accountsUrl = 'https://teamcast-rest.herokuapp.com/rest/accounts';
-  var imagesUrl = 'https://teamcast-rest.herokuapp.com/rest/images';
+  var accountsUrl = restBaseUrl + "accounts";
+  var imagesUrl = restBaseUrl + "images";
 
   if (event.request.url === accountsUrl) {
     console.log("FETCH REQUEST FOR ACCOUNTS URL - ", event.request.url);
     var transaction = teamcastIDB.transaction("users", "readwrite");
     var store = transaction.objectStore("users");
     var deleteRequest = store.delete("accountId");
-    deleteRequest.onerror = function () {
+    deleteRequest.onerror = function() {
       console.log("Error deleting accountId from IndexedDB");
     }
-    deleteRequest.onsuccess = function () {
+    deleteRequest.onsuccess = function() {
       console.log("Successfully deleted accountId from IndexedDB");
     }
 
     event.respondWith(
         fetch(event.request)
-            .then(function (response) {
-              /*return caches.open(dataCache).then(function(cache) {
-               cache.put(event.request.url, response.clone());
-
-               console.log('[ServiceWorker] Fetched and Cached Data');
-
-               return response;
-               });*/
-
+            .then(function(response) {
               var clonedResponse = response.clone();
 
-              clonedResponse.json().then(function (json) {
+              clonedResponse.json().then(function(json) {
                 var accountId = json.id;
                 var transaction = teamcastIDB.transaction("users", "readwrite");
                 var store = transaction.objectStore("users");
                 var addRequest = store.add(accountId, "accountId");
-                addRequest.onerror = function () {
+
+                addRequest.onerror = function() {
                   console.log("Error saving accountId to IndexedDB");
 
                 }
-                addRequest.onsuccess = function () {
+                addRequest.onsuccess = function() {
                   console.log("accountId saved to IndexedDB");
                 }
               });
@@ -140,11 +138,13 @@ self.addEventListener('fetch', function(event) {
 
               // Cache hit - return response
               if (response) {
-                var onlineResponse = self.updateImageDataCache(fetchRequest);
+                //var onlineResponse = self.updateImageDataCache(fetchRequest);
+                var onlineResponse = self.updateStorageCache(fetchRequest, dataImageCache);
 
                 return response;
               } else {
-                return self.updateImageDataCache(fetchRequest);
+                //return self.updateImageDataCache(fetchRequest);
+                return self.updateStorageCache(fetchRequest, dataImageCache);
               }
             })
     );
@@ -153,16 +153,18 @@ self.addEventListener('fetch', function(event) {
     event.respondWith(
         caches.match(event.request)
             .then(function(response) {
-                var fetchRequest = event.request.clone();
+              var fetchRequest = event.request.clone();
 
-                // Cache hit - return response
-                if (response) {
-                    var onlineResponse = self.updateStaticCache(fetchRequest);
+              // Cache hit - return response
+              if (response) {
+                //var onlineResponse = self.updateStaticCache(fetchRequest);
+                var onlineResponse = self.updateStorageCache(fetchRequest, staticCache);
 
-                    return response;
-                } else {
-                    return self.updateStaticCache(fetchRequest);
-                }
+                return response;
+              } else {
+                //return self.updateStaticCache(fetchRequest);
+                return self.updateStorageCache(fetchRequest, staticCache);
+              }
             })
     );
   }
@@ -199,7 +201,7 @@ self.addEventListener('push', function(event) {
     var store = transaction.objectStore("users");
 
     if (jsonPayload.imgId && jsonPayload.imgId.length) {
-      var imagesUrl = "https://teamcast-rest.herokuapp.com/rest/images/" + jsonPayload.imgId;
+      var imagesUrl = restBaseUrl + "images/" + jsonPayload.imgId;
 
       fetch(imagesUrl, {
         method: 'get'
@@ -221,7 +223,7 @@ self.addEventListener('push', function(event) {
       var accountId = request.result;
       console.log("accountId from IndexedDB :", accountId);
 
-      var apiUrl = "https://teamcast-rest.herokuapp.com/rest/announcements/" + jsonPayload.id + "/received/" + accountId;
+      var apiUrl = restBaseUrl + +"announcements/" + jsonPayload.id + "/received/" + accountId;
       fetch(apiUrl, {
         method: 'put',
         headers: {
@@ -229,12 +231,12 @@ self.addEventListener('push', function(event) {
         },
         body: {}
       })
-        .then(function(data) {
-          console.log('Successfully sent notification received status for announcement with ID: ' + jsonPayload.id);
-        })
-        .catch(function(error) {
-          console.log('Sending notification received status failed: ', error);
-        });
+          .then(function(data) {
+            console.log('Successfully sent notification received status for announcement with ID: ' + jsonPayload.id);
+          })
+          .catch(function(error) {
+            console.log('Sending notification received status failed: ', error);
+          });
     }
 
     notificationTitle = jsonPayload.title;
@@ -283,17 +285,17 @@ self.addEventListener("notificationclick", function(event) {
           .then(function(clientList) {
             if (clientList.length > 0) {
               for (var x = 0; x < clientList.length; x++) {
-                console.log(clientList[x].url)
+                console.log("CLIENT URL: ", clientList[x].url);
+
                 if (clientList[x].url.indexOf('teamcast.github.io') >= 0) {
                   clientList[x].focus();
                   clientList[x].postMessage(messageData);
-                  messageData = null;
                 }
               }
+              messageData = null;
             } else {
               self.clients.openWindow("./?utm_source=web_app_manifest").then(function(client) {
                 self.clients.claim();
-                client_id = client.id;
               })
             }
             return
@@ -308,14 +310,14 @@ self.addEventListener('message', function(event) {
         .then(function(clientList) {
           clientList.forEach(function(client) {
             client.postMessage(messageData);
-            messageData = null;
           })
+          messageData = null;
         })
   }
 });
 
-self.updateStaticCache = function(request) {
-  console.log("updateStaticCache called");
+self.updateStorageCache = function(request, cacheName) {
+  console.log("updateStorageCache called for: ", cacheName);
   return fetch(request).then(
       function(response) {
         // Check if we received a valid response
@@ -325,28 +327,7 @@ self.updateStaticCache = function(request) {
 
         var responseToCache = response.clone();
 
-        caches.open(staticCache)
-            .then(function(cache) {
-              cache.put(request, responseToCache);
-            });
-
-        return response;
-      }
-  )
-}
-
-self.updateImageDataCache = function(request) {
-  console.log("updateImageDataCache called");
-  return fetch(request).then(
-      function(response) {
-        // Check if we received a valid response
-        if (!response || response.status !== 200 || response.type !== 'basic') {
-          return response;
-        }
-
-        var responseToCache = response.clone();
-
-        caches.open(dataCache)
+        caches.open(cacheName)
             .then(function(cache) {
               cache.put(request, responseToCache);
             });
