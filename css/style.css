@@ -76,8 +76,6 @@ main {
     left: 0;
     background-color: #fff;
     z-index: 10;
-
-    display: none;
 }
 .teamcast-pwa.mdl-layout .mdl-layout__content > .loading-overlay > .loading-overlay-row {
     display: table-row;
