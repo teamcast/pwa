@@ -293,12 +293,13 @@ main {
 .inbox-card .mdl-list .mdl-list__item--two-line,
 .inbox-card .mdl-list .mdl-list__item--two-line .mdl-list__item-primary-content {
     height: auto;
+    padding: 0;
 }
-.inbox-card .mdl-list button {
+.teamcast-pwa.mdl-layout .inbox-card .mdl-list button {
     height: auto;
     text-align: left;
     width: 100%;
-    padding: 0;
+    padding: 16px;
     font-weight: normal;
 }
 
