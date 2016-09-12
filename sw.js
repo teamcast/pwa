@@ -151,7 +151,7 @@ self.addEventListener('fetch', function(event) {
             })
     );
   } else {
-    console.log("FETCH REQUEST FOR OTHER URL - ", event.request.url);
+    //console.log("FETCH REQUEST FOR OTHER URL - ", event.request.url);
     event.respondWith(
         caches.match(event.request)
             .then(function(response) {
