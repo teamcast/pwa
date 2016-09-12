@@ -34,7 +34,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         }
 
         var deleteNotificationStore = function() {
-            teamcastIDB.transaction("notifications")
+            teamcastIDB.transaction("notifications", "readwrite")
              .objectStore("notifications")
              .clear()
              .onsuccess = function(event) {
@@ -58,7 +58,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         };
 
         var updateNotificationProperty = function(announcementId, propertyName, propertyVal) {
-            var objectStore = teamcastIDB.transaction("notifications").objectStore("notifications");
+            var objectStore = teamcastIDB.transaction("notifications", "readwrite").objectStore("notifications");
              var request = objectStore.get(announcementId);
 
              request.onsuccess = function(event) {
