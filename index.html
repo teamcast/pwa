@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="TeamCast">
-
     <title>TeamCast</title>
     <link rel="shortcut icon" href=images/logo-32x32.png>
     <link rel="manifest" href="manifest.json">
@@ -17,25 +16,22 @@
 <body>
 <!-- Always shows a header, even in smaller screens. -->
 <div class="teamcast-pwa mdl-layout mdl-js-layout mdl-layout--fixed-header invisible">
-
     <header class="mdl-layout__header mdl-layout__header--transparent is-casting-shadow">
         <div class="mdl-layout__header-row">
             <span class="mdl-layout-title">TeamCast</span>
             <span class="teamcast-logo"></span>
         </div>
     </header>
-
     <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">TeamCast</span>
         <nav class="mdl-navigation">
             <a id="about-btn" class="mdl-navigation__link" href=""><i class="material-icons">info</i>&nbsp;&nbsp;About</a>
             <a id="profile-btn" class="mdl-navigation__link" href=""><i class="material-icons">account_box</i>&nbsp;&nbsp;Profile</a>
+            <a id="inbox-btn" class="mdl-navigation__link" href=""><i class="material-icons">inbox</i>&nbsp;&nbsp;Inbox</a>
             <a id="unsubscribe-btn" class="mdl-navigation__link" href=""><i class="material-icons">cancel</i>&nbsp;&nbsp;Unsubscribe</a>
         </nav>
     </div>
-
     <main class="mdl-layout__content">
-
         <div class="loading-overlay">
             <div class="loading-overlay-row">
                 <div class="loading-overlay-col">
@@ -43,7 +39,6 @@
                 </div>
             </div>
         </div>
-
         <div class="page-content">
             <div class="not-supported-card mdl-card">
                 <div class="mdl-card__title">
@@ -57,13 +52,15 @@
                         Please open the <span class="text-color-blue">TeamCast</span> page using the <strong>latest versions</strong> of the following compatible browsers:
                     </p>
                     <ul>
-                        <li><strong>Mobile</strong>:
+                        <li>
+                            <strong>Mobile</strong>:
                             <ul>
                                 <li>Google Chrome for Android</li>
                                 <!--<li>Firefox Mobile</li>-->
                             </ul>
                         </li>
-                        <li><strong>Desktop</strong>:
+                        <li>
+                            <strong>Desktop</strong>:
                             <ul>
                                 <li>Google Chrome</li>
                                 <!--<li>Firefox</li>-->
@@ -112,30 +109,11 @@
                     <p>You can opt out from receiving notifications by tapping on "<strong>Unsubscribe</strong>" from the app menu.</p>
                 </div>
             </div>
+
             <div class="unsubscribe-card mdl-card mdl-shadow--2dp testimonial-card">
                 <p>
                     &ldquo;Let me tell you, this TeamCast is such an amazing thing, really.&rdquo;
                 </p>
-            </div>
-
-            <div class="notification-card mdl-card mdl-shadow--2dp">
-                <button id="notif-card-close-btn" class="mdl-button mdl-js-button card-close-btn">
-                    <i class="material-icons">close</i>
-                </button>
-                <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text"></h2>
-                </div>
-                <div class="mdl-card__supporting-text">
-                    <p></p>
-                    <div class="options-container"></div>
-                </div>
-                <div class="mdl-card__actions mdl-card--border">
-                    <button type="button" id="respond-btn" class="mdl-button mdl-js-button mdl-js-ripple-effect" disabled>
-                        Send response
-                    </button>
-                </div>
-                <div class="mdl-card__menu">
-                </div>
             </div>
 
             <div class="about-card mdl-card mdl-shadow--2dp has-media">
@@ -186,17 +164,40 @@
                 </div>
             </div>
 
+            <div class="notification-card mdl-card mdl-shadow--2dp">
+                <button id="notif-card-close-btn" class="mdl-button mdl-js-button card-close-btn">
+                    <i class="material-icons">close</i>
+                </button>
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text"></h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    <p></p>
+                    <div class="options-container"></div>
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <button type="button" id="respond-btn" class="mdl-button mdl-js-button mdl-js-ripple-effect" disabled>
+                        Send response
+                    </button>
+                </div>
+                <div class="mdl-card__menu">
+                </div>
+            </div>
+
+            <div class="inbox-card mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__supporting-text">
+                    <ul class="mdl-list">
+                    </ul>
+                </div>
+            </div>
         </div>
     </main>
-
     <footer class="mdl-mini-footer">
         <div class="mdl-mini-footer__left-section">
             <div class="mdl-logo">Team Jack Daniel's<br/>asurionhackathon<br/>2016 - Manila</div>
         </div>
     </footer>
-
 </div>
-
 <script src="js/jquery.min.js"></script>
 <script src="js/material.min.js"></script>
 <script src="js/mustache.min.js"></script>
@@ -207,6 +208,14 @@
         <span class="mdl-radio__label">{{name}}</span>
     </label>
 </script>
-
+<script type="text/html" id="notif-list-template">
+    <li class="mdl-list__item mdl-list__item--two-line">
+    <span class="mdl-list__item-primary-content">
+        <a href="#">{{title}}</a>
+        <span class="mdl-list__item-sub-title">{{message}}</span>
+        <span class="mdl-list__item-sub-title">{{createTime}}</span>
+    </span>
+    </li>
+</script>
 </body>
 </html>

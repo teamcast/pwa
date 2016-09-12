@@ -32,7 +32,6 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                         .promise()
                         .done(function() {
                             $("#subscribe-btn").prop("disabled", true);
-                            $("footer").removeClass("invisible");
                         });
                     $(".loading-overlay").addClass("hidden");
                     return;
@@ -41,11 +40,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                 var profileObj = JSON.parse(localStorage.getItem("profile"));
 
                 $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
-                $(".unsubscribe-card, #unsubscribe-btn, #profile-btn").show()
-                    .promise()
-                    .done(function() {
-                        $("footer").removeClass("invisible");
-                    });
+                $(".unsubscribe-card, #unsubscribe-btn, #profile-btn, #inbox-btn").show();
 
                 console.log(JSON.stringify(subscription));
 
@@ -193,40 +188,42 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         $('#unsubscribe-btn').on('click', function(e) {
             e.preventDefault();
 
-            var layout = document.querySelector('.mdl-layout');
-            layout.MaterialLayout.toggleDrawer();
+            if (confirm("Are you sure you want to unsubscribe from TeamCast?")) {
+                var layout = document.querySelector('.mdl-layout');
+                layout.MaterialLayout.toggleDrawer();
 
-            $(".loading-overlay").removeClass("hidden");
+                $(".loading-overlay").removeClass("hidden");
 
-            serviceWorkerRegistration.pushManager.getSubscription()
-                .then(function(subscription) {
-                    subscription.unsubscribe().then(function(successful) {
-                        var profileObj = JSON.parse(localStorage.getItem("profile"));
+                serviceWorkerRegistration.pushManager.getSubscription()
+                    .then(function(subscription) {
+                        subscription.unsubscribe().then(function(successful) {
+                            var profileObj = JSON.parse(localStorage.getItem("profile"));
 
-                        $.ajax({
-                            type: 'DELETE',
-                            data: JSON.stringify(profileObj),
-                            url: restBaseUrl + "accounts/" + profileObj.accountId,
-                            complete: function() {
-                                localStorage.removeItem("profile");
+                            $.ajax({
+                                type: 'DELETE',
+                                data: JSON.stringify(profileObj),
+                                url: restBaseUrl + "accounts/" + profileObj.accountId,
+                                complete: function() {
+                                    localStorage.removeItem("profile");
 
-                                $("#profile-form")[0].reset();
-                                $(".mdl-card, #unsubscribe-btn, #profile-btn").hide();
-                                $(".subscription-card").show();
-                                $("#subscribe-btn").prop("disabled", true)
-                                $(".loading-overlay").addClass("hidden");
-                            },
-                            error: function(jqxhr, error, thrownError) {
-                                console.log(jqxhr);
-                                console.log(error);
-                                console.log(thrownError);
-                            }
-                        });
-                    }).catch(function(e) {
-                        // Unsubscribe failed
-                        $(".loading-overlay").addClass("hidden");
-                    })
-                });
+                                    $("#profile-form")[0].reset();
+                                    $(".mdl-card, #unsubscribe-btn, #profile-btn, #inbox-btn").hide();
+                                    $(".subscription-card").show();
+                                    $("#subscribe-btn").prop("disabled", true)
+                                    $(".loading-overlay").addClass("hidden");
+                                },
+                                error: function(jqxhr, error, thrownError) {
+                                    console.log(jqxhr);
+                                    console.log(error);
+                                    console.log(thrownError);
+                                }
+                            });
+                        }).catch(function(e) {
+                            // Unsubscribe failed
+                            $(".loading-overlay").addClass("hidden");
+                        })
+                    });
+            }
         });
 
         $('#notif-card-close-btn').on('click', function(e) {
@@ -239,21 +236,12 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
             $(".unsubscribe-card").show();
         });
 
-        $("#about-card-close-btn").on("click", function(e) {
+        $(".card-close-btn").on("click", function(e) {
             e.preventDefault();
 
             var $lastShownCard = (localStorage.getItem("profile")) ? $(".unsubscribe-card") : $(".subscription-card");
 
-            $(".about-card").hide();
-            $lastShownCard.show();
-        });
-
-        $("#profile-card-close-btn").on("click", function(e) {
-            e.preventDefault();
-
-            var $lastShownCard = (localStorage.getItem("profile")) ? $(".unsubscribe-card") : $(".subscription-card");
-
-            $(".profile-card").hide();
+            $(this).parent().hide();
             $lastShownCard.show();
         });
 

@@ -199,7 +199,7 @@ self.addEventListener('push', function(event) {
       var imagesUrl = restBaseUrl + "images/" + jsonPayload.imgId;
 
       fetch(imagesUrl, {
-        method: 'get'
+        method: 'GET'
       })
           .then(function(data) {
             console.log('Successfully requested image in notification content');
@@ -220,7 +220,7 @@ self.addEventListener('push', function(event) {
 
       var apiUrl = restBaseUrl +"announcements/" + jsonPayload.id + "/received/" + accountId;
       fetch(apiUrl, {
-        method: 'put',
+        method: 'PUT',
         headers: {
           "Content-type": "application/json"
         },

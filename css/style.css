@@ -38,11 +38,14 @@ p {
 main {
     width: 100%;
     box-sizing: border-box;
+    height: 100%;
 }
 .page-content {
     max-width: 600px;
     margin: 0 auto;
     padding: 0 10px;
+    height: 100%;
+
 }
 .inivisible {
     visibility: hidden;
@@ -73,6 +76,8 @@ main {
     left: 0;
     background-color: #fff;
     z-index: 10;
+
+    display: none;
 }
 .teamcast-pwa.mdl-layout .mdl-layout__content > .loading-overlay > .loading-overlay-row {
     display: table-row;
@@ -159,7 +164,7 @@ main {
 }
 @media (max-height: 320px) {
     .teamcast-pwa.mdl-layout .mdl-mini-footer {
-        /*display: none;*/
+        display: none;
     }
 }
 .teamcast-pwa.mdl-layout .mdl-mini-footer .mdl-mini-footer__left-section .mdl-logo {
@@ -172,7 +177,8 @@ main {
     background-repeat: no-repeat;
 }
 #unsubscribe-btn,
-#profile-btn {
+#profile-btn,
+#inbox-btn {
     display: none;
 }
 .teamcast-pwa.mdl-layout .card-close-btn {
@@ -254,7 +260,6 @@ main {
     text-align: right;
     padding: 15px 40px;
 }
-
 .teamcast-pwa.mdl-layout .testimonial-card {
     color: white;
     background-image: url("../images/testimonial-bg.jpg");
@@ -267,4 +272,23 @@ main {
 .teamcast-pwa.mdl-layout .testimonial-card p {
     font-size: 1.2rem;
     width: 50%;
+}
+
+.teamcast-pwa.mdl-layout .inbox-card {
+    height: calc(100% - 20px);
+    overflow-y: auto;
+}
+.inbox-card .mdl-card__supporting-text {
+    width: 100%;
+    box-sizing: border-box;
+}
+.inbox-card .mdl-list {
+    margin: 0;
+    padding: 0;
+}
+.inbox-card .mdl-list .mdl-list__item {
+    border-top: solid 1px #ddd;
+}
+.inbox-card .mdl-list .mdl-list__item:first-child {
+    border-top: 0;
 }
