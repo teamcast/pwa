@@ -3,7 +3,8 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
     var restBaseUrl = "https://teamcast-rest.herokuapp.com/rest/";
     var teamcastIDB,
-        cachedNotificationsDeferred;
+        cachedNotificationDeferred,
+        cachedNotificationListDeferred;
 
     $(".teamcast-pwa.mdl-layout").removeClass("invisible");
     $(document).ready(function() {
@@ -35,36 +36,48 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
         var deleteNotificationStore = function() {
             teamcastIDB.transaction("notifications", "readwrite")
-             .objectStore("notifications")
-             .clear()
-             .onsuccess = function(event) {
-             console.log("Successfully cleared notifications IndexedDB store.");
-             }
+                .objectStore("notifications")
+                .clear()
+                .onsuccess = function(event) {
+                console.log("Successfully cleared notifications IndexedDB store.");
+            }
         };
 
-        var getCachedNotifications = function() {
-            cachedNotificationsDeferred = new $.Deferred();
+        var getCachedNotificationList = function() {
+            cachedNotificationListDeferred = new $.Deferred();
             teamcastIDB.transaction("notifications")
-             .objectStore("notifications")
-             .getAll()
-             .onsuccess = function(event) {
-             cachedNotificationsDeferred.resolve(event.target.result);
-             }
+                .objectStore("notifications")
+                .getAll()
+                .onsuccess = function(event) {
+                cachedNotificationListDeferred.resolve(event.target.result);
+            }
         };
+
+        var getCachedNotification = function(announcementId) {
+            cachedNotificationDeferred = new $.Deferred();
+            teamcastIDB.transaction("notifications")
+                .objectStore("notifications")
+                .get(announcementId)
+                .onsuccess = function(event) {
+                cachedNotificationDeferred.resolve(event.target.result);
+            }
+        }
 
         var updateNotificationProperty = function(announcementId, propertyName, propertyVal) {
             var objectStore = teamcastIDB.transaction("notifications", "readwrite").objectStore("notifications");
-             var request = objectStore.get(announcementId);
+            var request = objectStore.get(announcementId);
 
-             request.onsuccess = function(event) {
-             var data = event.target.result;
-             data[propertyName] = propertyVal;
+            request.onsuccess = function(event) {
+                var data = event.target.result;
+                data[propertyName] = propertyVal;
 
-             var requestUpdate = objectStore.put(data, announcementId);
-             requestUpdate.onsuccess = function(event) {
-             console.log("SUCCESSFULLY UPDATED NOTIFICATION ID " + announcementId + ": ", {propertyName: propertyVal});
-             };
-             }
+                var requestUpdate = objectStore.put(data, announcementId);
+                requestUpdate.onsuccess = function(event) {
+                    console.log("SUCCESSFULLY UPDATED NOTIFICATION ID " + announcementId + ": ", {
+                        propertyName: propertyVal
+                    });
+                };
+            }
         }
 
         serviceWorkerRegistration.pushManager.getSubscription()
@@ -359,9 +372,9 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         $("#inbox-btn").on("click", function(e) {
             e.preventDefault();
 
-            getCachedNotifications();
+            getCachedNotificationList();
 
-            $.when(cachedNotificationsDeferred).done(function(val) {
+            $.when(cachedNotificationListDeferred).done(function(val) {
                 console.log("CACHED NOTIFICATIONS: ", val);
 
                 var template = $("#notif-list-template").html();
@@ -370,7 +383,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
                 $(".mdl-list", ".inbox-card").empty();
 
-                for(x = 0; x < listData.length; x++) {
+                for (x = 0; x < listData.length; x++) {
                     var displayDate = new Date(listData[x]["createTime"]);
 
                     listData[x]["createTime"] = displayDate.toLocaleString();
@@ -385,6 +398,69 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                 layout.MaterialLayout.toggleDrawer();
             })
         })
+
+        $(".inbox-card").on("click", "button", function(e) {
+            var $item = $(e.currentTarget);
+
+            getCachedNotification($item.data("announcementId"));
+
+            $.when(cachedNotificationDeferred).done(function(val) {
+                var cachedNotifData = val;
+
+                $(".inbox-card").hide();
+                $(".cached-notification-card").removeClass("has-media");
+                $(".mdl-card__title-text", ".cached-notification-card").text(cachedNotifData.heading);
+                $(".mdl-card__title", ".cached-notification-card").css({
+                    "background-image": "none"
+                });
+
+                $(".mdl-card__supporting-text", ".cached-notification-card")
+                    .find("p").text(cachedNotifData.content);
+                $(".options-container", ".cached-notification-card").empty();
+
+                if (cachedNotifData.options && cachedNotifData.options.length) {
+                    var optLen = cachedNotifData.options.length;
+                    for (x = 0; x < optLen; x++) {
+                        var data = {
+                            "id": cachedNotifData.options[x],
+                            "name": cachedNotifData.options[x].toUpperCase()
+                        }
+                        var template = $("#options-template").html();
+                        var optMarkup = Mustache.to_html(template, data);
+                        var newRadio = $(optMarkup)[0];
+                        componentHandler.upgradeElement(newRadio);
+
+                        $(".options-container", ".cached-notification-card").append(newRadio);
+                    }
+                    //$("#respond-btn").data("announcementid", cachedNotifData.announcementId);
+                    //$("#respond-btn").prop("disabled", true);
+                    $(".mdl-card__actions", ".cached-notification-card").show();
+                } else {
+                    $(".mdl-card__actions", ".cached-notification-card").hide();
+                }
+
+                if (cachedNotifData.imgId != "") {
+                    var imgUrl = restBaseUrl + "images/" + cachedNotifData.imgId;
+
+                    $(".cached-notification-card").addClass("has-media")
+                        .find(".mdl-card__title").css({
+                            'background-image': 'url(' + imgUrl + ')'
+                        });
+                }
+
+                $(".cached-notification-card").show();
+            })
+        });
+
+        $('#cached-notif-card-close-btn').on('click', function(e) {
+            e.preventDefault();
+
+            $(".cached-notification-card").hide();
+            $(".mdl-card__supporting-text", ".cached-notification-card")
+                .find("p").text("");
+            $(".options-container", ".cached-notification-card").empty();
+            $(".inbox-card").show();
+        });
     });
 } else {
     $("header, footer").remove();
