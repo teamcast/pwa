@@ -402,7 +402,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         $(".inbox-card").on("click", "button", function(e) {
             var $item = $(e.currentTarget);
 
-            getCachedNotification($item.data("announcementId"));
+            getCachedNotification($item.data("announcementid"));
 
             $.when(cachedNotificationDeferred).done(function(val) {
                 var cachedNotifData = val;
