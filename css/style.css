@@ -275,6 +275,8 @@ main {
 .teamcast-pwa.mdl-layout .inbox-card {
     height: calc(100% - 20px);
     overflow-y: auto;
+    margin: 0;
+    top: 10px;
 }
 .inbox-card .mdl-card__supporting-text {
     width: 100%;

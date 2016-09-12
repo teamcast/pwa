@@ -366,7 +366,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
                 var template = $("#notif-list-template").html();
                 var layout = document.querySelector('.mdl-layout');
-                var listData = _.sortBy("createTime");
+                var listData = _.sortBy(val, "createTime").reverse();
 
                 $(".mdl-list", ".inbox-card").empty();
 
