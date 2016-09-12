@@ -2,8 +2,8 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
     console.log('Service Worker is supported');
 
     var restBaseUrl = "https://teamcast-rest.herokuapp.com/rest/";
-    var teamcastIDB;
-    var cachedNotificationsDeferred = new $.Deferred();
+    var teamcastIDB,
+        cachedNotificationsDeferred;
 
     $(".teamcast-pwa.mdl-layout").removeClass("invisible");
     $(document).ready(function() {
@@ -43,6 +43,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         };
 
         var getCachedNotifications = function() {
+            cachedNotificationsDeferred = new $.Deferred();
             teamcastIDB.transaction("notifications")
              .objectStore("notifications")
              .getAll()
