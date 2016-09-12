@@ -65,7 +65,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
              var data = event.target.result;
              data[propertyName] = propertyVal;
 
-             var requestUpdate = objectStore.put(data);
+             var requestUpdate = objectStore.put(data, announcementId);
              requestUpdate.onsuccess = function(event) {
              console.log("SUCCESSFULLY UPDATED NOTIFICATION ID " + announcementId + ": ", {propertyName: propertyVal});
              };
