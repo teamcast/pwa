@@ -366,15 +366,15 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
                 var template = $("#notif-list-template").html();
                 var layout = document.querySelector('.mdl-layout');
+                var listData = _.sortBy("createTime");
 
                 $(".mdl-list", ".inbox-card").empty();
-                val.reverse();
 
-                for(x = 0; x < val.length; x++) {
-                    var displayDate = new Date(val[x]["createTime"]);
+                for(x = 0; x < listData.length; x++) {
+                    var displayDate = new Date(listData[x]["createTime"]);
 
-                    val[x]["createTime"] = (displayDate.getMonth() + 1) + "/" + displayDate.getDate() + "/" + displayDate.getFullYear() + " " + displayDate.getHours() + ":" + displayDate.getMinutes() + ":" + displayDate.getSeconds();
-                    var listItemMarkup = Mustache.to_html(template, val[x]);
+                    listData[x]["createTime"] = displayDate.toLocaleString();
+                    var listItemMarkup = Mustache.to_html(template, listData[x]);
 
                     $(".mdl-list", ".inbox-card").append(listItemMarkup);
                 }
