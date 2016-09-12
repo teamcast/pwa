@@ -343,9 +343,6 @@ var getCachedNotifications = function() {
             //console.log(event.target.result);
             result.push.apply(event.target.result);
         }
-        .onerror = function(event) {
-            console.log("Error fetching cached notifications");
-        };
 
     return result;
 };
