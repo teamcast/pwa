@@ -184,10 +184,11 @@ self.addEventListener('push', function(event) {
     data: {
       body: {
         heading: "",
+        trayMessage: "",
         announcementId: "0",
+        createTime: 0,
         content: "",
         options: [],
-        createTime: 0,
         imgId: "",
         received: 1,
         seen: 0,
@@ -243,12 +244,14 @@ self.addEventListener('push', function(event) {
     notificationTitle = jsonPayload.title;
     notificationOptions.body = jsonPayload.message;
     notificationOptions.tag = notificationOptions.tag + jsonPayload.id;
-    notificationOptions.data.body.heading = jsonPayload.message;
+
     notificationOptions.data.body.announcementId = jsonPayload.id;
-    notificationOptions.data.body.content = jsonPayload.content;
-    notificationOptions.data.body.options = jsonPayload.options;
     notificationOptions.data.body.createTime = jsonPayload.createTime;
+    notificationOptions.data.body.heading = jsonPayload.title;
+    notificationOptions.data.body.trayMessage = jsonPayload.message;
+    notificationOptions.data.body.content = jsonPayload.content;
     notificationOptions.data.body.imgId = jsonPayload.imgId;
+    notificationOptions.data.body.options = jsonPayload.options;
 
     var transaction = teamcastIDB.transaction("notifications", "readwrite");
     var store = transaction.objectStore("notifications");
