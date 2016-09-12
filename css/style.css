@@ -290,6 +290,15 @@ main {
 .inbox-card .mdl-list .mdl-list__item:first-child {
     border-top: 0;
 }
+.inbox-card .mdl-list .mdl-list__item--two-line,
 .inbox-card .mdl-list .mdl-list__item--two-line .mdl-list__item-primary-content {
     height: auto;
 }
+.inbox-card .mdl-list button {
+    height: auto;
+    text-align: left;
+    width: 100%;
+    padding: 0;
+    font-weight: normal;
+}
+
