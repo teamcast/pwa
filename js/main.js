@@ -298,7 +298,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
             $(".unsubscribe-card").show();
         });
 
-        $(".card-close-btn").on("click", function(e) {
+        $(".card-close-btn:not([id])").on("click", function(e) {
             e.preventDefault();
 
             var $lastShownCard = (localStorage.getItem("profile")) ? $(".unsubscribe-card") : $(".subscription-card");
