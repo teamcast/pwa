@@ -97,14 +97,17 @@ self.addEventListener('fetch', function(event) {
 
   if (event.request.url === accountsUrl) {
     console.log("FETCH REQUEST FOR ACCOUNTS URL - ", event.request.url);
-    var transaction = teamcastIDB.transaction("users", "readwrite");
-    var store = transaction.objectStore("users");
-    var deleteRequest = store.delete("accountId");
-    deleteRequest.onerror = function() {
-      console.log("Error deleting accountId from IndexedDB");
-    }
-    deleteRequest.onsuccess = function() {
-      console.log("Successfully deleted accountId from IndexedDB");
+
+    if (teamcastIDB.objectStoreNames.contains("users")) {
+      var transaction = teamcastIDB.transaction("users", "readwrite");
+      var store = transaction.objectStore("users");
+      var deleteRequest = store.delete("accountId");
+      deleteRequest.onerror = function() {
+        console.log("Error deleting accountId from IndexedDB");
+      }
+      deleteRequest.onsuccess = function() {
+        console.log("Successfully deleted accountId from IndexedDB");
+      }
     }
 
     event.respondWith(
