@@ -346,7 +346,8 @@ var getCachedNotifications = function() {
         .getAll()
         .onsuccess = function(event) {
             //console.log(event.target.result);
-            cachedNotifications.push.apply(event.target.result);
+            //cachedNotifications.push.apply(event.target.result);
+            $.merge(cachedNotifications, event.target.result);
             cachedNotificationsDeferred.resolve();
         }
 };
