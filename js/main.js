@@ -63,6 +63,9 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                 $.ajax({
                     type: 'PUT',
                     url: restBaseUrl + "announcements/" + messageObj.announcementId + "/seen/" + profileObj.accountId,
+                    success: function() {
+                        updateNotificationProperty(messageObj.announcementId, "seen", 1);
+                    },
                     error: function(jqxhr, error, thrownError) {
                         console.log(jqxhr);
                         console.log(error);
@@ -205,7 +208,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                                 url: restBaseUrl + "accounts/" + profileObj.accountId,
                                 complete: function() {
                                     localStorage.removeItem("profile");
-                                    deleteIndexedDBStores();
+                                    deleteNotificationStore();
 
                                     $("#profile-form")[0].reset();
                                     $(".mdl-card, #unsubscribe-btn, #profile-btn, #inbox-btn").hide();
@@ -252,6 +255,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
         $("#respond-btn").on("click", function(e) {
             if (!$(this).is(":disabled")) {
+                var $this = $(this);
                 var profileObj = JSON.parse(localStorage.getItem("profile"));
                 var responseObj = {
                     "option": $("input[type='radio']", ".mdl-radio.is-checked").val()
@@ -261,11 +265,12 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                     type: 'POST',
                     data: JSON.stringify(responseObj),
                     contentType: "application/json",
-                    url: restBaseUrl + "announcements/" + $(this).data("announcementid") + "/acknowledge/" + profileObj.accountId,
+                    url: restBaseUrl + "announcements/" + $this.data("announcementid") + "/acknowledge/" + profileObj.accountId,
                     beforeSend: function() {
                         $(".loading-overlay").removeClass("hidden");
                     },
                     success: function(resp) {
+                        updateNotificationProperty($this.data("announcementid"), "response", responseObj.option);
                         $(".notification-card").hide();
                         $(".mdl-card__supporting-text", ".notification-card")
                             .find("p").text("");
@@ -311,8 +316,28 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
             getCachedNotifications();
 
-            $.when(cachedNotificationsDeferred).done(function() {
-                console.log("CACHED NOTIFICATIONS: ", cachedNotifications);
+            $.when(cachedNotificationsDeferred).done(function(val) {
+                console.log("CACHED NOTIFICATIONS: ", val);
+
+                var template = $("#notif-list-template").html();
+                var layout = document.querySelector('.mdl-layout');
+
+                $(".mdl-list", ".inbox-card").empty();
+                val.reverse();
+
+                for(x = 0; x < val.length; x++) {
+                    var displayDate = new Date(val[x][createTime]);
+
+                    val[x][createTime] = (displayDate.getMonth() + 1) + "/" + displayDate.getDate() + "/" + displayDate.getFullYear() + " " + displayDate.getHours() + ":" + displayDate.getMinutes() + ":" + displayDate.getSeconds();
+                    var listItemMarkup = Mustache.to_html(template, val[x]);
+
+                    $(".mdl-list", ".inbox-card").append(listItemMarkup);
+                }
+
+                $(".mdl-card").hide();
+                $(".inbox-card").show();
+
+                layout.MaterialLayout.toggleDrawer();
             })
         })
     });
@@ -324,8 +349,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 }
 
 var teamcastIDB;
-var cachedNotifications = [],
-    cachedNotificationsDeferred = new $.Deferred(),
+var cachedNotificationsDeferred = new $.Deferred(),
     openDBRequest = window.indexedDB.open("teamcastIDB", 1);
 
 openDBRequest.onsuccess = function(e) {
@@ -335,9 +359,13 @@ openDBRequest.onerror = function(e) {
     console.log("FROM CLIENT: Error opening IndexedDB");
 }
 
-var deleteIndexedDBStores = function() {
-    teamcastIDB.deleteObjectStore("users");
-    teamcastIDB.deleteObjectStore("notifications");
+var deleteNotificationStore = function() {
+    teamcastIDB.transaction("notifications")
+        .objectStore("notifications")
+        .clear()
+        .onsuccess = function(event) {
+            console.log("Successfully cleared notifications IndexedDB store.");
+        }
 };
 
 var getCachedNotifications = function() {
@@ -345,9 +373,21 @@ var getCachedNotifications = function() {
         .objectStore("notifications")
         .getAll()
         .onsuccess = function(event) {
-            //console.log(event.target.result);
-            //cachedNotifications.push.apply(event.target.result);
-            $.merge(cachedNotifications, event.target.result);
-            cachedNotificationsDeferred.resolve();
+            cachedNotificationsDeferred.resolve(event.target.result);
         }
 };
+
+var updateNotificationProperty = function(announcementId, propertyName, propertyVal) {
+    var objectStore = teamcastIDB.transaction("notifications").objectStore("notifications");
+    var request = objectStore.get(announcementId);
+
+    request.onsuccess = function(event) {
+        var data = event.target.result;
+        data[propertyName] = propertyVal;
+
+        var requestUpdate = objectStore.put(data);
+        requestUpdate.onsuccess = function(event) {
+            console.log("SUCCESSFULLY UPDATED NOTIFICATION ID " + announcementId + ": ", {propertyName: propertyVal});
+        };
+    }
+}

@@ -185,7 +185,10 @@ self.addEventListener('push', function(event) {
         content: "",
         options: [],
         createTime: 0,
-        imgId: ""
+        imgId: "",
+        received: 1,
+        seen: 0,
+        response: ""
       }
     }
   };
@@ -246,7 +249,7 @@ self.addEventListener('push', function(event) {
 
     var transaction = teamcastIDB.transaction("notifications", "readwrite");
     var store = transaction.objectStore("notifications");
-    var addRequest = store.add(notificationOptions.data.body);
+    var addRequest = store.add(notificationOptions.data.body, jsonPayload.id);
 
     addRequest.onerror = function() {
       console.log("Error saving notification to IndexedDB");
