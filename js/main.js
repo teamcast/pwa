@@ -309,7 +309,11 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         $("#inbox-btn").on("click", function(e) {
             e.preventDefault();
 
-            console.log("CACHED NOTIFICATIONS: ", getCachedNotifications());
+            getCachedNotifications();
+
+            $.when(cachedNotificationsDeferred).done(function() {
+                console.log("CACHED NOTIFICATIONS: ", cachedNotifications);
+            })
         })
     });
 } else {
@@ -320,7 +324,9 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 }
 
 var teamcastIDB;
-var openDBRequest = window.indexedDB.open("teamcastIDB", 1);
+var cachedNotifications = [],
+    cachedNotificationsDeferred = new $.Deferred(),
+    openDBRequest = window.indexedDB.open("teamcastIDB", 1);
 
 openDBRequest.onsuccess = function(e) {
     teamcastIDB = e.target.result;
@@ -335,14 +341,12 @@ var deleteIndexedDBStores = function() {
 };
 
 var getCachedNotifications = function() {
-    var result = [];
     teamcastIDB.transaction("notifications")
         .objectStore("notifications")
         .getAll()
         .onsuccess = function(event) {
             //console.log(event.target.result);
-            result.push.apply(event.target.result);
+            cachedNotifications.push.apply(event.target.result);
+            cachedNotificationsDeferred.resolve();
         }
-
-    return result;
 };
