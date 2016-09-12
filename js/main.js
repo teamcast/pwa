@@ -40,9 +40,6 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
              .onsuccess = function(event) {
              console.log("Successfully cleared notifications IndexedDB store.");
              }
-             .onerror = function(event) {
-             console.log("Error clearing notifications store.")
-             }
         };
 
         var getCachedNotifications = function() {
@@ -51,9 +48,6 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
              .getAll()
              .onsuccess = function(event) {
              cachedNotificationsDeferred.resolve(event.target.result);
-             }
-             .onerror = function(event) {
-             console.log("Error getting notification list from store.")
              }
         };
 
