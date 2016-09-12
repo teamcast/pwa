@@ -349,8 +349,8 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 }
 
 var teamcastIDB;
-var cachedNotificationsDeferred = new $.Deferred(),
-    /*openDBRequest = window.indexedDB.open("teamcastIDB", 1);
+var cachedNotificationsDeferred = new $.Deferred()/*,
+    openDBRequest = window.indexedDB.open("teamcastIDB", 1);
 
 openDBRequest.onsuccess = function(e) {
     teamcastIDB = e.target.result;
