@@ -309,7 +309,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         $("#inbox-btn").on("click", function(e) {
             e.preventDefault();
 
-            getCachedNotifications();
+            console.log("CACHED NOTIFICATIONS: ", getCachedNotifications());
         })
     });
 } else {
@@ -335,10 +335,17 @@ var deleteIndexedDBStores = function() {
 };
 
 var getCachedNotifications = function() {
+    var result = [];
     teamcastIDB.transaction("notifications")
         .objectStore("notifications")
         .getAll()
         .onsuccess = function(event) {
-        console.log(event.target.result);
-    };
+            //console.log(event.target.result);
+            result.push.apply(event.target.result);
+        }
+        .onerror = function(event) {
+            console.log("Error fetching cached notifications");
+        };
+
+    return result;
 };
