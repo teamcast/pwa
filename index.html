@@ -210,11 +210,13 @@
 </script>
 <script type="text/html" id="notif-list-template">
     <li class="mdl-list__item mdl-list__item--two-line">
-    <span class="mdl-list__item-primary-content">
-        <a href="#">{{heading}}</a>
-        <span class="mdl-list__item-sub-title">{{trayMessage}}</span>
-        <span class="mdl-list__item-sub-title">{{createTime}}</span>
-    </span>
+        <button type="button" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+            <span class="mdl-list__item-primary-content">
+                <span>{{heading}}</span>
+                <span class="mdl-list__item-sub-title">{{trayMessage}}</span>
+                <span class="mdl-list__item-sub-title">{{createTime}}</span>
+            </span>
+        </button>
     </li>
 </script>
 </body>
