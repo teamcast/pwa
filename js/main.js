@@ -2,6 +2,8 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
     console.log('Service Worker is supported');
 
     var restBaseUrl = "https://teamcast-rest.herokuapp.com/rest/";
+    var teamcastIDB;
+    var cachedNotificationsDeferred = new $.Deferred();
 
     $(".teamcast-pwa.mdl-layout").removeClass("invisible");
     $(document).ready(function() {
@@ -22,6 +24,54 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         });
 
     navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
+        var openDBRequest = indexedDB.open("teamcastIDB", 1);
+        openDBRequest.onsuccess = function(e) {
+            console.log("FROM CLIENT: Successfully opened IndexedDB");
+            teamcastIDB = e.target.result;
+        }
+        openDBRequest.onerror = function(e) {
+            console.log("FROM CLIENT: Error opening IndexedDB");
+        }
+
+        var deleteNotificationStore = function() {
+            teamcastIDB.transaction("notifications")
+             .objectStore("notifications")
+             .clear()
+             .onsuccess = function(event) {
+             console.log("Successfully cleared notifications IndexedDB store.");
+             }
+             .onerror = function(event) {
+             console.log("Error clearing notifications store.")
+             }
+        };
+
+        var getCachedNotifications = function() {
+            teamcastIDB.transaction("notifications")
+             .objectStore("notifications")
+             .getAll()
+             .onsuccess = function(event) {
+             cachedNotificationsDeferred.resolve(event.target.result);
+             }
+             .onerror = function(event) {
+             console.log("Error getting notification list from store.")
+             }
+        };
+
+        var updateNotificationProperty = function(announcementId, propertyName, propertyVal) {
+            var objectStore = teamcastIDB.transaction("notifications").objectStore("notifications");
+             var request = objectStore.get(announcementId);
+
+             request.onsuccess = function(event) {
+             var data = event.target.result;
+             data[propertyName] = propertyVal;
+
+             var requestUpdate = objectStore.put(data);
+             requestUpdate.onsuccess = function(event) {
+             console.log("SUCCESSFULLY UPDATED NOTIFICATION ID " + announcementId + ": ", {propertyName: propertyVal});
+             };
+             }
+        }
+
         serviceWorkerRegistration.pushManager.getSubscription()
             .then(function(subscription) {
                 $(".loading-overlay").removeClass("hidden");
@@ -346,54 +396,4 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
     $(".loading-overlay").addClass("hidden");
     $(".not-supported-card").show();
     $(".teamcast-pwa.mdl-layout").removeClass("invisible");
-}
-
-var teamcastIDB;
-var cachedNotificationsDeferred = new $.Deferred()/*,
-    openDBRequest = window.indexedDB.open("teamcastIDB", 1);
-
-openDBRequest.onsuccess = function(e) {
-    teamcastIDB = e.target.result;
-}
-openDBRequest.onerror = function(e) {
-    console.log("FROM CLIENT: Error opening IndexedDB");
-}*/
-
-var deleteNotificationStore = function() {
-    /*teamcastIDB.transaction("notifications")
-        .objectStore("notifications")
-        .clear()
-        .onsuccess = function(event) {
-            console.log("Successfully cleared notifications IndexedDB store.");
-        }
-        .onerror = function(event) {
-            console.log("Error clearing notifications store.")
-        }*/
-};
-
-var getCachedNotifications = function() {
-    /*teamcastIDB.transaction("notifications")
-        .objectStore("notifications")
-        .getAll()
-        .onsuccess = function(event) {
-            cachedNotificationsDeferred.resolve(event.target.result);
-        }
-        .onerror = function(event) {
-            console.log("Error getting notification list from store.")
-        }*/
-};
-
-var updateNotificationProperty = function(announcementId, propertyName, propertyVal) {
-    /*var objectStore = teamcastIDB.transaction("notifications").objectStore("notifications");
-    var request = objectStore.get(announcementId);
-
-    request.onsuccess = function(event) {
-        var data = event.target.result;
-        data[propertyName] = propertyVal;
-
-        var requestUpdate = objectStore.put(data);
-        requestUpdate.onsuccess = function(event) {
-            console.log("SUCCESSFULLY UPDATED NOTIFICATION ID " + announcementId + ": ", {propertyName: propertyVal});
-        };
-    }*/
 }
