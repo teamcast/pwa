@@ -376,7 +376,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                 val.reverse();
 
                 for(x = 0; x < val.length; x++) {
-                    var displayDate = new Date(val[x][createTime]);
+                    var displayDate = new Date(val[x]["createTime"]);
 
                     val[x][createTime] = (displayDate.getMonth() + 1) + "/" + displayDate.getDate() + "/" + displayDate.getFullYear() + " " + displayDate.getHours() + ":" + displayDate.getMinutes() + ":" + displayDate.getSeconds();
                     var listItemMarkup = Mustache.to_html(template, val[x]);
