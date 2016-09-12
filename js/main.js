@@ -366,6 +366,9 @@ var deleteNotificationStore = function() {
         .onsuccess = function(event) {
             console.log("Successfully cleared notifications IndexedDB store.");
         }
+        .onerror = function(event) {
+            console.log("Error clearing notifications store.")
+        }
 };
 
 var getCachedNotifications = function() {
@@ -374,6 +377,9 @@ var getCachedNotifications = function() {
         .getAll()
         .onsuccess = function(event) {
             cachedNotificationsDeferred.resolve(event.target.result);
+        }
+        .onerror = function(event) {
+            console.log("Error getting notification list from store.")
         }
 };
 
