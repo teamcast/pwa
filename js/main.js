@@ -165,7 +165,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                             $("#subscription-form")[0].reset();
                             $(".mdl-card").hide();
                             $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
-                            $(".unsubscribe-card, #unsubscribe-btn, #profile-btn").show();
+                            $(".unsubscribe-card, #unsubscribe-btn, #profile-btn, #inbox-btn").show();
                             $("#profile-accountid").val(profileObj.accountId);
                             $("#profile-firstname").val(profileObj.firstName);
                             $("#profile-lastname").val(profileObj.lastName);
@@ -205,6 +205,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                                 url: restBaseUrl + "accounts/" + profileObj.accountId,
                                 complete: function() {
                                     localStorage.removeItem("profile");
+                                    deleteIndexedDBStores();
 
                                     $("#profile-form")[0].reset();
                                     $(".mdl-card, #unsubscribe-btn, #profile-btn, #inbox-btn").hide();
@@ -304,6 +305,12 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
             layout.MaterialLayout.toggleDrawer();
         })
+
+        $("#inbox-btn").on("click", function(e) {
+            e.preventDefault();
+
+            getCachedNotifications();
+        })
     });
 } else {
     $("header, footer").remove();
@@ -311,3 +318,27 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
     $(".not-supported-card").show();
     $(".teamcast-pwa.mdl-layout").removeClass("invisible");
 }
+
+var teamcastIDB;
+var openDBRequest = window.indexedDB.open("teamcastIDB", 1);
+
+openDBRequest.onsuccess = function(e) {
+    teamcastIDB = e.target.result;
+}
+openDBRequest.onerror = function(e) {
+    console.log("FROM CLIENT: Error opening IndexedDB");
+}
+
+var deleteIndexedDBStores = function() {
+    teamcastIDB.deleteObjectStore("users");
+    teamcastIDB.deleteObjectStore("notifications");
+};
+
+var getCachedNotifications = function() {
+    teamcastIDB.transaction("notifications")
+        .objectStore("notifications")
+        .getAll()
+        .onsuccess = function(event) {
+        console.log(event.target.result);
+    };
+};
