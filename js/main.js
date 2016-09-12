@@ -350,17 +350,17 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
 var teamcastIDB;
 var cachedNotificationsDeferred = new $.Deferred(),
-    openDBRequest = window.indexedDB.open("teamcastIDB", 1);
+    /*openDBRequest = window.indexedDB.open("teamcastIDB", 1);
 
 openDBRequest.onsuccess = function(e) {
     teamcastIDB = e.target.result;
 }
 openDBRequest.onerror = function(e) {
     console.log("FROM CLIENT: Error opening IndexedDB");
-}
+}*/
 
 var deleteNotificationStore = function() {
-    teamcastIDB.transaction("notifications")
+    /*teamcastIDB.transaction("notifications")
         .objectStore("notifications")
         .clear()
         .onsuccess = function(event) {
@@ -368,11 +368,11 @@ var deleteNotificationStore = function() {
         }
         .onerror = function(event) {
             console.log("Error clearing notifications store.")
-        }
+        }*/
 };
 
 var getCachedNotifications = function() {
-    teamcastIDB.transaction("notifications")
+    /*teamcastIDB.transaction("notifications")
         .objectStore("notifications")
         .getAll()
         .onsuccess = function(event) {
@@ -380,11 +380,11 @@ var getCachedNotifications = function() {
         }
         .onerror = function(event) {
             console.log("Error getting notification list from store.")
-        }
+        }*/
 };
 
 var updateNotificationProperty = function(announcementId, propertyName, propertyVal) {
-    var objectStore = teamcastIDB.transaction("notifications").objectStore("notifications");
+    /*var objectStore = teamcastIDB.transaction("notifications").objectStore("notifications");
     var request = objectStore.get(announcementId);
 
     request.onsuccess = function(event) {
@@ -395,5 +395,5 @@ var updateNotificationProperty = function(announcementId, propertyName, property
         requestUpdate.onsuccess = function(event) {
             console.log("SUCCESSFULLY UPDATED NOTIFICATION ID " + announcementId + ": ", {propertyName: propertyVal});
         };
-    }
+    }*/
 }
