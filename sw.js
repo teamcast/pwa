@@ -336,8 +336,10 @@ self.updateStorageCache = function(request, cacheName) {
           if (response.type === "basic" && response.status === 200) {
             shouldCache = cacheName;
           } else if (response.type === "opaque") {
+            console.log(requestURL.hostname);
+
             if (requestURL.hostname.indexOf("teamcast-rest.herokuapp.com") > -1) {
-              shouldCache = cacheName;
+              console.log("CACHING IMAGE FROM teamcast-rest.herokuapp.com")
             } else {
               return response;
             }
@@ -353,7 +355,7 @@ self.updateStorageCache = function(request, cacheName) {
 
         var responseToCache = response.clone();
 
-        caches.open(cacheName)
+        caches.open(shouldCache)
             .then(function(cache) {
               console.log("CACHENAME: ", cacheName);
               cache.put(request, responseToCache);
