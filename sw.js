@@ -207,8 +207,7 @@ self.addEventListener('push', function(event) {
       var imagesUrl = restBaseUrl + "images/" + jsonPayload.imgId;
 
       fetch(imagesUrl, {
-        method: 'GET',
-        mode: 'no-cors'
+        method: 'GET'
       })
           .then(function(data) {
             console.log('Successfully requested image in notification content');
@@ -324,15 +323,33 @@ self.addEventListener('message', function(event) {
 
 self.updateStorageCache = function(request, cacheName) {
   console.log("updateStorageCache called for: ", cacheName);
+  var requestURL = new URL(request.url);
+
   return fetch(request).then(
       function(response) {
         // Check if we received a valid response
-        if (!response || response.status !== 200 || response.type !== 'basic') {
+        var shouldCache = false;
+
+        if (!response || response.status !== 200) {
+          return response;
+        } else {
+          if (response.type === "basic" && response.status === 200) {
+            shouldCache = cacheName;
+          } else if (response.type === "opaque") {
+            if (requestURL.hostname.indexOf("teamcast-rest.herokuapp.com") > -1) {
+              shouldCache = cacheName;
+            } else {
+              return response;
+            }
+          }
+        }
+
+        /*if (!response || response.status !== 200 || response.type !== 'basic') {
           console.log("RESPONSE: ", response);
           console.log("RESPONSE STATUS: ", response.status);
           console.log("RESPONSE TYPE: ", response.type);
           return response;
-        }
+        }*/
 
         var responseToCache = response.clone();
 
