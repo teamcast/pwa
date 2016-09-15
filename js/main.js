@@ -3,6 +3,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
     var restBaseUrl = "https://teamcast-rest.herokuapp.com/rest/";
     var teamcastIDB,
+        openDBRequest,
         cachedNotificationDeferred,
         cachedNotificationListDeferred;
 
@@ -25,7 +26,18 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         });
 
     navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-        var openDBRequest = indexedDB.open("teamcastIDB", 1);
+        openDBRequest = indexedDB.open("teamcastIDB", 1);
+        openDBRequest.onupgradeneeded = function(e) {
+            var thisDB = e.target.result;
+            if (!thisDB.objectStoreNames.contains("users")) {
+                thisDB.createObjectStore("users", {
+                    autoIncrement: true
+                });
+                thisDB.createObjectStore("notifications", {
+                    autoIncrement: true
+                });
+            }
+        }
         openDBRequest.onsuccess = function(e) {
             console.log("FROM CLIENT: Successfully opened IndexedDB");
             teamcastIDB = e.target.result;

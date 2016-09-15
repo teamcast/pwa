@@ -32,7 +32,7 @@ var teamcastIDB,
 
 var openDBRequest = indexedDB.open("teamcastIDB", 1);
 
-openDBRequest.onupgradeneeded = function(e) {
+/*openDBRequest.onupgradeneeded = function(e) {
   var thisDB = e.target.result;
   if (!thisDB.objectStoreNames.contains("users")) {
     thisDB.createObjectStore("users", {
@@ -42,7 +42,7 @@ openDBRequest.onupgradeneeded = function(e) {
       autoIncrement: true
     });
   }
-}
+}*/
 openDBRequest.onsuccess = function(e) {
   teamcastIDB = e.target.result;
 }
