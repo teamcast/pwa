@@ -165,7 +165,6 @@ main {
     background-repeat: no-repeat;
     border-top: solid 2px #82BC00;
     z-index: 5;
-    transition: visibility 1s;
 }
 @media (max-height: 320px) {
     .teamcast-pwa.mdl-layout .mdl-mini-footer {
