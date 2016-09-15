@@ -328,21 +328,15 @@ self.updateStorageCache = function(request, cacheName) {
   return fetch(request).then(
       function(response) {
         // Check if we received a valid response
-        var shouldCache = false;
-
         if (!response) {
           return response;
         } else {
           if (response.type === "basic" && response.status === 200) {
-            shouldCache = cacheName;
-          } else if (response.type === "opaque") {
-            console.log(requestURL.hostname);
-
-            if (requestURL.hostname.indexOf("teamcast-rest.herokuapp.com") > -1) {
-              console.log("CACHING IMAGE FROM teamcast-rest.herokuapp.com")
-            } else {
-              return response;
-            }
+            console.log("CACHING TEAMCAST STATIC FILES");
+          } else if (response.type === "opaque" && requestURL.hostname.indexOf("teamcast") > -1) {
+            console.log("CACHING IMAGE FROM teamcast-rest.herokuapp.com")
+          } else {
+            return response;
           }
         }
 
@@ -355,7 +349,7 @@ self.updateStorageCache = function(request, cacheName) {
 
         var responseToCache = response.clone();
 
-        caches.open(shouldCache)
+        caches.open(cacheName)
             .then(function(cache) {
               console.log("CACHENAME: ", cacheName);
               cache.put(request, responseToCache);
