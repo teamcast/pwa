@@ -1,6 +1,7 @@
 importScripts("/cache-polyfill.js");
 
-var teamcastIDB,
+var openDBRequest,
+    teamcastIDB,
     staticCache = "teamcast-static-cache",
     dataImageCache = "teamcast-data-cache",
     restBaseUrl = "https://teamcast-rest.herokuapp.com/rest/",
@@ -30,28 +31,27 @@ var teamcastIDB,
       '/fonts/material-icons.woff2'
     ];
 
-var openDBRequest = indexedDB.open("teamcastIDB", 1);
-
-/*openDBRequest.onupgradeneeded = function(e) {
-  var thisDB = e.target.result;
-  if (!thisDB.objectStoreNames.contains("users")) {
-    thisDB.createObjectStore("users", {
-      autoIncrement: true
-    });
-    thisDB.createObjectStore("notifications", {
-      autoIncrement: true
-    });
-  }
-}*/
-openDBRequest.onsuccess = function(e) {
-  teamcastIDB = e.target.result;
-}
-openDBRequest.onerror = function(e) {
-  console.log("Error opening IndexedDB");
-}
-
 self.addEventListener("install", function(event) {
   console.log("Event: Install");
+
+  openDBRequest = indexedDB.open("teamcastIDB", 1);
+  openDBRequest.onupgradeneeded = function(e) {
+    var thisDB = e.target.result;
+    if (!thisDB.objectStoreNames.contains("users")) {
+      thisDB.createObjectStore("users", {
+        autoIncrement: true
+      });
+      thisDB.createObjectStore("notifications", {
+        autoIncrement: true
+      });
+    }
+  }
+  openDBRequest.onsuccess = function(e) {
+    teamcastIDB = e.target.result;
+  }
+  openDBRequest.onerror = function(e) {
+    console.log("Error opening IndexedDB");
+  }
 
   event.waitUntil(
       self.skipWaiting(),
