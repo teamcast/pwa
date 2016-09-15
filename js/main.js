@@ -249,7 +249,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         $('#unsubscribe-btn').on('click', function(e) {
             e.preventDefault();
 
-            if (confirm("Are you sure you want to unsubscribe from TeamCast?")) {
+            //if (confirm("Are you sure you want to unsubscribe from TeamCast?")) {
                 var layout = document.querySelector('.mdl-layout');
                 layout.MaterialLayout.toggleDrawer();
 
@@ -285,7 +285,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                             $(".loading-overlay").addClass("hidden");
                         })
                     });
-            }
+            //}
         });
 
         $('#notif-card-close-btn').on('click', function(e) {
