@@ -330,7 +330,7 @@ self.updateStorageCache = function(request, cacheName) {
         // Check if we received a valid response
         var shouldCache = false;
 
-        if (!response || response.status !== 200) {
+        if (!response) {
           return response;
         } else {
           if (response.type === "basic" && response.status === 200) {
