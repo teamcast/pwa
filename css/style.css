@@ -39,6 +39,7 @@ main {
     width: 100%;
     box-sizing: border-box;
     height: 100%;
+    margin-bottom: 83px;
 }
 .page-content {
     max-width: 600px;
@@ -155,6 +156,10 @@ main {
     background-color: #000080;
 }
 .teamcast-pwa.mdl-layout .mdl-mini-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     padding: 15px;
     font-size: 11px;
     background-color: #40B4E5;
@@ -272,6 +277,7 @@ main {
     background-position: calc(100% + 145px) bottom;
     padding: 25px 25px 10px;
     background-color: black;
+    min-height: 120px;
 }
 .teamcast-pwa.mdl-layout .testimonial-card p {
     font-size: 1.2rem;
