@@ -207,7 +207,8 @@ self.addEventListener('push', function(event) {
       var imagesUrl = restBaseUrl + "images/" + jsonPayload.imgId;
 
       fetch(imagesUrl, {
-        method: 'GET'
+        method: 'GET',
+        mode: 'no-cors'
       })
           .then(function(data) {
             console.log('Successfully requested image in notification content');
