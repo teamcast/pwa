@@ -383,13 +383,17 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
 
                 $(".mdl-list", ".inbox-card").empty();
 
-                for (x = 0; x < listData.length; x++) {
-                    var displayDate = new Date(listData[x]["createTime"]);
+                if (!listData.length) {
+                    $(".mdl-list", ".inbox-card").append($("#notif-list-empty-template").html());;
+                } else {
+                    for (x = 0; x < listData.length; x++) {
+                        var displayDate = new Date(listData[x]["createTime"]);
 
-                    listData[x]["createTime"] = displayDate.toLocaleString();
-                    var listItemMarkup = Mustache.to_html(template, listData[x]);
+                        listData[x]["createTime"] = displayDate.toLocaleString();
+                        var listItemMarkup = Mustache.to_html(template, listData[x]);
 
-                    $(".mdl-list", ".inbox-card").append(listItemMarkup);
+                        $(".mdl-list", ".inbox-card").append(listItemMarkup);
+                    }
                 }
 
                 $(".mdl-card").hide();
@@ -436,6 +440,12 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                         var optMarkup = Mustache.to_html(template, data);
                         var newRadio = $(optMarkup)[0];
                         componentHandler.upgradeElement(newRadio);
+
+                        if (cachedNotifData.options[x] == cachedNotifData.response) {
+                            $(newRadio).addClass("is-checked");
+                        }
+
+                        $("input", $(newRadio)).attr("disabled","disabled");
 
                         $(".options-container", ".cached-notification-card").append(newRadio);
                     }

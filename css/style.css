@@ -70,6 +70,10 @@ main {
     background-repeat: no-repeat;
     z-index: 5;
 }
+.teamcast-pwa.mdl-layout .mdl-layout__header > .mdl-button.inbox-back-btn {
+    color: white;
+    display: block;
+}
 .teamcast-pwa.mdl-layout .mdl-layout__content > .loading-overlay {
     position: fixed;
     display: table;
