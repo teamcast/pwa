@@ -393,10 +393,17 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                 }
 
                 $(".mdl-card").hide();
+                $(".inbox-back-btn, .mdl-layout__drawer-button, .mdl-layout-title").toggleClass("hidden");
                 $(".inbox-card").show();
 
                 layout.MaterialLayout.toggleDrawer();
             })
+        })
+
+        $(".inbox-back-btn").on("click", function(e) {
+            $(".mdl-card").hide();
+            $(".unsubscribe-card").show();
+            $(".inbox-back-btn, .mdl-layout__drawer-button, .mdl-layout-title").toggleClass("hidden");
         })
 
         $(".inbox-card").on("click", "button", function(e) {
