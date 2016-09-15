@@ -327,6 +327,9 @@ self.updateStorageCache = function(request, cacheName) {
       function(response) {
         // Check if we received a valid response
         if (!response || response.status !== 200 || response.type !== 'basic') {
+          console.log("RESPONSE: ", response);
+          console.log("RESPONSE STATUS: ", response.status);
+          console.log("RESPONSE TYPE: ", response.type);
           return response;
         }
 
@@ -334,6 +337,7 @@ self.updateStorageCache = function(request, cacheName) {
 
         caches.open(cacheName)
             .then(function(cache) {
+              console.log("CACHENAME: ", cacheName);
               cache.put(request, responseToCache);
             });
 
