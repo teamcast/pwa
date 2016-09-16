@@ -48,9 +48,10 @@ self.addEventListener("install", function(event) {
   }
   openDBRequest.onsuccess = function(e) {
     teamcastIDB = e.target.result;
+    console.log("FROM SW - Successfully opened IndexedDB");
   }
   openDBRequest.onerror = function(e) {
-    console.log("Error opening IndexedDB");
+    console.log("FROM SW - Error opening IndexedDB");
   }
 
   event.waitUntil(
