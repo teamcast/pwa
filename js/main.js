@@ -55,6 +55,15 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
             }
         };
 
+        var deleteUsersStore = function() {
+            teamcastIDB.transaction("users", "readwrite")
+                .objectStore("users")
+                .clear()
+                .onsuccess = function(event) {
+                console.log("Successfully cleared users IndexedDB store.");
+            }
+        };
+
         var getCachedNotificationList = function() {
             cachedNotificationListDeferred = new $.Deferred();
             teamcastIDB.transaction("notifications")
@@ -292,6 +301,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                             });
 
                             localStorage.removeItem("profile");
+                            deleteUsersStore();
                             deleteNotificationStore();
                             deleteNotificationImageCache();
 
