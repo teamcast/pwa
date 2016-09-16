@@ -97,7 +97,8 @@ self.addEventListener("install", function(event) {
 self.addEventListener("activate", function(event) {
   console.log("Event: Activate");
 
-  var cacheWhitelist = ["teamcast-static-cache", "teamcast-data-cache"];
+  //var cacheWhitelist = ["teamcast-static-cache", "teamcast-data-cache"];
+  var cacheWhitelist = ["teamcast-static-cache"];
 
   /*openDBRequest = indexedDB.open("teamcastIDB", 1);
   openDBRequest.onupgradeneeded = function(e) {
