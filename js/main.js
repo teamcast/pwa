@@ -35,6 +35,17 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
             console.log("FROM CLIENT: Error opening IndexedDB");
         }
 
+        var deleteNotificationImageCache = function() {
+            caches.keys()
+                .then(function(allCaches) {
+                    allCaches.map(function(cacheName) {
+                        if (cacheName == "teamcast-data-cache") {
+                            return caches.delete(cacheName);
+                        }
+                    });
+                })
+        }
+
         var deleteNotificationStore = function() {
             teamcastIDB.transaction("notifications", "readwrite")
                 .objectStore("notifications")
@@ -268,6 +279,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                                 complete: function() {
                                     localStorage.removeItem("profile");
                                     deleteNotificationStore();
+                                    deleteNotificationImageCache();
 
                                     $("#profile-form")[0].reset();
                                     $(".mdl-card, #unsubscribe-btn, #profile-btn, #inbox-btn").hide();
