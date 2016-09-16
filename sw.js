@@ -31,6 +31,28 @@ var openDBRequest,
       '/fonts/material-icons.woff2'
     ];
 
+openDBRequest = indexedDB.open("teamcastIDB", 1);
+openDBRequest.onupgradeneeded = function(e) {
+  var thisDB = e.target.result;
+  if (!thisDB.objectStoreNames.contains("users")) {
+    thisDB.createObjectStore("users", {
+      autoIncrement: true
+    });
+    thisDB.createObjectStore("notifications", {
+      autoIncrement: true
+    });
+
+    console.log("FROM SW - Successfully created object stores");
+  }
+}
+openDBRequest.onsuccess = function(e) {
+  teamcastIDB = e.target.result;
+  console.log("FROM SW - Successfully opened IndexedDB");
+}
+openDBRequest.onerror = function(e) {
+  console.log("FROM SW - Error opening IndexedDB");
+}
+
 self.addEventListener("install", function(event) {
   console.log("Event: Install");
 
@@ -77,7 +99,7 @@ self.addEventListener("activate", function(event) {
 
   var cacheWhitelist = ["teamcast-static-cache", "teamcast-data-cache"];
 
-  openDBRequest = indexedDB.open("teamcastIDB", 1);
+  /*openDBRequest = indexedDB.open("teamcastIDB", 1);
   openDBRequest.onupgradeneeded = function(e) {
     var thisDB = e.target.result;
     if (!thisDB.objectStoreNames.contains("users")) {
@@ -95,7 +117,7 @@ self.addEventListener("activate", function(event) {
   }
   openDBRequest.onerror = function(e) {
     console.log("FROM SW - Error opening IndexedDB");
-  }
+  }*/
 
   //Delete unwanted caches
   event.waitUntil(
