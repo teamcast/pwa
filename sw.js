@@ -243,8 +243,20 @@ self.addEventListener('push', function(event) {
 
   if (event.data) {
     var jsonPayload = JSON.parse(event.data.text());
-    var transaction = teamcastIDB.transaction("users", "readwrite");
-    var store = transaction.objectStore("users");
+
+    if (!teamcastIDB) {
+      openDBRequest = indexedDB.open("teamcastIDB", 1);
+      openDBRequest.onsuccess = function(e) {
+        teamcastIDB = e.target.result;
+        console.log("FROM SW PUSH - Successfully opened IndexedDB");
+      }
+      openDBRequest.onerror = function(e) {
+        console.log("FROM SW PUSH - Error opening IndexedDB");
+      }
+    }
+
+    var usersTransaction = teamcastIDB.transaction("users", "readwrite");
+    var store = usersTransaction.objectStore("users");
 
     if (jsonPayload.imgId && jsonPayload.imgId.length) {
       var imagesUrl = restBaseUrl + "images/" + jsonPayload.imgId;
@@ -297,8 +309,8 @@ self.addEventListener('push', function(event) {
     notificationOptions.data.body.imgId = jsonPayload.imgId;
     notificationOptions.data.body.options = jsonPayload.options;
 
-    var transaction = teamcastIDB.transaction("notifications", "readwrite");
-    var store = transaction.objectStore("notifications");
+    var notificationsTransaction = teamcastIDB.transaction("notifications", "readwrite");
+    var store = notificationsTransaction.objectStore("notifications");
     var addRequest = store.add(notificationOptions.data.body, jsonPayload.id);
 
     addRequest.onerror = function() {
