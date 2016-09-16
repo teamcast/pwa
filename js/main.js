@@ -272,16 +272,13 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                         subscription.unsubscribe().then(function(successful) {
                             var profileObj = JSON.parse(localStorage.getItem("profile"));
 
+                            $("#profile-form")[0].reset();
+
                             $.ajax({
                                 type: 'DELETE',
                                 data: JSON.stringify(profileObj),
                                 url: restBaseUrl + "accounts/" + profileObj.accountId,
                                 complete: function() {
-                                    localStorage.removeItem("profile");
-                                    deleteNotificationStore();
-                                    deleteNotificationImageCache();
-
-                                    $("#profile-form")[0].reset();
                                     $(".mdl-card, #unsubscribe-btn, #profile-btn, #inbox-btn").hide();
                                     $(".subscription-card").show();
                                     $("#subscribe-btn").prop("disabled", true)
@@ -293,6 +290,11 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                                     console.log(thrownError);
                                 }
                             });
+
+                            localStorage.removeItem("profile");
+                            deleteNotificationStore();
+                            deleteNotificationImageCache();
+
                         }).catch(function(e) {
                             // Unsubscribe failed
                             $(".loading-overlay").addClass("hidden");
