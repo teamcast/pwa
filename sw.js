@@ -99,7 +99,7 @@ self.addEventListener('fetch', function(event) {
   if (event.request.url === accountsUrl) {
     console.log("FETCH REQUEST FOR ACCOUNTS URL - ", event.request.url);
 
-    if (teamcastIDB.objectStoreNames.contains("users")) {
+    if (teamcastIDB && teamcastIDB.objectStoreNames.contains("users")) {
       var transaction = teamcastIDB.transaction("users", "readwrite");
       var store = transaction.objectStore("users");
       var deleteRequest = store.delete("accountId");

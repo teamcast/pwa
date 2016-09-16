@@ -173,6 +173,9 @@ main {
     z-index: 5;
 }
 @media (max-height: 320px) {
+    main {
+        margin-bottom: 0;
+    }
     .teamcast-pwa.mdl-layout .mdl-mini-footer {
         display: none;
     }
