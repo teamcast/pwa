@@ -36,7 +36,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         }
 
         var deleteNotificationImageCache = function() {
-            caches.keys()
+            return caches.keys()
                 .then(function(allCaches) {
                     allCaches.map(function(cacheName) {
                         if (cacheName == "teamcast-data-cache") {
