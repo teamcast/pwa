@@ -186,17 +186,19 @@ self.addEventListener('push', function(event) {
     badge: './images/logo-72x72.png',
     vibrate: [300, 100, 300, 100, 300],
     tag: 'teamcast-push-notification' + jsonPayload.id,
-    body: {
-      heading: jsonPayload.title,
-      trayMessage: jsonPayload.message,
-      announcementId: jsonPayload.id,
-      createTime: jsonPayload.createTime,
-      content: jsonPayload.content,
-      options: jsonPayload.options,
-      imgId: jsonPayload.imgId,
-      received: 1,
-      seen: 0,
-      response: ""
+    data: {
+      body: {
+        heading: jsonPayload.title,
+        trayMessage: jsonPayload.message,
+        announcementId: jsonPayload.id,
+        createTime: jsonPayload.createTime,
+        content: jsonPayload.content,
+        options: jsonPayload.options,
+        imgId: jsonPayload.imgId,
+        received: 1,
+        seen: 0,
+        response: ""
+      }
     }
   };
 
