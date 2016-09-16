@@ -34,7 +34,7 @@ var openDBRequest,
 self.addEventListener("install", function(event) {
   console.log("Event: Install");
 
-  openDBRequest = indexedDB.open("teamcastIDB", 1);
+  /*openDBRequest = indexedDB.open("teamcastIDB", 1);
   openDBRequest.onupgradeneeded = function(e) {
     var thisDB = e.target.result;
     if (!thisDB.objectStoreNames.contains("users")) {
@@ -52,7 +52,7 @@ self.addEventListener("install", function(event) {
   }
   openDBRequest.onerror = function(e) {
     console.log("FROM SW - Error opening IndexedDB");
-  }
+  }*/
 
   event.waitUntil(
       self.skipWaiting(),
@@ -76,6 +76,26 @@ self.addEventListener("activate", function(event) {
   console.log("Event: Activate");
 
   var cacheWhitelist = ["teamcast-static-cache", "teamcast-data-cache"];
+
+  openDBRequest = indexedDB.open("teamcastIDB", 1);
+  openDBRequest.onupgradeneeded = function(e) {
+    var thisDB = e.target.result;
+    if (!thisDB.objectStoreNames.contains("users")) {
+      thisDB.createObjectStore("users", {
+        autoIncrement: true
+      });
+      thisDB.createObjectStore("notifications", {
+        autoIncrement: true
+      });
+    }
+  }
+  openDBRequest.onsuccess = function(e) {
+    teamcastIDB = e.target.result;
+    console.log("FROM SW - Successfully opened IndexedDB");
+  }
+  openDBRequest.onerror = function(e) {
+    console.log("FROM SW - Error opening IndexedDB");
+  }
 
   //Delete unwanted caches
   event.waitUntil(
