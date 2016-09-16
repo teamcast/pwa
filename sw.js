@@ -213,15 +213,17 @@ self.addEventListener('push', function(event) {
     openDBRequest = indexedDB.open("teamcastIDB", 1);
     openDBRequest.onsuccess = function(e) {
       teamcastIDB = e.target.result;
+      self.sendReceivedNotificationStatus(jsonPayload.id);
+      self.cacheNotification(jsonPayload.id, notificationOptions.data.body);
       console.log("FROM SW PUSH - Successfully opened IndexedDB");
     }
     openDBRequest.onerror = function(e) {
       console.log("FROM SW PUSH - Error opening IndexedDB");
     }
+  } else {
+    self.sendReceivedNotificationStatus(jsonPayload.id);
+    self.cacheNotification(jsonPayload.id, notificationOptions.data.body);
   }
-
-  var usersTransaction = teamcastIDB.transaction("users", "readwrite");
-  var store = usersTransaction.objectStore("users");
 
   if (jsonPayload.imgId && jsonPayload.imgId.length) {
     var imagesUrl = restBaseUrl + "images/" + jsonPayload.imgId;
@@ -236,7 +238,24 @@ self.addEventListener('push', function(event) {
           console.log('Failed requesting image in notification content: ', error);
         });
   }
+});
 
+self.cacheNotification= function(announcementId, notificationData) {
+  var notificationsTransaction = teamcastIDB.transaction("notifications", "readwrite");
+  var store = notificationsTransaction.objectStore("notifications");
+  var addRequest = store.add(notificationData, announcementId);
+  addRequest.onerror = function() {
+    console.log("Error saving notification to IndexedDB");
+
+  }
+  addRequest.onsuccess = function() {
+    console.log("Notification saved to IndexedDB");
+  }
+}
+
+self.sendReceivedNotificationStatus = function(announcementId) {
+  var usersTransaction = teamcastIDB.transaction("users", "readwrite");
+  var store = usersTransaction.objectStore("users");
   var request = store.get("accountId");
   request.onerror = function(e) {
     console.log("Error getting accountId from IndexedDB");
@@ -245,7 +264,7 @@ self.addEventListener('push', function(event) {
     var accountId = request.result;
     console.log("accountId from IndexedDB :", accountId);
 
-    var apiUrl = restBaseUrl +"announcements/" + jsonPayload.id + "/received/" + accountId;
+    var apiUrl = restBaseUrl +"announcements/" + announcementId + "/received/" + accountId;
     fetch(apiUrl, {
       method: 'PUT',
       headers: {
@@ -254,24 +273,13 @@ self.addEventListener('push', function(event) {
       body: {}
     })
         .then(function(data) {
-          console.log('Successfully sent notification received status for announcement with ID: ' + jsonPayload.id);
+          console.log('Successfully sent notification received status for announcement with ID: ' + announcementId);
         })
         .catch(function(error) {
           console.log('Sending notification received status failed: ', error);
         });
   }
-
-  var notificationsTransaction = teamcastIDB.transaction("notifications", "readwrite");
-  var store = notificationsTransaction.objectStore("notifications");
-  var addRequest = store.add(notificationOptions.data.body, jsonPayload.id);
-  addRequest.onerror = function() {
-    console.log("Error saving notification to IndexedDB");
-
-  }
-  addRequest.onsuccess = function() {
-    console.log("Notification saved to IndexedDB");
-  }
-});
+}
 
 self.addEventListener("notificationclick", function(event) {
   console.log("Event: NotificationClick", event);
