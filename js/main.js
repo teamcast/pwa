@@ -259,6 +259,12 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                             profileObj.accountId = resp.id;
                             localStorage.setItem("profile", JSON.stringify(profileObj));
 
+                            caches.open("teamcast-account-cache")
+                                .then(function(cache) {
+                                    console.log("CACHENAME: ", "teamcast-account-cache");
+                                    cache.put(new URL("https://teamcast-rest.herokuapp.com/rest/accounts"), new Response(resp.id));
+                                });
+
                             $("#subscription-form")[0].reset();
                             $(".mdl-card").hide();
                             $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());

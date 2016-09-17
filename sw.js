@@ -100,32 +100,10 @@ self.addEventListener('fetch', function(event) {
   var accountsUrl = restBaseUrl + "accounts";
   var imagesUrl = restBaseUrl + "images";
 
-  if (event.request.url === accountsUrl) {
+  /*if (event.request.url === accountsUrl) {
     console.log("FETCH REQUEST FOR ACCOUNTS URL - ", event.request.url);
 
     event.respondWith(
-        /*fetch(event.request)
-            .then(function(response) {
-              var clonedResponse = response.clone();
-
-              clonedResponse.json().then(function(json) {
-                var accountId = json.id;
-                var transaction = teamcastIDB.transaction("users", "readwrite");
-                var store = transaction.objectStore("users");
-                var addRequest = store.add(accountId, "accountId");
-
-                addRequest.onerror = function() {
-                  console.log("Error saving accountId to IndexedDB");
-
-                }
-                addRequest.onsuccess = function() {
-                  console.log("accountId saved to IndexedDB");
-                }
-              });
-
-              return response;
-            })*/
-
         caches.match(event.request)
             .then(function(response) {
               var fetchRequest = event.request.clone();
@@ -133,7 +111,7 @@ self.addEventListener('fetch', function(event) {
               return self.updateAccountCache(fetchRequest, accountCache);
             })
     );
-  } else if (event.request.url.indexOf(imagesUrl) == 0) {
+  } else*/ if (event.request.url.indexOf(imagesUrl) == 0) {
     console.log("FETCH REQUEST FOR IMAGES URL - ", event.request.url);
     event.respondWith(
         caches.match(event.request)
@@ -340,7 +318,7 @@ self.updateStorageCache = function(request, cacheName) {
   )
 }
 
-self.updateAccountCache = function(request, cacheName) {
+/*self.updateAccountCache = function(request, cacheName) {
   console.log("updateAccountCache called for: ", cacheName);
 
   var requestURL = new URL(request.url);
@@ -363,13 +341,13 @@ self.updateAccountCache = function(request, cacheName) {
         return response;
       }
   )
-}
+}*/
 
 self.getAccountId = function() {
   caches.match(new URL(restBaseUrl + "accounts"))
       .then(function(response) {
-        return response.json().then(function(json) {
-          return json.id;
+        return response.text().then(function(text) {
+          return text;
         })
       })
 }
