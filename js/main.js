@@ -155,6 +155,8 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                 var profileObj = JSON.parse(localStorage.getItem("profile"));
                 var cacheDeferred = new $.Deferred();
 
+                cacheNotification(messageObj, cacheDeferred);
+
                 $.when(cacheDeferred).done(function(val) {
                     $.ajax({
                         type: 'PUT',
