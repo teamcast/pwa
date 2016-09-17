@@ -16,6 +16,25 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         }
     });
 
+    openDBRequest = indexedDB.open("teamcastIDB", 1);
+    openDBRequest.onupgradeneeded = function(e) {
+        var thisDB = e.target.result;
+        if (!thisDB.objectStoreNames.contains("notifications")) {
+            thisDB.createObjectStore("notifications", {
+                autoIncrement: true
+            });
+
+            console.log("FROM CLIENT - Successfully created object stores");
+        }
+    }
+    openDBRequest.onsuccess = function(e) {
+        console.log("FROM CLIENT: Successfully opened IndexedDB");
+        teamcastIDB = e.target.result;
+    }
+    openDBRequest.onerror = function(e) {
+        console.log("FROM CLIENT: Error opening IndexedDB");
+    }
+
     navigator.serviceWorker.register('/sw.js', {
         scope: '/'
     })
@@ -26,25 +45,6 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         });
 
     navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-        openDBRequest = indexedDB.open("teamcastIDB", 1);
-        openDBRequest.onupgradeneeded = function(e) {
-            var thisDB = e.target.result;
-            if (!thisDB.objectStoreNames.contains("notifications")) {
-                thisDB.createObjectStore("notifications", {
-                    autoIncrement: true
-                });
-
-                console.log("FROM CLIENT - Successfully created object stores");
-            }
-        }
-        openDBRequest.onsuccess = function(e) {
-            console.log("FROM CLIENT: Successfully opened IndexedDB");
-            teamcastIDB = e.target.result;
-        }
-        openDBRequest.onerror = function(e) {
-            console.log("FROM CLIENT: Error opening IndexedDB");
-        }
-
         var deleteDataCache = function() {
             return caches.keys()
                 .then(function(allCaches) {
