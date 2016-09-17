@@ -4,6 +4,7 @@ var openDBRequest,
     teamcastIDB,
     staticCache = "teamcast-static-cache",
     dataImageCache = "teamcast-data-cache",
+    accountCache = "teamcast-account-cache",
     restBaseUrl = "https://teamcast-rest.herokuapp.com/rest/",
     messageData,
     filesToCache = [
@@ -31,28 +32,6 @@ var openDBRequest,
       '/fonts/material-icons.woff2'
     ];
 
-openDBRequest = indexedDB.open("teamcastIDB", 1);
-openDBRequest.onupgradeneeded = function(e) {
-  var thisDB = e.target.result;
-  if (!thisDB.objectStoreNames.contains("users")) {
-    thisDB.createObjectStore("users", {
-      autoIncrement: true
-    });
-    thisDB.createObjectStore("notifications", {
-      autoIncrement: true
-    });
-
-    console.log("FROM SW - Successfully created object stores");
-  }
-}
-openDBRequest.onsuccess = function(e) {
-  teamcastIDB = e.target.result;
-  console.log("FROM SW - Successfully opened IndexedDB");
-}
-openDBRequest.onerror = function(e) {
-  console.log("FROM SW - Error opening IndexedDB");
-}
-
 self.addEventListener("install", function(event) {
   console.log("Event: Install");
 
@@ -77,7 +56,29 @@ self.addEventListener("install", function(event) {
 self.addEventListener("activate", function(event) {
   console.log("Event: Activate");
 
-  var cacheWhitelist = ["teamcast-static-cache", "teamcast-data-cache"];
+  openDBRequest = indexedDB.open("teamcastIDB", 1);
+  openDBRequest.onupgradeneeded = function(e) {
+    var thisDB = e.target.result;
+    if (!thisDB.objectStoreNames.contains("users")) {
+      thisDB.createObjectStore("users", {
+        autoIncrement: true
+      });
+      thisDB.createObjectStore("notifications", {
+        autoIncrement: true
+      });
+
+      console.log("FROM SW - Successfully created object stores");
+    }
+  }
+  openDBRequest.onsuccess = function(e) {
+    teamcastIDB = e.target.result;
+    console.log("FROM SW - Successfully opened IndexedDB");
+  }
+  openDBRequest.onerror = function(e) {
+    console.log("FROM SW - Error opening IndexedDB");
+  }
+
+  var cacheWhitelist = ["teamcast-static-cache", "teamcast-data-cache", "teamcast-account-cache"];
 
   //Delete unwanted caches
   event.waitUntil(
@@ -102,20 +103,8 @@ self.addEventListener('fetch', function(event) {
   if (event.request.url === accountsUrl) {
     console.log("FETCH REQUEST FOR ACCOUNTS URL - ", event.request.url);
 
-    /*if (teamcastIDB && teamcastIDB.objectStoreNames.contains("users")) {
-      var transaction = teamcastIDB.transaction("users", "readwrite");
-      var store = transaction.objectStore("users");
-      var deleteRequest = store.delete("accountId");
-      deleteRequest.onerror = function() {
-        console.log("Error deleting accountId from IndexedDB");
-      }
-      deleteRequest.onsuccess = function() {
-        console.log("Successfully deleted accountId from IndexedDB");
-      }
-    }*/
-
     event.respondWith(
-        fetch(event.request)
+        /*fetch(event.request)
             .then(function(response) {
               var clonedResponse = response.clone();
 
@@ -135,6 +124,13 @@ self.addEventListener('fetch', function(event) {
               });
 
               return response;
+            })*/
+
+        caches.match(event.request)
+            .then(function(response) {
+              var fetchRequest = event.request.clone();
+
+              return self.updateAccountCache(fetchRequest, accountCache);
             })
     );
   } else if (event.request.url.indexOf(imagesUrl) == 0) {
@@ -209,22 +205,6 @@ self.addEventListener('push', function(event) {
       ])
   );
 
-  if (!teamcastIDB) {
-    openDBRequest = indexedDB.open("teamcastIDB", 1);
-    openDBRequest.onsuccess = function(e) {
-      teamcastIDB = e.target.result;
-      self.sendReceivedNotificationStatus(jsonPayload.id);
-      self.cacheNotification(jsonPayload.id, notificationOptions.data.body);
-      console.log("FROM SW PUSH - Successfully opened IndexedDB");
-    }
-    openDBRequest.onerror = function(e) {
-      console.log("FROM SW PUSH - Error opening IndexedDB");
-    }
-  } else {
-    self.sendReceivedNotificationStatus(jsonPayload.id);
-    self.cacheNotification(jsonPayload.id, notificationOptions.data.body);
-  }
-
   if (jsonPayload.imgId && jsonPayload.imgId.length) {
     var imagesUrl = restBaseUrl + "images/" + jsonPayload.imgId;
 
@@ -238,9 +218,12 @@ self.addEventListener('push', function(event) {
           console.log('Failed requesting image in notification content: ', error);
         });
   }
+
+  self.sendReceivedNotificationStatus(jsonPayload.id);
+  /*self.cacheNotification(jsonPayload.id, notificationOptions.data.body);*/
 });
 
-self.cacheNotification= function(announcementId, notificationData) {
+/*self.cacheNotification= function(announcementId, notificationData) {
   var notificationsTransaction = teamcastIDB.transaction("notifications", "readwrite");
   var store = notificationsTransaction.objectStore("notifications");
   var addRequest = store.add(notificationData, announcementId);
@@ -251,34 +234,27 @@ self.cacheNotification= function(announcementId, notificationData) {
   addRequest.onsuccess = function() {
     console.log("Notification saved to IndexedDB");
   }
-}
+}*/
 
 self.sendReceivedNotificationStatus = function(announcementId) {
-  var usersTransaction = teamcastIDB.transaction("users", "readwrite");
-  var store = usersTransaction.objectStore("users");
-  var request = store.get("accountId");
-  request.onerror = function(e) {
-    console.log("Error getting accountId from IndexedDB");
-  }
-  request.onsuccess = function(e) {
-    var accountId = request.result;
-    console.log("accountId from IndexedDB :", accountId);
+  var accountId = self.getAccountId();
+  console.log("accountId from IndexedDB :", accountId);
 
-    var apiUrl = restBaseUrl +"announcements/" + announcementId + "/received/" + accountId;
-    fetch(apiUrl, {
-      method: 'PUT',
-      headers: {
-        "Content-type": "application/json"
-      },
-      body: {}
-    })
-        .then(function(data) {
-          console.log('Successfully sent notification received status for announcement with ID: ' + announcementId);
-        })
-        .catch(function(error) {
-          console.log('Sending notification received status failed: ', error);
-        });
-  }
+  var apiUrl = restBaseUrl +"announcements/" + announcementId + "/received/" + accountId;
+  fetch(apiUrl, {
+    method: 'PUT',
+    headers: {
+      "Content-type": "application/json"
+    },
+    body: {}
+  })
+      .then(function(data) {
+        console.log('Successfully sent notification received status for announcement with ID: ' + announcementId);
+      })
+      .catch(function(error) {
+        console.log('Sending notification received status failed: ', error);
+      });
+
 }
 
 self.addEventListener("notificationclick", function(event) {
@@ -351,12 +327,30 @@ self.updateStorageCache = function(request, cacheName) {
           }
         }
 
-        /*if (!response || response.status !== 200 || response.type !== 'basic') {
-          console.log("RESPONSE: ", response);
-          console.log("RESPONSE STATUS: ", response.status);
-          console.log("RESPONSE TYPE: ", response.type);
+        var responseToCache = response.clone();
+
+        caches.open(cacheName)
+            .then(function(cache) {
+              console.log("CACHENAME: ", cacheName);
+              cache.put(request, responseToCache);
+            });
+
+        return response;
+      }
+  )
+}
+
+self.updateAccountCache = function(request, cacheName) {
+  console.log("updateAccountCache called for: ", cacheName);
+
+  var requestURL = new URL(request.url);
+
+  return fetch(request).then(
+      function(response) {
+        // Check if we received a valid response
+        if (!response) {
           return response;
-        }*/
+        }
 
         var responseToCache = response.clone();
 
@@ -369,4 +363,13 @@ self.updateStorageCache = function(request, cacheName) {
         return response;
       }
   )
+}
+
+self.getAccountId = function() {
+  caches.match(new URL(restBaseUrl + "accounts"))
+      .then(function(response) {
+
+        return response.json().then(function(json) {
+          return json.id;
+      })
 }

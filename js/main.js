@@ -101,6 +101,20 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
             }
         }
 
+        var cacheNotification = function(messageObj, cacheDeferredObj) {
+            var notificationsTransaction = teamcastIDB.transaction("notifications", "readwrite");
+            var store = notificationsTransaction.objectStore("notifications");
+            var addRequest = store.add(messageObj, messageObj.announcementId);
+            addRequest.onerror = function() {
+                console.log("Error saving notification to IndexedDB");
+                cacheDeferredObj.resolve(false);
+            }
+            addRequest.onsuccess = function() {
+                console.log("Notification saved to IndexedDB");
+                cacheDeferredObj.resolve(true);
+            }
+        }
+
         serviceWorkerRegistration.pushManager.getSubscription()
             .then(function(subscription) {
                 $(".loading-overlay").removeClass("hidden");
@@ -138,19 +152,20 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
             if (event && event.data) {
                 var messageObj = event.data.body;
                 var profileObj = JSON.parse(localStorage.getItem("profile"));
+                var cacheDeferred = new $.Deferred();
 
-                $.ajax({
-                    type: 'PUT',
-                    url: restBaseUrl + "announcements/" + messageObj.announcementId + "/seen/" + profileObj.accountId,
-                    success: function() {
-                        updateNotificationProperty(messageObj.announcementId, "seen", 1);
-                    },
-                    error: function(jqxhr, error, thrownError) {
-                        console.log(jqxhr);
-                        console.log(error);
-                        console.log(thrownError);
-                    }
-                });
+                $.when(cacheDeferred).done(function(val) {
+                    $.ajax({
+                        type: 'PUT',
+                        url: restBaseUrl + "announcements/" + messageObj.announcementId + "/seen/" + profileObj.accountId,
+                        success: function() {
+                            updateNotificationProperty(messageObj.announcementId, "seen", 1);
+                        },
+                        error: function(jqxhr, error, thrownError) {
+                            console.log("Error setting announcement ID " + messageObj.announcementId + " to SEEN.");
+                        }
+                    });
+                })
 
                 $(".mdl-card").hide();
                 $(".notification-card").removeClass("has-media");
