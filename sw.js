@@ -368,8 +368,8 @@ self.updateAccountCache = function(request, cacheName) {
 self.getAccountId = function() {
   caches.match(new URL(restBaseUrl + "accounts"))
       .then(function(response) {
-
         return response.json().then(function(json) {
           return json.id;
+        })
       })
 }
