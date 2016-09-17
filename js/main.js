@@ -29,10 +29,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
         openDBRequest = indexedDB.open("teamcastIDB", 1);
         openDBRequest.onupgradeneeded = function(e) {
             var thisDB = e.target.result;
-            if (!thisDB.objectStoreNames.contains("users")) {
-                thisDB.createObjectStore("users", {
-                    autoIncrement: true
-                });
+            if (!thisDB.objectStoreNames.contains("notifications")) {
                 thisDB.createObjectStore("notifications", {
                     autoIncrement: true
                 });
@@ -48,11 +45,11 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
             console.log("FROM CLIENT: Error opening IndexedDB");
         }
 
-        var deleteNotificationImageCache = function() {
+        var deleteDataCache = function() {
             return caches.keys()
                 .then(function(allCaches) {
                     allCaches.map(function(cacheName) {
-                        if (cacheName == "teamcast-data-cache") {
+                        if (cacheName == "teamcast-data-cache" || cacheName == "teamcast-account-cache") {
                             return caches.delete(cacheName);
                         }
                     });
@@ -65,15 +62,6 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                 .clear()
                 .onsuccess = function(event) {
                 console.log("Successfully cleared notifications IndexedDB store.");
-            }
-        };
-
-        var deleteUsersStore = function() {
-            teamcastIDB.transaction("users", "readwrite")
-                .objectStore("users")
-                .clear()
-                .onsuccess = function(event) {
-                console.log("Successfully cleared users IndexedDB store.");
             }
         };
 
@@ -232,6 +220,9 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                     var layout = document.querySelector('.mdl-layout');
                     layout.MaterialLayout.toggleDrawer();
                 }
+                if (!$(".inbox-back-btn").hasClass("hidden")) {
+                    $(".inbox-back-btn, .mdl-layout__drawer-button, .mdl-layout-title").toggleClass("hidden");
+                }
             }
         });
 
@@ -335,9 +326,8 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                             });
 
                             localStorage.removeItem("profile");
-                            //deleteUsersStore();
                             deleteNotificationStore();
-                            deleteNotificationImageCache();
+                            deleteDataCache();
 
                         }).catch(function(e) {
                             // Unsubscribe failed

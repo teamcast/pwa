@@ -1,5 +1,3 @@
-importScripts("/cache-polyfill.js");
-
 var openDBRequest,
     teamcastIDB,
     staticCache = "teamcast-static-cache",
@@ -57,19 +55,6 @@ self.addEventListener("activate", function(event) {
   console.log("Event: Activate");
 
   openDBRequest = indexedDB.open("teamcastIDB", 1);
-  /*openDBRequest.onupgradeneeded = function(e) {
-    var thisDB = e.target.result;
-    if (!thisDB.objectStoreNames.contains("users")) {
-      thisDB.createObjectStore("users", {
-        autoIncrement: true
-      });
-      thisDB.createObjectStore("notifications", {
-        autoIncrement: true
-      });
-
-      console.log("FROM SW - Successfully created object stores");
-    }
-  }*/
   openDBRequest.onsuccess = function(e) {
     teamcastIDB = e.target.result;
     console.log("FROM SW - Successfully opened IndexedDB");
@@ -98,20 +83,9 @@ self.addEventListener('fetch', function(event) {
   console.log('Event: Fetch', event.request.url);
 
   var accountsUrl = restBaseUrl + "accounts";
-  var imagesUrl = restBaseUrl + "images";
+  var imagesUrl = restBaseUrl + "images";accountsUrl;
 
-  /*if (event.request.url === accountsUrl) {
-    console.log("FETCH REQUEST FOR ACCOUNTS URL - ", event.request.url);
-
-    event.respondWith(
-        caches.match(event.request)
-            .then(function(response) {
-              var fetchRequest = event.request.clone();
-
-              return self.updateAccountCache(fetchRequest, accountCache);
-            })
-    );
-  } else*/ if (event.request.url.indexOf(imagesUrl) == 0) {
+  if (event.request.url.indexOf(imagesUrl) == 0) {
     console.log("FETCH REQUEST FOR IMAGES URL - ", event.request.url);
     event.respondWith(
         caches.match(event.request)
@@ -129,7 +103,6 @@ self.addEventListener('fetch', function(event) {
             })
     );
   } else {
-    //console.log("FETCH REQUEST FOR OTHER URL - ", event.request.url);
     event.respondWith(
         caches.match(event.request)
             .then(function(response) {
@@ -198,21 +171,7 @@ self.addEventListener('push', function(event) {
   }
 
   self.sendReceivedNotificationStatus(jsonPayload.id);
-  /*self.cacheNotification(jsonPayload.id, notificationOptions.data.body);*/
 });
-
-/*self.cacheNotification= function(announcementId, notificationData) {
-  var notificationsTransaction = teamcastIDB.transaction("notifications", "readwrite");
-  var store = notificationsTransaction.objectStore("notifications");
-  var addRequest = store.add(notificationData, announcementId);
-  addRequest.onerror = function() {
-    console.log("Error saving notification to IndexedDB");
-
-  }
-  addRequest.onsuccess = function() {
-    console.log("Notification saved to IndexedDB");
-  }
-}*/
 
 self.sendReceivedNotificationStatus = function(announcementId) {
   caches.match(new URL(restBaseUrl + "accounts"))
@@ -319,37 +278,3 @@ self.updateStorageCache = function(request, cacheName) {
       }
   )
 }
-
-/*self.updateAccountCache = function(request, cacheName) {
-  console.log("updateAccountCache called for: ", cacheName);
-
-  var requestURL = new URL(request.url);
-
-  return fetch(request).then(
-      function(response) {
-        // Check if we received a valid response
-        if (!response) {
-          return response;
-        }
-
-        var responseToCache = response.clone();
-
-        caches.open(cacheName)
-            .then(function(cache) {
-              console.log("CACHENAME: ", cacheName);
-              cache.put(request, responseToCache);
-            });
-
-        return response;
-      }
-  )
-}*/
-
-/*self.getAccountId = function() {
-  caches.match(new URL(restBaseUrl + "accounts"))
-      .then(function(response) {
-        return response.text().then(function(text) {
-          return text;
-        })
-      })
-}*/
