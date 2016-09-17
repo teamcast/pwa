@@ -271,7 +271,10 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                                     cache.put(new URL("https://teamcast-rest.herokuapp.com/rest/accounts"), new Response(resp.id));
                                 });
 
-                            //$("input[type='text']", "#subscription-form").val("");
+                            $("#subscription-form")[0].reset();
+                            componentHandler.upgradeElement($("#firstname")[0]);
+                            componentHandler.upgradeElement($("#lastname")[0]);
+
                             $(".mdl-card").hide();
                             $(".employee-name").html(profileObj.firstName.toLowerCase() + " " + profileObj.lastName.toLowerCase());
                             $(".unsubscribe-card, #unsubscribe-btn, #profile-btn, #inbox-btn").show();
