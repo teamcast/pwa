@@ -321,3 +321,7 @@ main {
     font-weight: normal;
 }
 
+#subscription-form input[type=text] {
+    text-transform: capitalize;
+}
+
