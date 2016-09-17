@@ -344,8 +344,10 @@ self.updateStorageCache = function(request, cacheName) {
 }*/
 
 self.getAccountId = function() {
-  caches.match(new URL(restBaseUrl + "accounts"))
+  return caches.match(new URL(restBaseUrl + "accounts"))
       .then(function(response) {
-        return response.text();
+        return response.text().then(function(text) {
+          return text;
+        })
       })
 }
