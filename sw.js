@@ -57,7 +57,7 @@ self.addEventListener("activate", function(event) {
   console.log("Event: Activate");
 
   openDBRequest = indexedDB.open("teamcastIDB", 1);
-  openDBRequest.onupgradeneeded = function(e) {
+  /*openDBRequest.onupgradeneeded = function(e) {
     var thisDB = e.target.result;
     if (!thisDB.objectStoreNames.contains("users")) {
       thisDB.createObjectStore("users", {
@@ -69,7 +69,7 @@ self.addEventListener("activate", function(event) {
 
       console.log("FROM SW - Successfully created object stores");
     }
-  }
+  }*/
   openDBRequest.onsuccess = function(e) {
     teamcastIDB = e.target.result;
     console.log("FROM SW - Successfully opened IndexedDB");
@@ -346,8 +346,6 @@ self.updateStorageCache = function(request, cacheName) {
 self.getAccountId = function() {
   caches.match(new URL(restBaseUrl + "accounts"))
       .then(function(response) {
-        return response.text().then(function(text) {
-          return text;
-        })
+        return response.text();
       })
 }
