@@ -215,24 +215,26 @@ self.addEventListener('push', function(event) {
 }*/
 
 self.sendReceivedNotificationStatus = function(announcementId) {
-  var accountId = self.getAccountId();
-  console.log("accountId from IndexedDB :", accountId);
-
-  var apiUrl = restBaseUrl +"announcements/" + announcementId + "/received/" + accountId;
-  fetch(apiUrl, {
-    method: 'PUT',
-    headers: {
-      "Content-type": "application/json"
-    },
-    body: {}
-  })
-      .then(function(data) {
-        console.log('Successfully sent notification received status for announcement with ID: ' + announcementId);
+  caches.match(new URL(restBaseUrl + "accounts"))
+      .then(function(response) {
+        return response.text().then(function(text) {
+          console.log("ACCOUNT ID: ", text);
+          var apiUrl = restBaseUrl +"announcements/" + announcementId + "/received/" + text;
+          fetch(apiUrl, {
+            method: 'PUT',
+            headers: {
+              "Content-type": "application/json"
+            },
+            body: {}
+          })
+              .then(function(data) {
+                console.log('Successfully sent notification received status for announcement with ID: ' + announcementId);
+              })
+              .catch(function(error) {
+                console.log('Sending notification received status failed: ', error);
+              });
+        })
       })
-      .catch(function(error) {
-        console.log('Sending notification received status failed: ', error);
-      });
-
 }
 
 self.addEventListener("notificationclick", function(event) {
@@ -343,11 +345,11 @@ self.updateStorageCache = function(request, cacheName) {
   )
 }*/
 
-self.getAccountId = function() {
-  return caches.match(new URL(restBaseUrl + "accounts"))
+/*self.getAccountId = function() {
+  caches.match(new URL(restBaseUrl + "accounts"))
       .then(function(response) {
         return response.text().then(function(text) {
           return text;
         })
       })
-}
+}*/
