@@ -322,7 +322,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                             });
 
                             localStorage.removeItem("profile");
-                            deleteUsersStore();
+                            //deleteUsersStore();
                             deleteNotificationStore();
                             deleteNotificationImageCache();
 
