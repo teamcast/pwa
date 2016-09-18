@@ -228,7 +228,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
             }
         });
 
-        $("input[type='text']", "#subscription-form").on("keyup", function(e) {
+        $("input[type='text']", "#subscription-form").on("keyup change", function(e) {
             var filledUp = true;
 
             $("#subscribe-btn").prop("disabled", true);
