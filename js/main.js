@@ -320,7 +320,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                                 complete: function() {
                                     $(".mdl-card, #unsubscribe-btn, #profile-btn, #inbox-btn").hide();
                                     $(".subscription-card").show();
-                                    $("#subscribe-btn").prop("disabled", true)
+                                    //$("#subscribe-btn").prop("disabled", true)
                                     $(".loading-overlay").addClass("hidden");
                                 },
                                 error: function(jqxhr, error, thrownError) {
