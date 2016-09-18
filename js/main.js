@@ -271,7 +271,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                                     cache.put(new URL("https://teamcast-rest.herokuapp.com/rest/accounts"), new Response(resp.id));
                                 });
 
-                            $("#subscription-form")[0].reset();
+                            //$("#subscription-form")[0].reset();
                             componentHandler.upgradeElement($("#firstname")[0]);
                             componentHandler.upgradeElement($("#lastname")[0]);
 
