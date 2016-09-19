@@ -214,20 +214,15 @@ self.addEventListener("notificationclick", function(event) {
                 console.log("CLIENT URL: ", clientList[x].url);
 
                 if (clientList[x].url.indexOf('teamcast.github.io') >= 0) {
-                  //clientList[x].focus();
-                  //clientList[x].postMessage(messageData);
-                  clients.openWindow(clientList[x])
-                      .then(function(client) {
-                        client.focus();
-                        client.postMessage(messageData);
-                      })
+                  clientList[x].focus();
+                  clientList[x].postMessage(messageData);
                 }
               }
               messageData = null;
             } else {
               clients.openWindow("./?utm_source=web_app_manifest")
                 .then(function(client) {
-                  self.clients.claim();
+                  clients.claim();
                 })
             }
             return
