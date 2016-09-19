@@ -67,7 +67,7 @@ self.addEventListener("activate", function(event) {
 
   //Delete unwanted caches
   event.waitUntil(
-      self.clients.claim(),
+      clients.claim(),
       caches.keys()
           .then(function(allCaches) {
             allCaches.map(function(cacheName) {
@@ -214,22 +214,26 @@ self.addEventListener("notificationclick", function(event) {
                 console.log("CLIENT URL: ", clientList[x].url);
 
                 if (clientList[x].url.indexOf('teamcast.github.io') >= 0) {
-                  try {
-                    clientList[x].focus();
-                    clientList[x].postMessage(messageData);
-                  } catch(err) {
-                    console.log("ERROR FOCUSING ON CLIENT: ", clientList[x].url);
-                  }
-
+                  //clientList[x].focus();
+                  //clientList[x].postMessage(messageData);
+                  clients.openWindow(clientList[x])
+                      .then(function(client) {
+                        client.focus();
+                        client.postMessage(messageData);
+                      })
                 }
               }
               messageData = null;
             } else {
-              self.clients.openWindow("./?utm_source=web_app_manifest").then(function(client) {
-                self.clients.claim();
-              })
+              clients.openWindow("./?utm_source=web_app_manifest")
+                .then(function(client) {
+                  self.clients.claim();
+                })
             }
             return
+          })
+          .catch(function(error) {
+            console.log("ERROR FOCUSING ON CLIENT: ", error);
           })
   );
 });
@@ -237,7 +241,10 @@ self.addEventListener("notificationclick", function(event) {
 self.addEventListener('message', function(event) {
   console.log("Event: PostMessage", event);
   if (event.data == "clientloaded" && messageData !== null) {
-    self.clients.matchAll()
+    self.clients.matchAll({
+      includeUncontrolled: true,
+      type: 'window'
+    })
         .then(function(clientList) {
           clientList.forEach(function(client) {
             client.postMessage(messageData);
