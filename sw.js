@@ -83,7 +83,7 @@ self.addEventListener('fetch', function(event) {
   console.log('Event: Fetch', event.request.url);
 
   var accountsUrl = restBaseUrl + "accounts";
-  var imagesUrl = restBaseUrl + "images";accountsUrl;
+  var imagesUrl = restBaseUrl + "images";
 
   if (event.request.url.indexOf(imagesUrl) == 0) {
     console.log("FETCH REQUEST FOR IMAGES URL - ", event.request.url);
@@ -214,12 +214,12 @@ self.addEventListener("notificationclick", function(event) {
                 console.log("CLIENT URL: ", clientList[x].url);
 
                 if (clientList[x].url.indexOf('teamcast.github.io') >= 0) {
-                  //try {
+                  try {
                     clientList[x].focus();
                     clientList[x].postMessage(messageData);
-                  //} catch(err) {
-                  //  console.log("ERROR FOCUSING ON CLIENT: ", clientList[x].url);
-                  //}
+                  } catch(err) {
+                    console.log("ERROR FOCUSING ON CLIENT: ", clientList[x].url);
+                  }
 
                 }
               }
@@ -231,19 +231,13 @@ self.addEventListener("notificationclick", function(event) {
             }
             return
           })
-          .catch(function(error) {
-            console.log("ERROR FOCUSING ON CLIENT: ", clientList[x].url);
-          })
   );
 });
 
 self.addEventListener('message', function(event) {
   console.log("Event: PostMessage", event);
   if (event.data == "clientloaded" && messageData !== null) {
-    self.clients.matchAll({
-      includeUncontrolled: true,
-      type: 'window'
-    })
+    self.clients.matchAll()
         .then(function(clientList) {
           clientList.forEach(function(client) {
             client.postMessage(messageData);
