@@ -67,7 +67,7 @@ self.addEventListener("activate", function(event) {
 
   //Delete unwanted caches
   event.waitUntil(
-      clients.claim(),
+      self.clients.claim(),
       caches.keys()
           .then(function(allCaches) {
             allCaches.map(function(cacheName) {
@@ -214,21 +214,25 @@ self.addEventListener("notificationclick", function(event) {
                 console.log("CLIENT URL: ", clientList[x].url);
 
                 if (clientList[x].url.indexOf('teamcast.github.io') >= 0) {
-                  clientList[x].focus();
-                  clientList[x].postMessage(messageData);
+                  //try {
+                    clientList[x].focus();
+                    clientList[x].postMessage(messageData);
+                  //} catch(err) {
+                  //  console.log("ERROR FOCUSING ON CLIENT: ", clientList[x].url);
+                  //}
+
                 }
               }
               messageData = null;
             } else {
-              clients.openWindow("./?utm_source=web_app_manifest")
-                .then(function(client) {
-                  clients.claim();
-                })
+              self.clients.openWindow("./?utm_source=web_app_manifest").then(function(client) {
+                self.clients.claim();
+              })
             }
             return
           })
           .catch(function(error) {
-            console.log("ERROR FOCUSING ON CLIENT: ", error);
+            console.log("ERROR FOCUSING ON CLIENT: ", clientList[x].url);
           })
   );
 });
