@@ -215,7 +215,6 @@ self.addEventListener("notificationclick", function(event) {
 
                 if (clientList[x].url.indexOf('teamcast.github.io') >= 0) {
                   try {
-                      console.log("MESSAGE DATA", messageData);
                     clientList[x].focus();
                     clientList[x].postMessage(messageData);
                   } catch(err) {
@@ -226,9 +225,10 @@ self.addEventListener("notificationclick", function(event) {
               }
               messageData = null;
             } else {
-              self.clients.openWindow("./?utm_source=web_app_manifest").then(function(client) {
-                self.clients.claim();
-              })
+              //self.clients.openWindow("./?utm_source=web_app_manifest").then(function(client) {
+                self.clients.openWindow("/?homescreen=1").then(function(client) {
+                    self.clients.claim();
+                })
             }
             return
           })
@@ -238,7 +238,6 @@ self.addEventListener("notificationclick", function(event) {
 self.addEventListener('message', function(event) {
   console.log("Event: PostMessage", event);
   if (event.data == "clientloaded" && messageData !== null) {
-      console.log(messageData);
     self.clients.matchAll()
         .then(function(clientList) {
           clientList.forEach(function(client) {

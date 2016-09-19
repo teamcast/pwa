@@ -183,7 +183,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                     .find("p").text(messageObj.content);
                 $(".options-container", ".notification-card").empty();
 
-                if (messageObj.options && messageObj.options.length) {
+                if (messageObj.options && messageObj.options.length && messageObj.options[0] !== null) {
                     var optLen = messageObj.options.length;
                     for (x = 0; x < optLen; x++) {
                         var data = {
