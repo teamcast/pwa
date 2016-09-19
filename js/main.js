@@ -483,7 +483,7 @@ if (('serviceWorker' in navigator) && ('PushManager' in window)) {
                     .find("p").text(cachedNotifData.content);
                 $(".options-container", ".cached-notification-card").empty();
 
-                if (cachedNotifData.options && cachedNotifData.options.length) {
+                if (cachedNotifData.options && cachedNotifData.options.length && cachedNotifData.options[0] !== null) {
                     var optLen = cachedNotifData.options.length;
                     for (x = 0; x < optLen; x++) {
                         var data = {
