@@ -237,6 +237,7 @@ self.addEventListener("notificationclick", function(event) {
 self.addEventListener('message', function(event) {
   console.log("Event: PostMessage", event);
   if (event.data == "clientloaded" && messageData !== null) {
+      console.log(messageData);
     self.clients.matchAll()
         .then(function(clientList) {
           clientList.forEach(function(client) {
