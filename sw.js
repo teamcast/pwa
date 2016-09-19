@@ -215,6 +215,7 @@ self.addEventListener("notificationclick", function(event) {
 
                 if (clientList[x].url.indexOf('teamcast.github.io') >= 0) {
                   try {
+                      console.log("MESSAGE DATA", messageData);
                     clientList[x].focus();
                     clientList[x].postMessage(messageData);
                   } catch(err) {
